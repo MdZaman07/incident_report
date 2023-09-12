@@ -11,7 +11,7 @@ class login extends Component {
             <input
               type="text"
               id="username"
-              name="username"
+              name="Test_Name"
               defaultValue="username"
               className="text_input"
 
