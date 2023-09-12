@@ -6,6 +6,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import Login from "./component/login";
 import Form from "./component/form";
 import Archive from "./component/archive";
+import Signup from "./component/signup";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Login />
       <Form />
       <Archive />
+      <Signup />
     </PrimeReactProvider>
   );
 }
