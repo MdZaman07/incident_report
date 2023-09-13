@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import "./signup.css";
 
-class signup extends Component {
+export default class signup extends Component {
     render() {
       return (
         <div className="Signup">
-        <h4>Login</h4>
+        <h4>Sign-up</h4>
         <form>
         <div className="text_area">
             <input
