@@ -10,9 +10,9 @@ class signup extends Component {
         <div className="text_area">
             <input
               type="text"
-              id="companyid"
-              name="companyid"
-              defaultValue="Company ID"
+              id="userid"
+              name="userid"
+              defaultValue="User ID"
               className="text_input"
 
             />
