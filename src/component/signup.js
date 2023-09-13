@@ -74,7 +74,7 @@ class signup extends Component {
 
           />
         </form>
-        <a className="link" href="/login">Back to Login</a>
+        <a className="link" href="/login.js">Back to Login</a>
       </div>
     )
   }

@@ -34,7 +34,7 @@ class login extends Component {
 
           />
         </form>
-        <a className="link" href="/signup">Sign Up</a>
+        <a className="link" href="/signup.js">Sign Up</a>
       </div>
     )
   }
