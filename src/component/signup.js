@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./signup.css";
 
-export default class signup extends Component {
+class signup extends Component {
     render() {
       return (
         <div className="Signup">

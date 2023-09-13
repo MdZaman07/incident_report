@@ -19,7 +19,7 @@ function App() {
           <Route path="/login.js" element={<Login />} />
           <Route path="/form.js" element={<Form />} />
           <Route path="/archive.js" element={<Archive />} />
-          <Route path="/archive.js" element={<Signup />} />
+          <Route path="/signup.js" element={<Signup />} />
         </Routes>
       </Router>
     </PrimeReactProvider>
