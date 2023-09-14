@@ -13,6 +13,9 @@ const Home = () => {
         <Link to="/form.js" className="nav-link">
           Report an Incident
         </Link>
+        <Link to="/signup.js" className="nav-link">
+          Signup
+        </Link>
         <Link to="/login.js" className="nav-link">
           Login
         </Link>
