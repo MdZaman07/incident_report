@@ -11,7 +11,7 @@ const Home = () => {
       </header>
       <nav className="navbar">
         <Link to="/form.js" className="nav-link">
-          Report an Incident
+          Report an Incident..
         </Link>
         <Link to="/signup.js" className="nav-link">
           Signup
@@ -22,6 +22,7 @@ const Home = () => {
         <Link to="/archive.js" className="nav-link">
           Archive
         </Link>
+        <div>triallsss</div>
       </nav>
     </div>
   );
