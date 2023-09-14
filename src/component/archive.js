@@ -7,7 +7,7 @@ export default class archive extends Component {
   render() {
     return (
       <div className="centered-content">
-        <DataTable value={mockData} paginator rows={10} sortField="date" sortOrder={-1}>
+        <DataTable value={mockData} paginator rows={10} sortField="status" sortOrder={1}>
           <Column field="date" header="Date" sortable></Column>
           <Column field="incidentTitle" header="Incident" sortable></Column>
           <Column
@@ -18,6 +18,7 @@ export default class archive extends Component {
           <Column field="witnessName" header="Witness Name" sortable></Column>
           <Column field="offenderName" header="Offender Name" sortable></Column>
           <Column field="description" header="Description"></Column>
+          <Column field="status" header="Status" sortable></Column>
         </DataTable>
       </div>
     );
@@ -33,6 +34,7 @@ const mockData = [
     description: "Description of the Burglary incident.",
     incidentCategory: "Theft",
     attachedFile: null,
+    status: "Open"
   },
   {
     incidentTitle: "Vandalism",
@@ -42,6 +44,7 @@ const mockData = [
     description: "Description of the Accident incident.",
     incidentCategory: "Other",
     attachedFile: null,
+    status: "Open"
   },
   {
     incidentTitle: "Disturbance",
@@ -51,6 +54,7 @@ const mockData = [
     description: "Description of the Assault incident.",
     incidentCategory: "Physical",
     attachedFile: null,
+    status: "Open"
   },
   {
     incidentTitle: "Fraud",
@@ -60,6 +64,7 @@ const mockData = [
     description: "Description of the Harassment incident.",
     incidentCategory: "Theft",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Vandalism",
@@ -69,6 +74,7 @@ const mockData = [
     description: "Description of the Theft incident.",
     incidentCategory: "Harassment",
     attachedFile: null,
+    status: "Open"
   },
   {
     incidentTitle: "Assault",
@@ -78,6 +84,7 @@ const mockData = [
     description: "Description of the Assault incident.",
     incidentCategory: "Theft",
     attachedFile: null,
+    status: "Open"
   },
   {
     incidentTitle: "Burglary",
@@ -87,6 +94,7 @@ const mockData = [
     description: "Description of the Fraud incident.",
     incidentCategory: "Accident",
     attachedFile: null,
+    status: "Open"
   },
   {
     incidentTitle: "Theft",
@@ -96,6 +104,7 @@ const mockData = [
     description: "Description of the Fraud incident.",
     incidentCategory: "Harassment",
     attachedFile: null,
+    status: "Open"
   },
   {
     incidentTitle: "Theft",
@@ -105,6 +114,7 @@ const mockData = [
     description: "Description of the Disturbance incident.",
     incidentCategory: "Other",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Burglary",
@@ -114,6 +124,7 @@ const mockData = [
     description: "Description of the Fire incident.",
     incidentCategory: "Physical",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Disturbance",
@@ -123,6 +134,7 @@ const mockData = [
     description: "Description of the Theft incident.",
     incidentCategory: "Other",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Fire",
@@ -132,6 +144,7 @@ const mockData = [
     description: "Description of the Assault incident.",
     incidentCategory: "Property Damage",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Accident",
@@ -141,6 +154,7 @@ const mockData = [
     description: "Description of the Disturbance incident.",
     incidentCategory: "Property Damage",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Fire",
@@ -150,6 +164,7 @@ const mockData = [
     description: "Description of the Trespassing incident.",
     incidentCategory: "Physical",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Fire",
@@ -159,6 +174,7 @@ const mockData = [
     description: "Description of the Assault incident.",
     incidentCategory: "Harassment",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Assault",
@@ -168,6 +184,7 @@ const mockData = [
     description: "Description of the Vandalism incident.",
     incidentCategory: "Other",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Fraud",
@@ -177,6 +194,7 @@ const mockData = [
     description: "Description of the Theft incident.",
     incidentCategory: "Theft",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Trespassing",
@@ -186,6 +204,7 @@ const mockData = [
     description: "Description of the Fraud incident.",
     incidentCategory: "Other",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Fraud",
@@ -195,6 +214,7 @@ const mockData = [
     description: "Description of the Disturbance incident.",
     incidentCategory: "Property Damage",
     attachedFile: null,
+    status: "Resolved"
   },
   {
     incidentTitle: "Fraud",
@@ -204,5 +224,6 @@ const mockData = [
     description: "Description of the Disturbance incident.",
     incidentCategory: "Theft",
     attachedFile: null,
+    status: "Resolved"
   },
 ];
