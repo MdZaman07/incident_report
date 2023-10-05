@@ -8,8 +8,8 @@ import { selectClasses } from '@mui/material';
 
 const Form = () => {
 
-    const [address, setAddress] = useState('');
-    const [coordinates, setCoordinates] = useState(null);
+    //const [address, setAddress] = useState('');
+    //const [coordinates, setCoordinates] = useState(null);
   
 
     const[formData, setFormData] = useState( {
@@ -34,7 +34,7 @@ const Form = () => {
         }));
     }
 
-    const handleSearch = async (selectedAddress) => {
+    /*const handleSearch = async (selectedAddress) => {
         try {
             const results = await geocodeByAddress(selectedAddress);
             const latLng = await getLatLng(results[0]);
@@ -43,18 +43,18 @@ const Form = () => {
           } catch (error) {
             console.error('Error selecting address:', error);
           }
-        };
+        }; */
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const formElement = document.getElementById('incidentForm');
-        const formData = new FormData(formElement);
-
         try {
-            const response = await fetch('api/submit', {
+            const response = await fetch('http://localhost:4000/api/submit', {
                 method: 'POST',
-                body : formData
+                body : formData,
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
             })
 
             if(response.status === 200) {
@@ -62,6 +62,7 @@ const Form = () => {
             }
             else {
                 console.log('Form submission failed.')
+                console.log(response.status)
             }
         }
         catch(error) {
@@ -80,11 +81,11 @@ const Form = () => {
             <form id='incidentForm' onSubmit={handleSubmit}>
                 <div className='incident-form__text-area'>
                     <label htmlFor="name">Incident Title: </label>
-                    <input type='text' id='incidentTitle' name='offenderName' onChange={handleFormChange} value={formData.incidentTitle}></input>
+                    <input type='text' id='incidentTitle' name='incidentTitle' onChange={handleFormChange} value={formData.incidentTitle}></input>
                 </div>
                 <div className='incident-form__text-area'>
                     <label htmlFor="title">Location/Venue: </label>
-                    <input type='text' id='location' value={formData.incidentLocation} onChange={handleFormChange} name='location'></input>
+                    <input type='text' id='incidentlocation' value={formData.incidentLocation} onChange={handleFormChange} name='incidentLocation'></input>
                 </div>
                 <div className='incident-form__text-area'>
                     <label htmlFor="date">Date of incident: </label>
@@ -92,7 +93,7 @@ const Form = () => {
                 </div>
                 <div className='incident-form__text-area'>
                     <label htmlFor="level">Incident Category: </label>
-                    <select id="level" name='incidentCategory' value={formData.incidentCategory} onChange={handleFormChange}>
+                    <select id="incidentCategory" name='incidentCategory' value={formData.incidentCategory} onChange={handleFormChange}>
                         <option value="" disabled>Select a category</option>
                         {incidentCategories.map((level, index) => (
                             <option key={index} value={level}>
@@ -103,11 +104,11 @@ const Form = () => {
                 </div>
                 <div className='incident-form__text-area'>
                     <label htmlFor="description">Incident Description: </label>
-                    <input type='text' id='description' value={formData.description} name='description'></input>
+                    <input type='text' id='description' value={formData.description} onChange={handleFormChange} name='description'></input>
                 </div>
                  <div className='incident-form__text-area'>
                     <label htmlFor="name">Name of offender (if applicable): </label>
-                    <input type='text' id='offenderName' name='offenderName' value={formData.offenderName}></input>
+                    <input type='text' id='offenderName' name='offenderName' onChange={handleFormChange} value={formData.offenderName}></input>
                 </div>
                {/*<div className='incident-form__text-area'>
                     <label htmlFor="file">Attach image/video: </label>

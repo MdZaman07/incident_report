@@ -1,14 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const User = require('./models/User'); // Import the User model
 const multer = require('multer');
-const Grid = reqruie('gridfs-stream')
+const Grid = require('gridfs-stream');
+const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 
-app.use(cors());
+const Form = require('./Model/form')
+const User = require('./Model/user')
+
+app.use(cors())
 app.use(bodyParser.json());
 
 // Connect to MongoDB
@@ -23,8 +26,7 @@ catch(error) {
 }
 
 // Used for unstructured data
-Grid.mongo = mongoose.mongo;
-const gfs = Grid(mongoose.connection.db);
+
 
 // Create a route for user registration
 app.post('/api/register', async (req, res) => {
@@ -57,6 +59,7 @@ app.post('/api/submit', async (req, res) => {
 
   const form = new Form({
     incidentTitle,
+    incidentLocation,
     witnessName,
     offenderName,
     date: parsedDate,
