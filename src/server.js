@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB
 try {
-  mongoose.connect('mongodb+srv://<<username>>:<<password>>@cluster0.hr8ilkr.mongodb.net/?retryWrites=true&w=majority', {
+  mongoose.connect('mongodb+srv://blester7:yTGJYryN4t2RfVFC@cluster0.hr8ilkr.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -44,7 +44,6 @@ app.post('/api/register', async (req, res) => {
 // Routing for form submission
 
 app.post('/api/submit', async (req, res) => {
-  const {incidentTitle, witnessName, offenderName, date, description, incidentCategory} = req.body
 
 
 

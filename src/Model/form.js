@@ -9,5 +9,7 @@ const formSchema = new mongoose.Schema({
   incidentCategory: String
 });
 
-const User = mongoose.model('Form', formSchema);
+const Form = mongoose.model('Form', formSchema);
+
+module.exports = Form
 
