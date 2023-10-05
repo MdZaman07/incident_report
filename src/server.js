@@ -45,8 +45,34 @@ app.post('/api/register', async (req, res) => {
 
 app.post('/api/submit', async (req, res) => {
 
+  const {incidentTitle, incidentLocation, witnessName, offenderName, date, description, incidentCategory} = req.body
 
+  try {
 
+  const parsedDate = new Date(date)
+
+  if(offenderName === "") {
+    offenderName = "N/A"
+  }
+
+  const form = new Form({
+    incidentTitle,
+    witnessName,
+    offenderName,
+    date: parsedDate,
+    description,
+    incidentCategory
+
+  })
+
+  await form.save(); 
+
+  res.json({ message: 'Incident submitted successfully' });
+} 
+catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Internal server error' });
+}
 });
 
 app.listen(port, () => {
