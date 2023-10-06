@@ -51,7 +51,7 @@ const Form = () => {
         try {
             const response = await fetch('http://localhost:4000/api/submit', {
                 method: 'POST',
-                body : formData,
+                body : JSON.stringify(formData),
                 headers: {
                     'Content-Type': 'application/json', 
                 },
@@ -80,19 +80,19 @@ const Form = () => {
             <h2>Incident Form</h2>
             <form id='incidentForm' onSubmit={handleSubmit}>
                 <div className='incident-form__text-area'>
-                    <label htmlFor="name">Incident Title: </label>
+                    <label htmlFor="incidentTitle">Incident Title: </label>
                     <input type='text' id='incidentTitle' name='incidentTitle' onChange={handleFormChange} value={formData.incidentTitle}></input>
                 </div>
                 <div className='incident-form__text-area'>
-                    <label htmlFor="title">Location/Venue: </label>
-                    <input type='text' id='incidentlocation' value={formData.incidentLocation} onChange={handleFormChange} name='incidentLocation'></input>
+                    <label htmlFor="incidentLocation">Location/Venue: </label>
+                    <input type='text' id='incidentLocation' value={formData.incidentLocation} onChange={handleFormChange} name='incidentLocation'></input>
                 </div>
                 <div className='incident-form__text-area'>
                     <label htmlFor="date">Date of incident: </label>
                     <input type='date' id='date' value={formData.date} onChange={handleFormChange} name='date'></input>
                 </div>
                 <div className='incident-form__text-area'>
-                    <label htmlFor="level">Incident Category: </label>
+                    <label htmlFor="incidentCategory">Incident Category: </label>
                     <select id="incidentCategory" name='incidentCategory' value={formData.incidentCategory} onChange={handleFormChange}>
                         <option value="" disabled>Select a category</option>
                         {incidentCategories.map((level, index) => (
@@ -107,7 +107,7 @@ const Form = () => {
                     <input type='text' id='description' value={formData.description} onChange={handleFormChange} name='description'></input>
                 </div>
                  <div className='incident-form__text-area'>
-                    <label htmlFor="name">Name of offender (if applicable): </label>
+                    <label htmlFor="offenderName">Name of offender (if applicable): </label>
                     <input type='text' id='offenderName' name='offenderName' onChange={handleFormChange} value={formData.offenderName}></input>
                 </div>
                {/*<div className='incident-form__text-area'>

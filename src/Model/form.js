@@ -7,7 +7,7 @@ const formSchema = new mongoose.Schema({
   date: Date,
   description: String,
   incidentCategory: String
-});
+}, { collection: 'Forms' });
 
 const Form = mongoose.model('Form', formSchema, 'Forms');
 

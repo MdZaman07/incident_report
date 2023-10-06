@@ -14,9 +14,11 @@ const User = require('./Model/user')
 app.use(cors())
 app.use(bodyParser.json());
 
+const dbUrl = 'mongodb+srv://blester7:yTGJYryN4t2RfVFC@cluster0.hr8ilkr.mongodb.net/IncidentReportingDB?retryWrites=true&w=majority'
+
 // Connect to MongoDB
 try {
-  mongoose.connect('mongodb+srv://blester7:yTGJYryN4t2RfVFC@cluster0.hr8ilkr.mongodb.net/?retryWrites=true&w=majority', {
+  const dbConnection = mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -52,10 +54,6 @@ app.post('/api/submit', async (req, res) => {
   try {
 
   const parsedDate = new Date(date)
-
-  if(offenderName === "") {
-    offenderName = "N/A"
-  }
 
   const form = new Form({
     incidentTitle,
