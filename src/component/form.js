@@ -5,6 +5,7 @@ import PlacesAutocomplete, {
     getLatLng,
   } from 'react-places-autocomplete';
 import { selectClasses } from '@mui/material';
+import { set } from 'mongoose';
 
 const Form = () => {
 
@@ -33,6 +34,8 @@ const Form = () => {
             [fieldName]: fieldValue
         }));
     }
+
+    const[status, setStatus] = useState('')
 
     /*const handleSearch = async (selectedAddress) => {
         try {
@@ -63,10 +66,11 @@ const Form = () => {
     
                 if(response.status === 200) {
                     console.log('Form data submitted sucessfully.')
+                    setStatus('Incident form submitted successfully, redirecting to home page.')
                 }
                 else {
                     console.log('Form submission failed.')
-                    console.log(response.status)
+                    setStatus('Form fail to submit, please try again.')
                 }
             }
             catch(error) {
@@ -128,6 +132,7 @@ const Form = () => {
                         accept=".pdf, .doc, .docx, .jpg, .jpeg, .png, .mp4"
                     />
                         </div> */}
+                {status && <p className="status">{status}</p>}
                 <input className='btn' type='submit' value="Submit"></input>
             </form>
         </div>
