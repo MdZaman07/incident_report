@@ -32,9 +32,9 @@ catch(error) {
 
 // Create a route for user registration
 app.post('/api/register', async (req, res) => {
+  const {firstname, lastname, email, password} = req.body
   try {
-    const { username, password } = req.body;
-    const newUser = new User({ username, password });
+    const newUser = new User({firstname, lastname, email, password});
     await newUser.save();
     res.json({ message: 'User registered successfully' });
   } catch (error) {
