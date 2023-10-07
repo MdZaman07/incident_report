@@ -5,8 +5,6 @@ import archive from "./archive";
 import "./home.css";
 
 const Home = () => {
-
-
   return (
     <div className="home">
       <header className="home-header">
@@ -28,6 +26,9 @@ const Home = () => {
         </Link>
         <Link to="/viewMalls.js" className="nav-link">
           Shopping
+        </Link>
+        <Link to="/viewForms.js" className="nav-link">
+          Incidents List
         </Link>
         <div></div>
       </nav>
