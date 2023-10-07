@@ -29,9 +29,7 @@ const Home = () => {
         <Link to="/viewMalls.js" className="nav-link">
           Shopping
         </Link>
-     
-       
-        <div>triallsss</div>
+        <div></div>
       </nav>
     </div>
   );
