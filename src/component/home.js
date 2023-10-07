@@ -22,7 +22,7 @@ const Home = () => {
         <Link to="/archive.js" className="nav-link">
           Archive
         </Link>
-        <div>triallsss</div>
+        <div></div>
       </nav>
     </div>
   );
