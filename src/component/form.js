@@ -15,7 +15,7 @@ const Form = () => {
     const[formData, setFormData] = useState( {
         incidentTitle: "",
         incidentLocation: "",
-        witnessName: "",
+        //witnessName: "", Shouldnt be required as a login should note the witness name.
         offenderName: "",
         date: "",
         description: "",
@@ -48,26 +48,33 @@ const Form = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        try {
-            const response = await fetch('http://localhost:4000/api/submit', {
-                method: 'POST',
-                body : JSON.stringify(formData),
-                headers: {
-                    'Content-Type': 'application/json', 
-                },
-            })
+        if(formData.incidentTitle == "" || formData.description == "" || formData.incidentLocation == "") {
+            alert("One of the mandatory fields is empty, please try again.")
+        }
+        else {
+            try {
+                const response = await fetch('http://localhost:4000/api/submit', {
+                    method: 'POST',
+                    body : JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json', 
+                    },
+                })
+    
+                if(response.status === 200) {
+                    console.log('Form data submitted sucessfully.')
+                }
+                else {
+                    console.log('Form submission failed.')
+                    console.log(response.status)
+                }
+            }
+            catch(error) {
+                console.log(error)
+            }
+        }
 
-            if(response.status === 200) {
-                console.log('Form data submitted sucessfully.')
-            }
-            else {
-                console.log('Form submission failed.')
-                console.log(response.status)
-            }
-        }
-        catch(error) {
-            console.log(error)
-        }
+        
     }
 
     // const severityLevels = ["Low", "Medium", "High"];
@@ -80,21 +87,17 @@ const Form = () => {
             <h2>Incident Form</h2>
             <form id='incidentForm' onSubmit={handleSubmit}>
                 <div className='incident-form__text-area'>
-                    <label htmlFor="incidentTitle">Incident Title: </label>
-                    <input type='text' id='incidentTitle' name='incidentTitle' onChange={handleFormChange} value={formData.incidentTitle}></input>
+                    <input type='text' id='incidentTitle' placeholder='Title*' name='incidentTitle' onChange={handleFormChange} value={formData.incidentTitle}></input>
                 </div>
                 <div className='incident-form__text-area'>
-                    <label htmlFor="incidentLocation">Location/Venue: </label>
-                    <input type='text' id='incidentLocation' value={formData.incidentLocation} onChange={handleFormChange} name='incidentLocation'></input>
+                    <input type='text' id='incidentLocation' placeholder='Location*' value={formData.incidentLocation} onChange={handleFormChange} name='incidentLocation'></input>
                 </div>
                 <div className='incident-form__text-area'>
-                    <label htmlFor="date">Date of incident: </label>
-                    <input type='date' id='date' value={formData.date} onChange={handleFormChange} name='date'></input>
+                    <input type='date' placeholder='Date*' id='date' value={formData.date} onChange={handleFormChange} name='date'></input>
                 </div>
                 <div className='incident-form__text-area'>
-                    <label htmlFor="incidentCategory">Incident Category: </label>
                     <select id="incidentCategory" name='incidentCategory' value={formData.incidentCategory} onChange={handleFormChange}>
-                        <option value="" disabled>Select a category</option>
+                        <option value="" disabled>Incident Category</option>
                         {incidentCategories.map((level, index) => (
                             <option key={index} value={level}>
                                 {level}
@@ -103,12 +106,18 @@ const Form = () => {
                     </select>
                 </div>
                 <div className='incident-form__text-area'>
-                    <label htmlFor="description">Incident Description: </label>
-                    <input type='text' id='description' value={formData.description} onChange={handleFormChange} name='description'></input>
+                <textarea
+                        id='description'
+                        placeholder='Description (character limit 500)'
+                        value={formData.description}
+                        onChange={handleFormChange}
+                        name='description'
+                        rows="5"
+                        maxLength='500'
+                    ></textarea>
                 </div>
                  <div className='incident-form__text-area'>
-                    <label htmlFor="offenderName">Name of offender (if applicable): </label>
-                    <input type='text' id='offenderName' name='offenderName' onChange={handleFormChange} value={formData.offenderName}></input>
+                    <input type='text' placeholder='Name of offender (if applicable)' id='offenderName' name='offenderName' onChange={handleFormChange} value={formData.offenderName}></input>
                 </div>
                {/*<div className='incident-form__text-area'>
                     <label htmlFor="file">Attach image/video: </label>
