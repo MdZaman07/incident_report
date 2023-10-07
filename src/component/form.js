@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
 import './form.css';
-import PlacesAutocomplete, {
-    geocodeByAddress,
-    getLatLng,
-  } from 'react-places-autocomplete';
-import { selectClasses } from '@mui/material';
-import { set } from 'mongoose';
 
 const Form = () => {
 
