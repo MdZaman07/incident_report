@@ -37,6 +37,16 @@ const Form = () => {
 
     const[status, setStatus] = useState('')
 
+    const[inputType, setInputType] = useState('text')
+
+    const handleInputFocus = () => {
+        setInputType('date')
+    }
+
+    const handleInputBlur = () => {
+        setInputType('text')
+    }
+
     /*const handleSearch = async (selectedAddress) => {
         try {
             const results = await geocodeByAddress(selectedAddress);
@@ -75,6 +85,7 @@ const Form = () => {
             }
             catch(error) {
                 console.log(error)
+                setStatus('Form fail to submit, please try again.')
             }
         }
 
@@ -84,6 +95,8 @@ const Form = () => {
     // const severityLevels = ["Low", "Medium", "High"];
 
     const incidentCategories = ["Safety", "Security", "Technical", "Environmental"];
+
+    const locations = ["Broadway Sydney", "Westfield Sydney", "Pit Street Mall"]
   
 
     return (
@@ -94,14 +107,21 @@ const Form = () => {
                     <input type='text' id='incidentTitle' placeholder='Title*' name='incidentTitle' onChange={handleFormChange} value={formData.incidentTitle}></input>
                 </div>
                 <div className='incident-form__text-area'>
-                    <input type='text' id='incidentLocation' placeholder='Location*' value={formData.incidentLocation} onChange={handleFormChange} name='incidentLocation'></input>
+                <select required id="incidentLocation" name='incidentLocation' value={formData.incidentLocation} onChange={handleFormChange}>
+                        <option value="" disabled selected >Venue Locations</option>
+                        {locations.map((level, index) => (
+                            <option key={index} value={level}>
+                                {level}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div className='incident-form__text-area'>
-                    <input type='date' placeholder='Date*' id='date' value={formData.date} onChange={handleFormChange} name='date'></input>
+                    <input type={inputType} placeholder='Date of incident' onFocus={handleInputFocus} onBlur={handleInputBlur} id='date' value={formData.date} onChange={handleFormChange} name='date'></input>
                 </div>
                 <div className='incident-form__text-area'>
-                    <select id="incidentCategory" name='incidentCategory' value={formData.incidentCategory} onChange={handleFormChange}>
-                        <option value="" disabled>Incident Category</option>
+                    <select required id="incidentCategory" name='incidentCategory' value={formData.incidentCategory} onChange={handleFormChange}>
+                        <option value="" disabled selected>Incident Category</option>
                         {incidentCategories.map((level, index) => (
                             <option key={index} value={level}>
                                 {level}

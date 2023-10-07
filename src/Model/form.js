@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const formSchema = new mongoose.Schema({
   incidentTitle: String,
+  incidentLocation: String,
   witnessName: String,
   offenderName: String,
   date: Date,
