@@ -95,7 +95,6 @@ const Form = () => {
 
     return (
         <div className='incident-form'>
-            <h2>Incident Form</h2>
             <form id='incidentForm' onSubmit={handleSubmit}>
                 <div className='incident-form__text-area'>
                     <input type='text' id='incidentTitle' placeholder='Title*' name='incidentTitle' onChange={handleFormChange} value={formData.incidentTitle}></input>

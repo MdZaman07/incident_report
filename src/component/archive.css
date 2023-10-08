@@ -4,3 +4,8 @@
   align-items: center;
   min-height: 100vh;
 }
+
+.p-datatable-tbody > tr:hover {
+  cursor: pointer;
+  background-color: #f2f2f2;
+}
