@@ -21,12 +21,14 @@ steps:
   displayName: 'npm install and build'
 
 - script: |
-    node src/server.js 
-    if [ $? -eq 0 ]; then
-      echo "Express.js server ran successfully."
-      exit 0
-    else
-      echo "Express.js server encountered an error."
-      exit 1
-    fi
-  displayName: 'Express js server'
+    - script: |
+    npx wait-on http://localhost:4000
+    node src/server.js &
+    server_pid=$!
+    # You can run additional tests here, if needed.
+    # For example: npm test
+    # Terminate the server when done.
+    kill $server_pid
+    wait $server_pid
+    exit $?
+  displayName: 'Run Express.js Server and Tests'
