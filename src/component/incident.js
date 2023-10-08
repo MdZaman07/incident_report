@@ -21,7 +21,6 @@ function Incident() {
       detail: "You have successfully resolved the incident .",
       life: 3000,
     });
-    navigate("/archive.js");
   };
 
   const deniedConfirmation = () => {
@@ -31,7 +30,6 @@ function Incident() {
       detail: "You have denied resolved the incident .",
       life: 3000,
     });
-    navigate("/archive.js");
   };
 
   const resolveConfirmation = () => {
@@ -83,7 +81,6 @@ function Incident() {
               <p>No evidence supplied</p>
             )}
             <p>Status: {incident.status}</p>
-
             {incident.status === "Open" && (
               <div>
                 <Button
