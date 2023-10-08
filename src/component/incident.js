@@ -83,20 +83,23 @@ function Incident() {
               <p>No evidence supplied</p>
             )}
             <p>Status: {incident.status}</p>
-            <div>
-              <Button
-                onClick={resolveConfirmation}
-                icon="pi pi-check"
-                label="Resolve"
-                className="mr-2"
-              ></Button>
-              <Button
-                style={{ marginLeft: "1em" }}
-                onClick={denyConfirmation}
-                icon="pi pi-times"
-                label="Deny"
-              ></Button>
-            </div>
+
+            {incident.status === "Open" && (
+              <div>
+                <Button
+                  onClick={resolveConfirmation}
+                  icon="pi pi-check"
+                  label="Resolve"
+                  className="mr-2"
+                ></Button>
+                <Button
+                  style={{ marginLeft: "1em" }}
+                  onClick={denyConfirmation}
+                  icon="pi pi-times"
+                  label="Deny"
+                ></Button>
+              </div>
+            )}
           </Panel>
         </div>
       </div>

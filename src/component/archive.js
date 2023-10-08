@@ -20,7 +20,6 @@ export default function Archive() {
         paginator
         rows={10}
         sortField="status"
-        sortOrder={1}
         onRowClick={onRowClick}
       >
         <Column field="incidentID" header="ID" sortable></Column>
