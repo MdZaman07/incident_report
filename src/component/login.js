@@ -5,23 +5,28 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      username: '',
+      email: '',
       password: '',
     };
   }
 
+  handleInputChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
   handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { username, password } = this.state;
+    const { email, password } = this.state;
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('http://localhost:4000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (response.status === 200) {
@@ -40,8 +45,8 @@ class Login extends Component {
       <div className="Login">
         <h4>Login</h4>
         <form onSubmit={this.handleSubmit}>
-          {/* Input fields for username and password */}
-          {/* ... */}
+          <input type='text' name='email' onChange={this.handleInputChange} id='email' placeholder='Email'></input>
+          <input type='password' name='password' onChange={this.handleInputChange} id='password' placeholder='Password'></input>
           <input type="submit" value="LOGIN" className="btn" />
         </form>
         <a className="link" href="/signup.js">

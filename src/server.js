@@ -44,6 +44,23 @@ app.post("/api/register", async (req, res) => {
 
 // Add routing to Login Page here
 
+app.post("/api/login", async (req, res) => {
+  const {email, password} = req.body
+
+  try {
+    const user = await User.findOne({email: email, password: password})
+
+    if(!user) {
+      return res.status(401).json({message : 'Invalid credentials'});
+    }
+
+    return res.status(200).json({message : 'Login successful'})
+  }
+  catch(error) {
+
+  }
+})
+
 // Routing for form submission
 
 app.post("/api/submit", async (req, res) => {
