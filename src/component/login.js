@@ -36,11 +36,14 @@ const Login = () => {
       });
 
       if (response.status === 200) {
+        const data = await response.json();
+        const userId= data.user._id
+        console.log(userId)
         console.log('Login successful');
         setStatus('Details correct. Logging in.')
 
-        setTimeout(() => {
-          navigate("/userHome.js");
+      setTimeout(() => {
+          navigate(`/userHome.js/${userId}`);
         }, 2000);
       } else {
         console.error('Login failed');
