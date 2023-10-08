@@ -11,7 +11,7 @@ const UserHome = () => {
     const[showForm, setShowForm] = useState(false);
     const[header, setHeader] = useState('Your Incident Archive')
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const getUser = async () => {
         try {
@@ -41,13 +41,16 @@ const UserHome = () => {
         const fetchName = async () => {
             const user = await getUser();
             setUserData(user);
+            console.log(userData)
         };
         fetchName();
     }, []);
 
+    const welcomeMessage = userData ? `Welcome, ${userData.firstname}` : 'No name'
+
     const items = [
         {
-            label: `Welcome, ${userData.firstname}`,
+            label: welcomeMessage,
             className: 'welcome-user',
             disabled: true,
         },
@@ -66,6 +69,12 @@ const UserHome = () => {
             setShowForm(true);
             setHeader('Report an incident')
            }
+        },
+        {
+            label: 'Sign out',
+            command: () => {
+                navigate('/login.js')
+            }
         }
     ];
 
