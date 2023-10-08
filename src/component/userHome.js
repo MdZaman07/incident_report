@@ -1,12 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './userHome.css'
 import { Menubar } from 'primereact/menubar';
+import { useParams } from 'react-router-dom';
 
-const UserHome = (props) => { // Will take props as user information will be passed.
+const UserHome = () => { // Will take props as user information will be passed.
 
-    const formList = {
+    const { userId } = useParams();
+    const[userData, setUserData] = useState(null);
 
-    }
+    useEffect(() => {
+        
+    })
 
     const items = [
         {

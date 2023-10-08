@@ -111,6 +111,10 @@ app.get("/api/getForms", async (req, res) => {
   }
 });
 
+app.get("api/Users/:UserId", async (req, res) => {
+  const {userId} = req.params
+})
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
