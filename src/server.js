@@ -43,23 +43,19 @@ app.post("/api/register", async (req, res) => {
 });
 
 // Add routing to Login Page here
-
 app.post("/api/login", async (req, res) => {
-  const {email, password} = req.body
+  const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({email: email, password: password})
+    const user = await User.findOne({ email: email, password: password });
 
-    if(!user) {
-      return res.status(401).json({message : 'Invalid credentials'});
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    return res.status(200).json({message : 'Login successful'})
-  }
-  catch(error) {
-
-  }
-})
+    return res.status(200).json({ message: "Login successful" });
+  } catch (error) {}
+});
 
 // Routing for form submission
 
@@ -110,12 +106,12 @@ app.get("/api/getForms", async (req, res) => {
   }
 });
 
-// Add a new route for searching incidents by incidentLocation
+// Add a new route for searching incidents by incidentTitle
 app.get("/api/searchIncidents", async (req, res) => {
-  const { incidentTitle } = req.query;
+  const { incidentLocation } = req.query;
 
   try {
-    const incidents = await Form.find({ incidentTitle });
+    const incidents = await Form.find({ incidentLocation });
 
     res.json(incidents);
   } catch (error) {

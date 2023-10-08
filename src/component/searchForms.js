@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
 const SearchIncidents = () => {
-  const [incidentTitle, setIncidentTitle] = useState("");
+  const [incidentLocation, setIncidentLocation] = useState("");
   const [incidents, setIncidents] = useState([]);
 
   const handleSearch = () => {
     fetch(
-      `http://localhost:4000/api/searchIncidents?incidentTitle=${incidentTitle}`
+      `http://localhost:4000/api/searchIncidents?incidentLocation=${incidentLocation}`
     )
       .then((response) => {
         if (!response.ok) {
@@ -20,19 +20,17 @@ const SearchIncidents = () => {
         // Handle error and display a message to the user.
       });
   };
-  const handleInputChange = (e) => {
-    const newIncidentTitle = e.target.value;
-    setIncidentTitle(newIncidentTitle);
-    // Trigger the search on every character change
-    handleSearch();
-  };
 
   return (
     <div>
       <h2>Search Incidents by Location</h2>
       <div>
         <label>Incident Location:</label>
-        <input type="text" value={incidentTitle} onChange={handleInputChange} />
+        <input
+          type="text"
+          value={incidentLocation}
+          onChange={(e) => setIncidentLocation(e.target.value)}
+        />
 
         <button onClick={handleSearch}>Search</button>
       </div>
