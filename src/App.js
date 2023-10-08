@@ -10,13 +10,10 @@ import Form from "./component/form";
 import Archive from "./component/archive";
 import Signup from "./component/signup";
 import Home from "./component/home";
-<<<<<<< HEAD
 import ViewMalls from "./component/viewMalls";
 import FormList from "./component/viewForms";
 import UserHome from "./component/userHome";
-=======
 import Incident from "./component/incident";
->>>>>>> Darryl
 
 function App() {
   return (
