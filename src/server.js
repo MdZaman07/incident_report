@@ -111,8 +111,10 @@ app.get("/api/searchIncidents", async (req, res) => {
   const { incidentLocation } = req.query;
 
   try {
-    const incidents = await Form.find({ incidentLocation });
-
+    const incidents = await Form.find({
+      incidentLocation: { $regex: incidentLocation, $options: "i" },
+    });
+    console.log("Found incidents:", incidents);
     res.json(incidents);
   } catch (error) {
     console.error(error);
