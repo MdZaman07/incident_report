@@ -1,47 +1,63 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './login.css';
+import { useNavigate } from 'react-router-dom';
 
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      username: '',
-      password: '',
-    };
+const Login = () => {
+
+  const navigate = useNavigate();
+
+  const[loginData, setLoginData] = useState({
+    email: '',
+    password: ''
+  })
+
+  const handleInputChange = (event) => {
+    const fieldName = event.target.name;
+    const fieldValue = event.target.value;
+
+    setLoginData(prevData => ({
+        ...prevData,
+        [fieldName]: fieldValue
+    }));
   }
 
-  handleSubmit = async (e) => {
+  const[status, setStatus] = useState('')
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { username, password } = this.state;
-
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('http://localhost:4000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(loginData),
       });
 
       if (response.status === 200) {
         console.log('Login successful');
-        // Redirect to the dashboard or perform other actions upon successful login
+        setStatus('Details correct. Logging in.')
+
+        setTimeout(() => {
+          navigate("/userHome.js");
+        }, 2000);
       } else {
         console.error('Login failed');
+        setStatus('Incorrect details. Try again.')
       }
     } catch (error) {
       console.error(error);
     }
-  };
+  }; 
 
-  render() {
     return (
       <div className="Login">
         <h4>Login</h4>
-        <form onSubmit={this.handleSubmit}>
-          {/* Input fields for username and password */}
-          {/* ... */}
+        <form onSubmit={handleSubmit}>
+          <input type='text' name='email' onChange={handleInputChange} id='email' placeholder='Email'></input>
+          <input type='password' name='password' onChange={handleInputChange} id='password' placeholder='Password'></input>
+          {status && <p className="status">{status}</p>}
           <input type="submit" value="LOGIN" className="btn" />
         </form>
         <a className="link" href="/signup.js">
@@ -50,6 +66,5 @@ class Login extends Component {
       </div>
     );
   }
-}
 
 export default Login;
