@@ -11,6 +11,7 @@ import Signup from "./component/signup";
 import Home from "./component/home";
 import ViewMalls from "./component/viewMalls";
 import FormList from "./component/viewForms";
+import UserHome from "./component/userHome";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/signup.js" element={<Signup />} />
           <Route path="/viewMalls.js" element={<ViewMalls />} />
           <Route path="/viewForms.js" element={<FormList />} />
+          <Route path="/userHome.js" element={<UserHome />} />
         </Routes>
       </Router>
     </PrimeReactProvider>

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import './login.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
+  const navigate = useNavigate();
 
   const[loginData, setLoginData] = useState({
     email: '',
@@ -35,7 +38,10 @@ const Login = () => {
       if (response.status === 200) {
         console.log('Login successful');
         setStatus('Details correct. Logging in.')
-        // Redirect to the dashboard or perform other actions upon successful login
+
+        setTimeout(() => {
+          navigate("/userHome.js");
+        }, 2000);
       } else {
         console.error('Login failed');
         setStatus('Incorrect details. Try again.')
