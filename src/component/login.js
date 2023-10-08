@@ -1,24 +1,27 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './login.css';
 
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: '',
-      password: '',
-    };
+const Login = () => {
+
+  const[loginData, setLoginData] = useState({
+    email: '',
+    password: ''
+  })
+
+  const handleInputChange = (event) => {
+    const fieldName = event.target.name;
+    const fieldValue = event.target.value;
+
+    setLoginData(prevData => ({
+        ...prevData,
+        [fieldName]: fieldValue
+    }));
   }
 
-  handleInputChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
+  const[status, setStatus] = useState('')
 
-  handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { email, password } = this.state;
 
     try {
       const response = await fetch('http://localhost:4000/api/login', {
@@ -26,27 +29,29 @@ class Login extends Component {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(loginData),
       });
 
       if (response.status === 200) {
         console.log('Login successful');
+        setStatus('Details correct. Logging in.')
         // Redirect to the dashboard or perform other actions upon successful login
       } else {
         console.error('Login failed');
+        setStatus('Incorrect details. Try again.')
       }
     } catch (error) {
       console.error(error);
     }
-  };
+  }; 
 
-  render() {
     return (
       <div className="Login">
         <h4>Login</h4>
-        <form onSubmit={this.handleSubmit}>
-          <input type='text' name='email' onChange={this.handleInputChange} id='email' placeholder='Email'></input>
-          <input type='password' name='password' onChange={this.handleInputChange} id='password' placeholder='Password'></input>
+        <form onSubmit={handleSubmit}>
+          <input type='text' name='email' onChange={handleInputChange} id='email' placeholder='Email'></input>
+          <input type='password' name='password' onChange={handleInputChange} id='password' placeholder='Password'></input>
+          {status && <p className="status">{status}</p>}
           <input type="submit" value="LOGIN" className="btn" />
         </form>
         <a className="link" href="/signup.js">
@@ -55,6 +60,5 @@ class Login extends Component {
       </div>
     );
   }
-}
 
 export default Login;
