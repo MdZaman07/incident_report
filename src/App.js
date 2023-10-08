@@ -12,6 +12,7 @@ import Home from "./component/home";
 import ViewMalls from "./component/viewMalls";
 import FormList from "./component/viewForms";
 import SearchIncidents from "./component/searchForms";
+import UserHome from "./component/userHome";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/viewMalls.js" element={<ViewMalls />} />
           <Route path="/viewForms.js" element={<FormList />} />
           <Route path="/searchForms.js" element={<SearchIncidents />} />
+          <Route path="/userHome.js" element={<UserHome />} />
         </Routes>
       </Router>
     </PrimeReactProvider>

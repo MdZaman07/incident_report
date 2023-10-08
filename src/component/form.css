@@ -61,6 +61,11 @@
   font-size: 16px;
 }
 
+#incidentLocation:invalid , #incidentCategory:invalid {
+  color: gray;
+}
+
+
 .btn {
   margin-top: 28px;
     width: 165px;
