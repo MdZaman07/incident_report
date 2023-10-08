@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import "./signup.css";
+import {Link} from 'react-router-dom';
 
 
 const Signup = () => {
@@ -125,7 +126,7 @@ const Signup = () => {
             className="btn"
           />
         </form>
-        <a className="link" href="/login.js">Back to Login</a>
+        <Link className='link' to='/login.js'>Back to login</Link>
       </div>
     )
 }
