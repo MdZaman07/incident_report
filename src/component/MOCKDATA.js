@@ -90,7 +90,7 @@ export const mockData = [
       "On December 12th, 2022, Fiona Black reported a break-in at the tech store she manages in Uptown Shopping Plaza. High-end gadgets were stolen, and Mike F was identified as the potential perpetrator from the security tapes. Enhanced security protocols have since been introduced in the plaza.",
     incidentCategory: "Theft",
     attachedFile: null,
-    status: "Open",
+    status: "Denied",
     severity: "High",
   },
   {
@@ -129,7 +129,7 @@ export const mockData = [
       "On August 5th, 2023, a boutique in Eastwood Mall reported a burglary. Alice Johnson, the store manager, discovered the back storeroom broken into and several designer outfits missing. Nina E, caught on camera, is the prime suspect in this theft, and the search for her is ongoing.",
     incidentCategory: "Theft",
     attachedFile: null,
-    status: "Resolved",
+    status: "Denied",
     severity: "Medium",
   },
 ];
