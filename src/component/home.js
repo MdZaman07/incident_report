@@ -30,6 +30,9 @@ const Home = () => {
         <Link to="/viewForms.js" className="nav-link">
           Incidents List
         </Link>
+        <Link to="/searchForms.js" className="nav-link">
+          Search Incidents
+        </Link>
         <div></div>
       </nav>
     </div>
