@@ -19,16 +19,3 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
-
-- script: |
-    - script: |
-    npx wait-on http://localhost:4000
-    node src/server.js &
-    server_pid=$!
-    # You can run additional tests here, if needed.
-    # For example: npm test
-    # Terminate the server when done.
-    kill $server_pid
-    wait $server_pid
-    exit $?
-  displayName: 'Run Express.js Server and Tests'
