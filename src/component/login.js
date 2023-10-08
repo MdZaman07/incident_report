@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './login.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
 
@@ -36,11 +36,14 @@ const Login = () => {
       });
 
       if (response.status === 200) {
+        const data = await response.json();
+        const userId= data.user._id
+        console.log(userId)
         console.log('Login successful');
         setStatus('Details correct. Logging in.')
 
-        setTimeout(() => {
-          navigate("/userHome.js");
+      setTimeout(() => {
+          navigate(`/userHome.js/${userId}`);
         }, 2000);
       } else {
         console.error('Login failed');
@@ -60,9 +63,7 @@ const Login = () => {
           {status && <p className="status">{status}</p>}
           <input type="submit" value="LOGIN" className="btn" />
         </form>
-        <a className="link" href="/signup.js">
-          Sign Up
-        </a>
+        <Link className='link' to='/signup.js'>Sign up</Link>
       </div>
     );
   }

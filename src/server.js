@@ -19,7 +19,7 @@ const dbUrl =
 
 // Connect to MongoDB
 try {
-  const dbConnection = mongoose.connect(dbUrl, {
+  mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
@@ -53,7 +53,7 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    return res.status(200).json({ message: "Login successful" });
+    return res.status(200).json({ message: "Login successful", user: user });
   } catch (error) {}
 });
 
@@ -120,6 +120,19 @@ app.get("/api/searchIncidents", async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
+});
+
+app.post("/api/user", async (req, res) => {
+  const { userId } = req.body;
+
+  const user = await User.findOne({ _id: userId });
+
+  if (!user) {
+    console.log("Error");
+    return res.status(401).json({ message: "User not found" });
+  }
+
+  return res.status(200).json({ message: "User found", user: user });
 });
 
 app.listen(port, () => {
