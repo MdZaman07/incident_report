@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import "./signup.css";
+import {Link, Navigate, useNavigate} from 'react-router-dom';
 
 
 const Signup = () => {
+
+      const navigate = useNavigate()
 
       const[formData, setFormData] = useState( {
         userid: "",
@@ -13,7 +16,8 @@ const Signup = () => {
         verifyPassword: ""
       })
 
-      const[error, setError] = useState('')
+      const[status, setStatus] = useState('')
+      const[submitDisabled, setSubmitDisabled] = useState(false);
 
       const handleFormChange = (event) => {
         const fieldName = event.target.name;
@@ -29,10 +33,10 @@ const Signup = () => {
         event.preventDefault()
 
         if(formData.password !== formData.verifyPassword) {
-          setError('Passwords do not match')
+          setStatus('Passwords do not match')
         }
         else {
-          setError('')
+          setStatus('')
           try {
             const response = await fetch('http://localhost:4000/api/register', {
                 method: 'POST',
@@ -42,9 +46,16 @@ const Signup = () => {
                 },
             })
             if(response.status === 200) {
+                setSubmitDisabled(true)
+                setStatus('Sign up successful. Redirecting...')
+
+                setTimeout(() => {
+                  navigate('/login.js');
+                }, 2000);
                 console.log('Form data submitted sucessfully.')
             }
             else {
+                setStatus('Error. Try again.')
                 console.log('Form submission failed.')
                 console.log(response.status)
             }
@@ -68,6 +79,7 @@ const Signup = () => {
               onChange={handleFormChange}
               placeholder="First Name"
               className="text_input"
+              required
 
             />
           </div>
@@ -80,6 +92,7 @@ const Signup = () => {
               onChange={handleFormChange}
               placeholder="Last Name"
               className="text_input"
+              required
 
             />
           </div>
@@ -92,6 +105,7 @@ const Signup = () => {
               onChange={handleFormChange}
               placeholder="Email Address"
               className="text_input"
+              required
 
             />
           </div>
@@ -104,6 +118,7 @@ const Signup = () => {
               placeholder="Password"
               onChange={handleFormChange}
               className="text_input"
+              required
 
             />
           </div>
@@ -116,16 +131,18 @@ const Signup = () => {
               placeholder="Verify Password"
               onChange={handleFormChange}
               className="text_input"
+              required
             />
           </div>
-          {error && <p className="error">{error}</p>}
+          {status && <p className="status">{status}</p>}
           <input
             type="submit"
             value="Sign-Up"
             className="btn"
+            disabled={submitDisabled}
           />
         </form>
-        <a className="link" href="/login.js">Back to Login</a>
+        <Link className='link' to='/login.js'>Back to login</Link>
       </div>
     )
 }
