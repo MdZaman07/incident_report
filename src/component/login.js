@@ -35,13 +35,31 @@ class Login extends Component {
     }
   };
 
+  handlePasswordChange = (e) => {
+    this.setState({ password: e.target.value });
+  };
+
   render() {
     return (
       <div className="Login">
         <h4>Login</h4>
         <form onSubmit={this.handleSubmit}>
-          {/* Input fields for username and password */}
-          {/* ... */}
+          {/* Input field for username */}
+          <input
+            type="text"
+            placeholder="Username"
+            value={this.state.username}
+            onChange={(e) => this.setState({ username: e.target.value })}
+            required
+          />
+          {/* Input field for password */}
+          <input
+            type="password" // Change the input type to "password"
+            placeholder="Password"
+            value={this.state.password}
+            onChange={this.handlePasswordChange}
+            required
+          />
           <input type="submit" value="LOGIN" className="btn" />
         </form>
         <a className="link" href="/signup.js">
@@ -53,3 +71,4 @@ class Login extends Component {
 }
 
 export default Login;
+
