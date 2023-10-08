@@ -4,22 +4,50 @@ import { Menubar } from 'primereact/menubar';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Form from './form'
 
-const UserHome = () => { // Will take props as user information will be passed.
+const UserHome = () => {
 
     const { userId } = useParams();
     const[userData, setUserData] = useState(null);
     const[showForm, setShowForm] = useState(false);
     const[header, setHeader] = useState('Your Incident Archive')
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
+
+    const getUser = async () => {
+        try {
+            console.log('get name called')
+            const response = await fetch('http://localhost:4000/api/user', {
+                method: 'POST',
+                body: JSON.stringify({ userId }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.status === 200) {
+                console.log('Retrieved user success')
+                const data = await response.json();
+                return data.user
+            } else {
+                return 'Could not find name';
+            }
+        } catch (error) {
+            console.log(error);
+            return 'An error occurred';
+        }
+    };
 
     useEffect(() => {
-        
-    })
+        const fetchName = async () => {
+            const user = await getUser();
+            setUserData(user);
+        };
+        fetchName();
+    }, []);
 
     const items = [
         {
-            label: `Welcome, User`,
+            label: `Welcome, ${userData.firstname}`,
             className: 'welcome-user',
             disabled: true,
         },
