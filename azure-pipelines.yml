@@ -22,4 +22,11 @@ steps:
 
 - script: |
     node src/server.js 
+    if [ $? -eq 0 ]; then
+      echo "Express.js server ran successfully."
+      exit 0
+    else
+      echo "Express.js server encountered an error."
+      exit 1
+    fi
   displayName: 'Express js server'
