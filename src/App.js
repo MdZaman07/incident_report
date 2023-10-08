@@ -9,6 +9,7 @@ import Form from "./component/form";
 import Archive from "./component/archive";
 import Signup from "./component/signup";
 import Home from "./component/home";
+import Incident from "./component/incident";
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login.js" element={<Login />} />
           <Route path="/form.js" element={<Form />} />
-          <Route path="/archive.js" element={<Archive />} />
+          <Route exact path="/archive.js" element={<Archive />} />
+          <Route path="/incident/:id" element={<Incident />} />
           <Route path="/signup.js" element={<Signup />} />
         </Routes>
       </Router>
