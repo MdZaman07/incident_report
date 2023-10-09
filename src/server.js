@@ -74,11 +74,10 @@ app.post("/api/submit", async (req, res) => {
     description,
     incidentCategory,
     status,
-    userId
+    userId,
   } = req.body;
 
   try {
-
     const form = new Form({
       incidentTitle,
       incidentLocation,
@@ -88,7 +87,7 @@ app.post("/api/submit", async (req, res) => {
       description,
       incidentCategory,
       status,
-      userId
+      userId,
     });
 
     await form.save();
@@ -115,13 +114,12 @@ app.get("/api/getForms", async (req, res) => {
 });
 
 app.get("/api/getFormsById", async (req, res) => {
-  const { userId } = req.query
+  const { userId } = req.query;
   try {
-      const forms = await Form.find({ userId })
-      res.json(forms)
-  }
-  catch(error) {
-    console.error(error)
+    const forms = await Form.find({ userId });
+    res.json(forms);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -131,13 +129,41 @@ app.get("/api/searchIncidents", async (req, res) => {
   const { incidentLocation } = req.query;
 
   try {
-    const incidents = await Form.find({
-      incidentLocation: { $regex: incidentLocation, $options: "i" },
-    });
-    console.log("Found incidents:", incidents);
+    let incidents;
+
+    if (incidentLocation !== "") {
+      incidents = await Form.find({
+        incidentLocation: { $regex: incidentLocation, $options: "i" },
+      });
+    } else {
+      incidents = await Form.find();
+    }
+
+    // console.log("Found incidents:", incidents);
     res.json(incidents);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// Add a new route for incident form approval
+app.post("/api/approveIncident", async (req, res) => {
+  const { id, status } = req.body;
+
+  try {
+    const updatedForm = await Form.findByIdAndUpdate(
+      id,
+      { status: status },
+      { new: true }
+    );
+
+    if (!updatedForm) {
+      return res.status(404).json({ message: "Incident form not found" });
+    }
+
+    res.json({ message: "Incident form approved successfully", updatedForm });
+  } catch (error) {
+    console.error("Error approving incident:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });

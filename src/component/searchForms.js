@@ -1,85 +1,9 @@
-// import React, { useState } from "react";
-
-// const SearchIncidents = () => {
-//   const [incidentLocation, setIncidentLocation] = useState("");
-//   const [incidents, setIncidents] = useState([]);
-
-//   const handleSearch = () => {
-//     fetch(
-//       `http://localhost:4000/api/searchIncidents?incidentLocation=${incidentLocation}`
-//     )
-//       .then((response) => {
-//         if (!response.ok) {
-//           throw new Error("Network response was not ok");
-//         }
-//         return response.json();
-//       })
-//       .then((data) => setIncidents(data))
-//       .catch((error) => {
-//         console.error("Error fetching data:", error);
-//         // Handle error and display a message to the user.
-//       });
-//   };
-
-//   return (
-//     <div>
-//       <h2>Search Incidents by Location</h2>
-//       <div>
-//         <label>Incident Location:</label>
-//         <input
-//           type="text"
-//           value={incidentLocation}
-//           onChange={(e) => setIncidentLocation(e.target.value)}
-//         />
-
-//         <button onClick={handleSearch}>Search</button>
-//       </div>
-//       <div>
-//         <h3>Search Results:</h3>
-//         {incidents.length > 0 ? ( // Conditionally render table headers
-//           <table>
-//             <thead>
-//               <tr>
-//                 <th>Incident Title</th>
-//                 <th>Incident Location</th>
-//                 <th>Offender Name</th>
-//                 <th>Date</th>
-//                 <th>Description</th>
-//                 <th>Incident Category</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {incidents.map((form) => (
-//                 <tr key={form._id}>
-//                   <td>{form.incidentTitle}</td>
-//                   <td>{form.incidentLocation}</td>
-//                   <td>{form.offenderName}</td>
-//                   <td>{new Date(form.date).toLocaleDateString()}</td>
-//                   <td>{form.description}</td>
-//                   <td>{form.incidentCategory}</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         ) : (
-//           <p>No search results to display.</p>
-//         )}
-//         {/* <ul>
-//           {incidents.map((incident) => (
-//             <li key={incident._id}>
-//               <strong>Title:</strong> {incident.incidentTitle},{" "}
-//               <strong>Date:</strong>{" "}
-//               {new Date(incident.date).toLocaleDateString()}
-//             </li>
-//           ))}
-//         </ul> */}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default SearchIncidents;
 import React, { useState, useEffect } from "react";
+import { Button } from "primereact/button";
+import "primereact/resources/primereact.min.css";
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primeicons/primeicons.css";
+import "./searchForms.css";
 
 const SearchIncidents = () => {
   const [incidentLocation, setIncidentLocation] = useState("");
@@ -89,7 +13,7 @@ const SearchIncidents = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedLocation(incidentLocation);
-    }, 100); // Adjust the debounce delay as needed
+    }, 100);
 
     return () => {
       clearTimeout(timer);
@@ -97,7 +21,8 @@ const SearchIncidents = () => {
   }, [incidentLocation]);
 
   useEffect(() => {
-    if (debouncedLocation) {
+    if (debouncedLocation !== undefined) {
+      console.log(debouncedLocation);
       fetch(
         `http://localhost:4000/api/searchIncidents?incidentLocation=${debouncedLocation}`
       )
@@ -110,37 +35,76 @@ const SearchIncidents = () => {
         .then((data) => setIncidents(data))
         .catch((error) => {
           console.error("Error fetching data:", error);
-          // Handle error and display a message to the user.
         });
     } else {
-      // Clear the search results if the input is empty
       setIncidents([]);
     }
   }, [debouncedLocation]);
+  const handleSearch = (e) => {
+    console.log(e);
+    console.log(e === "");
+    setIncidentLocation(e);
+  };
+  const handleStatus = (id, status) => {
+    const requestBody = {
+      id: id,
+      status: status,
+    };
+
+    fetch(`http://localhost:4000/api/approveIncident`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const updatedIncidents = incidents.map((form) => {
+          if (form._id === id) {
+            return { ...form, status: status };
+          }
+          return form;
+        });
+        setIncidents(updatedIncidents);
+      })
+      .catch((error) => {
+        console.error("Error approving incident:", error);
+      });
+  };
 
   return (
-    <div>
-      <h2>Search Incidents by Location</h2>
-      <div>
-        <label>Incident Location:</label>
+    <div className="container">
+      <h2 className="header">Search Incidents by Location</h2>
+      <div className="search-container">
+        <label className="label" htmlFor="incident-location">
+          Incident Location:
+        </label>
         <input
           type="text"
+          id="incident-location"
+          className="input-text"
           value={incidentLocation}
-          onChange={(e) => setIncidentLocation(e.target.value)}
+          onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
       <div>
-        <h3>Search Results:</h3>
+        <h3 className="h3">Search Results:</h3>
         {incidents.length > 0 ? (
-          <table>
+          <table className="table">
             <thead>
               <tr>
-                <th>Incident Title</th>
-                <th>Incident Location</th>
-                <th>Offender Name</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Incident Category</th>
+                <th className="th">Incident Title</th>
+                <th className="th">Incident Location</th>
+                <th className="th">Offender Name</th>
+                <th className="th">Date</th>
+                <th className="th">Description</th>
+                <th className="th">Incident Category</th>
+                <th className="th">Incident Status</th>
+                <th className="th">Approval</th>
               </tr>
             </thead>
             <tbody>
@@ -152,12 +116,36 @@ const SearchIncidents = () => {
                   <td>{new Date(form.date).toLocaleDateString()}</td>
                   <td>{form.description}</td>
                   <td>{form.incidentCategory}</td>
+                  <td className="status-label">{form.status}</td>
+
+                  <td>
+                    {form.status === "pending" ? (
+                      <div className="button-container">
+                        <Button
+                          icon="pi pi-check"
+                          tooltip="Approve"
+                          className="approve-button"
+                          onClick={() => handleStatus(form._id, "Approved")}
+                          disabled={form.status === "Approved"}
+                        />
+                        <Button
+                          icon="pi pi-times"
+                          tooltip="Reject"
+                          className="reject-button"
+                          onClick={() => handleStatus(form._id, "Rejected")}
+                          disabled={form.status === "Rejected"}
+                        />
+                      </div>
+                    ) : (
+                      <p>{form.status}</p>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
-          <p>No search results found</p>
+          <p className="no-results">No search results found</p>
         )}
       </div>
     </div>
