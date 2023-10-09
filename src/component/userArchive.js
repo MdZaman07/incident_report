@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import "./archive.css";
 import { useNavigate } from "react-router-dom";
-import { mockData } from "./MOCKDATA.js";
 
 const UserArchive = ( {userData} ) => {
   const navigate = useNavigate();
+  const[forms, setForms] = useState([])
 
   const userId = userData ? userData._id : 'Id could not be retrieved in time'
 
@@ -17,7 +16,16 @@ const UserArchive = ( {userData} ) => {
 
   const getIncidents = async () => {
     try {
+        const response = await fetch(`http://localhost:4000/api/getFormsById?userId=${userId}`)
 
+        if(response.status === 200) {
+            const data = await response.json()
+            console.log(data)
+            return data
+        }
+        else {
+            console.log('failed to fetch forms')
+        }
     }
     catch(error) {
         console.log(error)
@@ -26,15 +34,19 @@ const UserArchive = ( {userData} ) => {
 
   useEffect(() => {
     const fetchIncidents = async () => {
-        const incidents = await getIncidents()
+        if(userData) {
+            const forms = await getIncidents()
+            setForms(forms)
+        }
+        
     };
     fetchIncidents();
-}, []);
+}, [userData]);
 
   return (
     <div className="centered-content">
       <DataTable
-        value={mockData}
+        value={forms}
         paginator
         rows={10}
         sortField="status"
@@ -48,10 +60,8 @@ const UserArchive = ( {userData} ) => {
           header="Incident Category"
           sortable
         ></Column>
-        <Column field="witnessName" header="Witness Name" sortable></Column>
         <Column field="offenderName" header="Offender Name" sortable></Column>
         <Column field="status" header="Status" sortable></Column>
-        <Column field="severity" header="Status" sortable></Column>
       </DataTable>
     </div>
   );

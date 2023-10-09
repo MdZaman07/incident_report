@@ -110,6 +110,18 @@ app.get("/api/getForms", async (req, res) => {
   }
 });
 
+app.get("/api/getFormsById", async (req, res) => {
+  const { userId } = req.query
+  try {
+      const forms = await Form.find({ userId })
+      res.json(forms)
+  }
+  catch(error) {
+    console.error(error)
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // Add a new route for searching incidents by incidentTitle
 app.get("/api/searchIncidents", async (req, res) => {
   const { incidentLocation } = req.query;
