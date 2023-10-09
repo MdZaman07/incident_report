@@ -31,7 +31,10 @@ try {
 
 // Create a route for user registration
 app.post("/api/register", async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  let { firstname, lastname, email, password } = req.body;
+  email = email.toLowerCase();
+  console.log(email);
+
   try {
     const newUser = new User({ firstname, lastname, email, password });
     await newUser.save();
@@ -44,7 +47,9 @@ app.post("/api/register", async (req, res) => {
 
 // Add routing to Login Page here
 app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+
+  email = email.toLowerCase();
 
   try {
     const user = await User.findOne({ email: email, password: password });
