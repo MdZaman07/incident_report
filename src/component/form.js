@@ -15,6 +15,7 @@ const Form = () => {
         date: "",
         description: "",
         incidentCategory: "",
+        resolved: false
         //severityLevel: "",
        // attachedFile: null
     })

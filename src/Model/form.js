@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { bool } = require('prop-types');
 
 const formSchema = new mongoose.Schema({
   incidentTitle: String,
@@ -7,7 +8,9 @@ const formSchema = new mongoose.Schema({
   offenderName: String,
   date: Date,
   description: String,
-  incidentCategory: String
+  incidentCategory: String,
+  resolved: Boolean
+
 }, { collection: 'Forms' });
 
 const Form = mongoose.model('Form', formSchema, 'Forms');

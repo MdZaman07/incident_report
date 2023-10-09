@@ -68,6 +68,7 @@ app.post("/api/submit", async (req, res) => {
     date,
     description,
     incidentCategory,
+    resolved
   } = req.body;
 
   try {
@@ -81,6 +82,7 @@ app.post("/api/submit", async (req, res) => {
       date: parsedDate,
       description,
       incidentCategory,
+      resolved
     });
 
     await form.save();
