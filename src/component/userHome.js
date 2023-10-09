@@ -48,7 +48,7 @@ const UserHome = () => {
         fetchName();
     }, []);
 
-    const welcomeMessage = userData ? `Welcome, ${userData.firstname}` : 'No name'
+    const welcomeMessage = userData ? `Welcome, ${userData.firstname}` : ''
 
     const items = [
         {
@@ -83,9 +83,11 @@ const UserHome = () => {
     return (
         <>
         <Menubar model={items}/>
-        <h1>{header}</h1>  
+        <h1 className='heading'>{header}</h1>  
+        <div className='function-container'>
         {showForm && <Form userData = {userData}/>}
-        {showArchive && <UserArchive userData={userData}/>}
+        {showArchive && <UserArchive className="user-archive" userData={userData}/>}
+        </div>
         </>
     )
 }

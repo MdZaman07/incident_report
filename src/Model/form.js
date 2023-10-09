@@ -6,7 +6,7 @@ const formSchema = new mongoose.Schema({
   incidentLocation: String,
   witnessName: String,
   offenderName: String,
-  date: Date,
+  date: String,
   description: String,
   incidentCategory: String,
   status: String,
