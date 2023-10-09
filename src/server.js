@@ -78,7 +78,6 @@ app.post("/api/submit", async (req, res) => {
   } = req.body;
 
   try {
-
     const form = new Form({
       incidentTitle,
       incidentLocation,
@@ -128,10 +127,7 @@ app.get("/api/getFormsById", async (req, res) => {
 // Add a new route for searching incidents by incidentTitle
 app.get("/api/searchIncidents", async (req, res) => {
   const { incidentLocation } = req.query;
-  console.log(incidentLocation);
-  console.log(incidentLocation === "");
-  console.log(incidentLocation === null);
-  console.log(!incidentLocation);
+
   try {
     let incidents;
 
@@ -140,14 +136,35 @@ app.get("/api/searchIncidents", async (req, res) => {
         incidentLocation: { $regex: incidentLocation, $options: "i" },
       });
     } else {
-      // console.log("all incidents");
-      incidents = await Form.find(); // Return all incidents if incidentLocation is empty
+      incidents = await Form.find();
     }
 
     // console.log("Found incidents:", incidents);
     res.json(incidents);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// Add a new route for incident form approval
+app.post("/api/approveIncident", async (req, res) => {
+  const { id, status } = req.body;
+
+  try {
+    // Update the status of the incident form with the given ID
+    const updatedForm = await Form.findByIdAndUpdate(
+      id,
+      { status: status },
+      { new: true }
+    );
+
+    if (!updatedForm) {
+      return res.status(404).json({ message: "Incident form not found" });
+    }
+
+    res.json({ message: "Incident form approved successfully", updatedForm });
+  } catch (error) {
+    console.error("Error approving incident:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
