@@ -69,7 +69,7 @@ app.post("/api/submit", async (req, res) => {
     description,
     incidentCategory,
     status,
-    userId
+    userId,
   } = req.body;
 
   try {
@@ -84,7 +84,7 @@ app.post("/api/submit", async (req, res) => {
       description,
       incidentCategory,
       status,
-      userId
+      userId,
     });
 
     await form.save();
@@ -111,13 +111,12 @@ app.get("/api/getForms", async (req, res) => {
 });
 
 app.get("/api/getFormsById", async (req, res) => {
-  const { userId } = req.query
+  const { userId } = req.query;
   try {
-      const forms = await Form.find({ userId })
-      res.json(forms)
-  }
-  catch(error) {
-    console.error(error)
+    const forms = await Form.find({ userId });
+    res.json(forms);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -125,12 +124,23 @@ app.get("/api/getFormsById", async (req, res) => {
 // Add a new route for searching incidents by incidentTitle
 app.get("/api/searchIncidents", async (req, res) => {
   const { incidentLocation } = req.query;
-
+  console.log(incidentLocation);
+  console.log(incidentLocation === "");
+  console.log(incidentLocation === null);
+  console.log(!incidentLocation);
   try {
-    const incidents = await Form.find({
-      incidentLocation: { $regex: incidentLocation, $options: "i" },
-    });
-    console.log("Found incidents:", incidents);
+    let incidents;
+
+    if (incidentLocation !== "") {
+      incidents = await Form.find({
+        incidentLocation: { $regex: incidentLocation, $options: "i" },
+      });
+    } else {
+      // console.log("all incidents");
+      incidents = await Form.find(); // Return all incidents if incidentLocation is empty
+    }
+
+    // console.log("Found incidents:", incidents);
     res.json(incidents);
   } catch (error) {
     console.error(error);
