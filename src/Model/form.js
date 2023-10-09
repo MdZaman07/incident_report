@@ -9,7 +9,7 @@ const formSchema = new mongoose.Schema({
   date: Date,
   description: String,
   incidentCategory: String,
-  resolved: Boolean
+  status: String
 
 }, { collection: 'Forms' });
 
