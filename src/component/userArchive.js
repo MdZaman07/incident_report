@@ -8,6 +8,7 @@ const UserArchive = ( {userData} ) => {
   const[forms, setForms] = useState([])
 
   const userId = userData ? userData._id : 'Id could not be retrieved in time'
+  const[loading, setLoading] = useState(true)
 
   const onRowClick = (event) => {
     const incidentID = event.data.incidentID;
@@ -30,6 +31,9 @@ const UserArchive = ( {userData} ) => {
     catch(error) {
         console.log(error)
     }
+    finally {
+        setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -45,7 +49,9 @@ const UserArchive = ( {userData} ) => {
 
   return (
     <div className="centered-content">
-      <DataTable
+       { loading ? (
+        <p>Loading...</p>
+      ) : (<DataTable
         value={forms}
         paginator
         rows={10}
@@ -62,7 +68,8 @@ const UserArchive = ( {userData} ) => {
         ></Column>
         <Column field="offenderName" header="Offender Name" sortable></Column>
         <Column field="status" header="Status" sortable></Column>
-      </DataTable>
+      </DataTable>)
+      }
     </div>
   );
 }
