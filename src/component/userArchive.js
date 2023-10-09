@@ -3,6 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useNavigate } from "react-router-dom";
 import { ProgressSpinner } from 'primereact/progressspinner';
+import './userArchive.css'
 
 const UserArchive = ( {userData} ) => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const UserArchive = ( {userData} ) => {
 }, [userData]);
 
   return (
-    <div className="centered-content">
+    <div className="data-table">
        { loading ? (
         <ProgressSpinner />
       ) : (<DataTable
@@ -58,6 +59,7 @@ const UserArchive = ( {userData} ) => {
         rows={10}
         sortField="status"
         onRowClick={onRowClick}
+        size="normal"
       >
         <Column field="incidentID" header="ID" sortable></Column>
         <Column field="date" header="Date" sortable></Column>

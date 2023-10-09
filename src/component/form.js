@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import './form.css';
+import { Button } from 'primereact/button';
 
 const Form = ( {userData} ) => {
 
@@ -12,14 +13,12 @@ const Form = ( {userData} ) => {
     const[formData, setFormData] = useState( {
         incidentTitle: "",
         incidentLocation: "",
-        //witnessName: "", Shouldnt be required as a login should note the witness name.
         offenderName: "",
         date: "",
         description: "",
         incidentCategory: "",
         status: 'pending',
         userId: userId // Id of user who submits form
-        //severityLevel: "",
        // attachedFile: null
     })
 
@@ -75,7 +74,16 @@ const Form = ( {userData} ) => {
                 if(response.status === 200) {
                     console.log(userId)
                     console.log('Form data submitted sucessfully.')
-                    setStatus('Incident form submitted successfully, redirecting to home page.')
+                    setFormData({
+                        incidentTitle: "",
+                        incidentLocation: "",
+                        offenderName: "",
+                        date: "",
+                        description: "",
+                        incidentCategory: "",
+
+                    })
+                    setStatus('Incident form submitted successfully.')
                 }
                 else {
                     console.log('Form submission failed.')
@@ -151,7 +159,7 @@ const Form = ( {userData} ) => {
                     />
                         </div> */}
                 {status && <p className="status">{status}</p>}
-                <input className='btn' type='submit' value="Submit"></input>
+                <Button className='submit-button' icon="pi pi-check" iconPos="right" severity='success' type='submit' label="Submit"></Button>
             </form>
         </div>
     ); 
