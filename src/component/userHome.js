@@ -58,7 +58,6 @@ const UserHome = () => {
         },
         {
            label:'Home',
-           icon:'pi pi-fw pi-file',
            command: () => {
             setShowForm(false);
             setShowArchive(true)
@@ -67,8 +66,7 @@ const UserHome = () => {
         },
         {
             label:'Report an incident',
-           icon:'pi pi-fw pi-file',
-           command: () => {
+            command: () => {
             setShowForm(true);
             setShowArchive(false);
             setHeader('Report an incident')
