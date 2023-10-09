@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import './form.css';
 
-const Form = () => {
+const Form = ( {userData} ) => {
+
+    const userId = userData ? userData._id : null
 
     //const [address, setAddress] = useState('');
     //const [coordinates, setCoordinates] = useState(null);
@@ -15,7 +17,8 @@ const Form = () => {
         date: "",
         description: "",
         incidentCategory: "",
-        status: 'pending'
+        status: 'pending',
+        userId: userId // Id of user who submits form
         //severityLevel: "",
        // attachedFile: null
     })
@@ -70,6 +73,7 @@ const Form = () => {
                 })
     
                 if(response.status === 200) {
+                    console.log(userId)
                     console.log('Form data submitted sucessfully.')
                     setStatus('Incident form submitted successfully, redirecting to home page.')
                 }

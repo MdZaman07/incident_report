@@ -3,12 +3,14 @@ import './userHome.css'
 import { Menubar } from 'primereact/menubar';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Form from './form'
+import UserArchive from './userArchive';
 
 const UserHome = () => {
 
     const { userId } = useParams();
     const[userData, setUserData] = useState(null);
     const[showForm, setShowForm] = useState(false);
+    const[showArchive, setShowArchive] = useState(true);
     const[header, setHeader] = useState('Your Incident Archive')
 
     const navigate = useNavigate();
@@ -59,6 +61,7 @@ const UserHome = () => {
            icon:'pi pi-fw pi-file',
            command: () => {
             setShowForm(false);
+            setShowArchive(true)
             setHeader('Your incident archive')
            }
         },
@@ -67,6 +70,7 @@ const UserHome = () => {
            icon:'pi pi-fw pi-file',
            command: () => {
             setShowForm(true);
+            setShowArchive(false);
             setHeader('Report an incident')
            }
         },
@@ -82,7 +86,8 @@ const UserHome = () => {
         <>
         <Menubar model={items}/>
         <h1>{header}</h1>  
-        {showForm && <Form/>}
+        {showForm && <Form userData = {userData}/>}
+        {showArchive && <UserArchive userData={userData}/>}
         </>
     )
 }

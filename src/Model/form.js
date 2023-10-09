@@ -9,7 +9,8 @@ const formSchema = new mongoose.Schema({
   date: Date,
   description: String,
   incidentCategory: String,
-  status: String
+  status: String,
+  userId: String
 
 }, { collection: 'Forms' });
 
