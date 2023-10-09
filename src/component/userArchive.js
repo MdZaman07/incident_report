@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useNavigate } from "react-router-dom";
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 const UserArchive = ( {userData} ) => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const UserArchive = ( {userData} ) => {
   return (
     <div className="centered-content">
        { loading ? (
-        <p>Loading...</p>
+        <ProgressSpinner />
       ) : (<DataTable
         value={forms}
         paginator

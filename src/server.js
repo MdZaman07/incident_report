@@ -73,14 +73,13 @@ app.post("/api/submit", async (req, res) => {
   } = req.body;
 
   try {
-    const parsedDate = new Date(date);
 
     const form = new Form({
       incidentTitle,
       incidentLocation,
       witnessName,
       offenderName,
-      date: parsedDate,
+      date,
       description,
       incidentCategory,
       status,
