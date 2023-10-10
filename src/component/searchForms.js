@@ -1,4 +1,3 @@
-// import { Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import "primereact/resources/primereact.min.css";
@@ -14,7 +13,7 @@ const SearchIncidents = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedLocation(incidentLocation);
-    }, 100); // Adjust the debounce delay as needed
+    }, 100);
 
     return () => {
       clearTimeout(timer);
@@ -36,10 +35,8 @@ const SearchIncidents = () => {
         .then((data) => setIncidents(data))
         .catch((error) => {
           console.error("Error fetching data:", error);
-          // Handle error and display a message to the user.
         });
     } else {
-      // Clear the search results if the input is empty
       setIncidents([]);
     }
   }, [debouncedLocation]);
@@ -49,10 +46,9 @@ const SearchIncidents = () => {
     setIncidentLocation(e);
   };
   const handleStatus = (id, status) => {
-    // Create a request body with the incident ID and the new status
     const requestBody = {
       id: id,
-      status: status, // Set the new status to 'approved'
+      status: status,
     };
 
     fetch(`http://localhost:4000/api/approveIncident`, {
@@ -66,7 +62,7 @@ const SearchIncidents = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        // Update the local state with the new status
+
         const updatedIncidents = incidents.map((form) => {
           if (form._id === id) {
             return { ...form, status: status };
@@ -77,7 +73,6 @@ const SearchIncidents = () => {
       })
       .catch((error) => {
         console.error("Error approving incident:", error);
-        // Handle error and display a message to the user.
       });
   };
 

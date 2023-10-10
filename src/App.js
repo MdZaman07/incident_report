@@ -14,6 +14,7 @@ import ViewMalls from "./component/viewMalls";
 import FormList from "./component/viewForms";
 import SearchIncidents from "./component/searchForms";
 import UserHome from "./component/userHome";
+import AdminHome from "./component/adminHome";
 import Incident from "./component/incident";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/viewForms.js" element={<FormList />} />
           <Route path="/searchForms.js" element={<SearchIncidents />} />
           <Route path="/userHome.js/:userId" element={<UserHome />} />
+          <Route path="/adminHome.js/:userId" element={<AdminHome />} />
         </Routes>
       </Router>
     </PrimeReactProvider>

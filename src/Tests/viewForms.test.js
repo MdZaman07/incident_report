@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import Form from '../component/form';
+import viewForms from '../component/viewForms'
 
 test('renders form', () => {
-    render(<Form/>);
+    render(<viewForms/>);
   });

@@ -33,9 +33,12 @@ const Home = () => {
         <Link to="/searchForms.js" className="nav-link">
           Search Incidents
         </Link>
-        <Link to="userHome.js" className="nav-link">
+        <Link to="/userHome.js/:test" className="nav-link">
           User Home
         </Link>
+        {/* <Link to="/adminHome.js/:admin@admin.com" className="nav-link">
+          User Home
+        </Link> */}
         <div></div>
       </nav>
     </div>

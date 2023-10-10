@@ -109,24 +109,25 @@ td {
   margin-top: 20px;
 }
 
+/* Add this CSS to your existing styles */
 .search-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
 }
 
-.label {
-  flex: 0 0 auto; /* Ensure label does not grow */
-  margin-right: 10px; /* Add some spacing between label and input */
+.centered-input-container {
+  display: flex;
+  align-items: center;
 }
 
-.search-input-container {
-  flex: 1; /* Allow input to grow and take remaining space */
+.label {
+  margin-right: 10px;
 }
 
 .input-text {
-  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
