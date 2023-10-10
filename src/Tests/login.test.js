@@ -1,6 +1,6 @@
-import { render } from '@testing-library/react';
-import Login from '../component/login';
+import { render } from "@testing-library/react";
+import Form from "../component/form";
 
-test('renders form', () => {
-    render(<Login/>);
-  });
+test("renders form", () => {
+  render(<Form />);
+});

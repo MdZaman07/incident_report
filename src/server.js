@@ -145,7 +145,7 @@ app.get("/api/searchIncidents", async (req, res) => {
         });
       } else if (searchCriteria === "incidentCategory") {
         incidents = await Form.find({
-          incidenCategory: { $regex: searchTerm, $options: "i" },
+          incidentCategory: { $regex: searchTerm, $options: "i" },
         });
       } else if (searchCriteria === "status") {
         incidents = await Form.find({

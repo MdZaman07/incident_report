@@ -86,7 +86,7 @@ const SearchIncidents = () => {
   return (
     <div className="container">
       <h2 className="header">Search Incidents by Location</h2>
-      <div className="search-container">
+      <div aria-label="Search Criteria:" className="search-container">
         <label className="label" htmlFor="search-criteria">
           Search Criteria:
         </label>
@@ -109,11 +109,17 @@ const SearchIncidents = () => {
           id="search-term"
           className="input-text"
           value={searchTerm}
+          placeholder="Search..."
           onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
       <div>
-        <h3 className="h3">Search Results:</h3>
+        {searchTerm === "" ? (
+          <h3 className="h3">All Incidents</h3>
+        ) : (
+          <h3 className="h3">Search Results:</h3>
+        )}
+
         {incidents.length > 0 ? (
           <table className="table">
             <thead>
