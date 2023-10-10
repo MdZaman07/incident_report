@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
+import { Dropdown } from "primereact/dropdown";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primeicons/primeicons.css";
 import "./searchForms.css";
 
 const SearchIncidents = () => {
+  const [searchCriteria, setSearchCriteria] = useState("incidentLocation"); // Default to "location"
+  const [searchTerm, setSearchTerm] = useState("");
   const [incidentLocation, setIncidentLocation] = useState("");
   const [incidents, setIncidents] = useState([]);
-  const [debouncedLocation, setDebouncedLocation] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedLocation(incidentLocation);
+      setDebouncedSearchTerm(searchTerm);
     }, 100);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [incidentLocation]);
+  }, [searchTerm]);
 
   useEffect(() => {
-    if (debouncedLocation !== undefined) {
-      console.log(debouncedLocation);
+    if (debouncedSearchTerm !== undefined) {
+      console.log(debouncedSearchTerm);
       fetch(
-        `http://localhost:4000/api/searchIncidents?incidentLocation=${debouncedLocation}`
+        `http://localhost:4000/api/searchIncidents?searchCriteria=${searchCriteria}&searchTerm=${debouncedSearchTerm}`
       )
         .then((response) => {
           if (!response.ok) {
@@ -39,11 +42,11 @@ const SearchIncidents = () => {
     } else {
       setIncidents([]);
     }
-  }, [debouncedLocation]);
+  }, [debouncedSearchTerm, searchCriteria]);
   const handleSearch = (e) => {
     console.log(e);
     console.log(e === "");
-    setIncidentLocation(e);
+    setSearchTerm(e);
   };
   const handleStatus = (id, status) => {
     const requestBody = {
@@ -75,19 +78,37 @@ const SearchIncidents = () => {
         console.error("Error approving incident:", error);
       });
   };
+  const handleSearchCriteriaChange = (e) => {
+    setSearchCriteria(e);
+    setSearchTerm("");
+  };
 
   return (
     <div className="container">
       <h2 className="header">Search Incidents by Location</h2>
       <div className="search-container">
-        <label className="label" htmlFor="incident-location">
-          Incident Location:
+        <label className="label" htmlFor="search-criteria">
+          Search Criteria:
         </label>
+        <Dropdown
+          id="search-criteria"
+          className="select"
+          value={searchCriteria}
+          options={[
+            { label: "Location", value: "incidentLocation" },
+            { label: "Incident Title", value: "incidentTitle" },
+            { label: "Incident Description", value: "description" },
+            { label: "Incident Category", value: "incidentCategory" },
+            { label: "Incident Form Status", value: "status" },
+          ]}
+          onChange={(e) => handleSearchCriteriaChange(e.value)}
+          placeholder="Select a criteria"
+        />
         <input
           type="text"
-          id="incident-location"
+          id="search-term"
           className="input-text"
-          value={incidentLocation}
+          value={searchTerm}
           onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
