@@ -4,7 +4,7 @@ import {
   waitFor,
   getByDisplayValue,
 } from "@testing-library/react";
-import SearchIncidents from "../component/SearchForms";
+import SearchIncidents from "../component/searchForms";
 
 test("renders form", () => {
   render(<SearchIncidents />);
