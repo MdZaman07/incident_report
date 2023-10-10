@@ -85,8 +85,8 @@ const SearchIncidents = () => {
 
   return (
     <div className="container">
-      <h2 className="header">Search Incidents by Location</h2>
-      <div aria-label="Search Criteria:" className="search-container">
+      {/* <h2 className="header">Search Incidents by Location</h2> */}
+      <div className="search-container">
         <label className="label" htmlFor="search-criteria">
           Search Criteria:
         </label>
@@ -97,9 +97,9 @@ const SearchIncidents = () => {
           options={[
             { label: "Location", value: "incidentLocation" },
             { label: "Incident Title", value: "incidentTitle" },
-            { label: "Incident Description", value: "description" },
+            { label: "Description", value: "description" },
             { label: "Incident Category", value: "incidentCategory" },
-            { label: "Incident Form Status", value: "status" },
+            { label: "Form Status", value: "status" },
           ]}
           onChange={(e) => handleSearchCriteriaChange(e.value)}
           placeholder="Select a criteria"
@@ -115,9 +115,9 @@ const SearchIncidents = () => {
       </div>
       <div>
         {searchTerm === "" ? (
-          <h3 className="h3">All Incidents</h3>
+          <h3 className="h3 center-text">All Incidents</h3>
         ) : (
-          <h3 className="h3">Search Results:</h3>
+          <h3 className="h3 center-text">Search Results:</h3>
         )}
 
         {incidents.length > 0 ? (
