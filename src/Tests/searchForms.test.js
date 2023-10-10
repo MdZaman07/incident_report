@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import Form from '../component/form';
+import searchForms from '../component/searchForms'
 
 test('renders form', () => {
-    render(<Form/>);
+    render(<searchForms/>);
   });
