@@ -64,6 +64,7 @@ const Login = () => {
           <input type="submit" value="LOGIN" className="btn" />
         </form>
         <Link className='link' to='/signup.js'>Sign up</Link>
+        <Link className= 'link' to='/forgetPassword.js'>Forget Password</Link>
       </div>
     );
   }
