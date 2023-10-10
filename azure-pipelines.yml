@@ -21,6 +21,5 @@ steps:
   displayName: 'npm install and build'
 
 - script: | 
-    npm install
     npm test form.test.js
   displayName: 'form renders'
