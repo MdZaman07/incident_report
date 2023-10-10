@@ -1,0 +1,135 @@
+/* Apply basic styles to the entire page */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the container for your component */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style the header */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Style the input field */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+/* Style the table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* Style the table headers */
+th {
+  background-color: #f0f0f0;
+  text-align: left;
+  padding: 10px;
+}
+
+/* Style the table rows */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Style the table cells */
+td {
+  padding: 5px;
+}
+
+.header {
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: 20px;
+}
+
+/* Style the approve and reject buttons */
+.approve-button,
+.reject-button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.approve-button {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.reject-button {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.approve-button:hover,
+.reject-button:hover {
+  background-color: #45a049;
+}
+
+/* Style the status label */
+.status-label {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #888;
+}
+
+/* Style the "No search results found" message */
+.no-results {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+  margin-top: 20px;
+}
+
+/* Add this CSS to your existing styles */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.centered-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  margin-right: 10px;
+}
+
+.input-text {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}

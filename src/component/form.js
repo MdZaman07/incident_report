@@ -1,5 +1,14 @@
 import React, {useState} from 'react';
 import './form.css';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { InputTextarea } from 'primereact/inputtextarea';
+
+        
+        
+        
 
 const Form = ( {userData} ) => {
 
@@ -12,14 +21,12 @@ const Form = ( {userData} ) => {
     const[formData, setFormData] = useState( {
         incidentTitle: "",
         incidentLocation: "",
-        //witnessName: "", Shouldnt be required as a login should note the witness name.
         offenderName: "",
         date: "",
         description: "",
         incidentCategory: "",
         status: 'pending',
         userId: userId // Id of user who submits form
-        //severityLevel: "",
        // attachedFile: null
     })
 
@@ -75,7 +82,16 @@ const Form = ( {userData} ) => {
                 if(response.status === 200) {
                     console.log(userId)
                     console.log('Form data submitted sucessfully.')
-                    setStatus('Incident form submitted successfully, redirecting to home page.')
+                    setFormData({
+                        incidentTitle: "",
+                        incidentLocation: "",
+                        offenderName: "",
+                        date: "",
+                        description: "",
+                        incidentCategory: "",
+
+                    })
+                    setStatus('Incident form submitted successfully.')
                 }
                 else {
                     console.log('Form submission failed.')
@@ -102,33 +118,19 @@ const Form = ( {userData} ) => {
         <div className='incident-form'>
             <form id='incidentForm' onSubmit={handleSubmit}>
                 <div className='incident-form__text-area'>
-                    <input type='text' id='incidentTitle' placeholder='Title*' name='incidentTitle' onChange={handleFormChange} value={formData.incidentTitle}></input>
+                    <InputText type='text' id='incidentTitle' placeholder='Title*' name='incidentTitle' onChange={handleFormChange} value={formData.incidentTitle}></InputText>
                 </div>
                 <div className='incident-form__text-area'>
-                <select required id="incidentLocation" name='incidentLocation' value={formData.incidentLocation} onChange={handleFormChange}>
-                        <option value="" disabled selected >Venue Locations</option>
-                        {locations.map((level, index) => (
-                            <option key={index} value={level}>
-                                {level}
-                            </option>
-                        ))}
-                    </select>
+                <Dropdown className='dropdown' required id="incidentLocation" name='incidentLocation' placeholder='Venue Locations' options={locations} value={formData.incidentLocation} onChange={handleFormChange}></Dropdown>
                 </div>
                 <div className='incident-form__text-area'>
-                    <input type={inputType} placeholder='Date of incident' onFocus={handleInputFocus} onBlur={handleInputBlur} id='date' value={formData.date} onChange={handleFormChange} name='date'></input>
+                    <Calendar className='custom-date' placeholder='Date of incident' id='date' value={formData.date} onChange={handleFormChange} name='date'></Calendar>
                 </div>
                 <div className='incident-form__text-area'>
-                    <select required id="incidentCategory" name='incidentCategory' value={formData.incidentCategory} onChange={handleFormChange}>
-                        <option value="" disabled selected>Incident Category</option>
-                        {incidentCategories.map((level, index) => (
-                            <option key={index} value={level}>
-                                {level}
-                            </option>
-                        ))}
-                    </select>
+                    <Dropdown required id="incidentCategory" className='dropdown' options={incidentCategories} placeholder='Incident Categories' name='incidentCategory' value={formData.incidentCategory} onChange={handleFormChange}/>
                 </div>
                 <div className='incident-form__text-area'>
-                <textarea
+                <InputTextarea
                         id='description'
                         placeholder='Description (character limit 500)'
                         value={formData.description}
@@ -136,10 +138,11 @@ const Form = ( {userData} ) => {
                         name='description'
                         rows="5"
                         maxLength='500'
-                    ></textarea>
+                        autoResize
+                    ></InputTextarea>
                 </div>
                  <div className='incident-form__text-area'>
-                    <input type='text' placeholder='Name of offender (if applicable)' id='offenderName' name='offenderName' onChange={handleFormChange} value={formData.offenderName}></input>
+                    <InputText type='text' placeholder='Name of offender (if applicable)' id='offenderName' name='offenderName' onChange={handleFormChange} value={formData.offenderName}></InputText>
                 </div>
                {/*<div className='incident-form__text-area'>
                     <label htmlFor="file">Attach image/video: </label>
@@ -151,7 +154,7 @@ const Form = ( {userData} ) => {
                     />
                         </div> */}
                 {status && <p className="status">{status}</p>}
-                <input className='btn' type='submit' value="Submit"></input>
+                <Button className='submit-button' icon="pi pi-check" iconPos="right" severity='success' type='submit' label="Submit"></Button>
             </form>
         </div>
     ); 
