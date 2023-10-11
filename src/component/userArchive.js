@@ -61,14 +61,14 @@ const UserArchive = ( {userData} ) => {
         onRowClick={onRowClick}
         size="normal"
       >
-        <Column field="incidentID" header="ID" sortable></Column>
-        <Column field="date" header="Date" sortable></Column>
-        <Column field="incidentTitle" header="Incident" sortable></Column>
+        <Column field="incidentTitle" header="Incident Title" sortable></Column>
+        <Column field="date" header="Date" sortable body={(rowData) => new Date(rowData.date).toLocaleDateString()}></Column>
         <Column
           field="incidentCategory"
           header="Incident Category"
           sortable
         ></Column>
+        <Column field="description" header="Description" sortable></Column>
         <Column field="offenderName" header="Offender Name" sortable></Column>
         <Column field="status" header="Status" sortable></Column>
       </DataTable>)

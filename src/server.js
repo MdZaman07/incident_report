@@ -97,7 +97,7 @@ app.post("/api/login", async (req, res) => {
 // Routing for form submission
 
 app.post("/api/submit", async (req, res) => {
-  const {
+  let {
     incidentTitle,
     incidentLocation,
     witnessName,
@@ -108,6 +108,10 @@ app.post("/api/submit", async (req, res) => {
     status,
     userId,
   } = req.body;
+
+  if(offenderName == '') {
+    offenderName = 'N/A'
+  }
 
   try {
     const form = new Form({
