@@ -28,35 +28,35 @@ try {
 }
 
 // Routing for Email check
-app.post("/api/checkemail", async(req, res) =>{
-  const {email} = req.body;
+app.post("/api/checkemail", async (req, res) => {
+  const { email } = req.body;
 
-  try{
-    const user = await User.findOne({email});
+  try {
+    const user = await User.findOne({ email });
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({ message: "Email not found" });
     }
     res.status(200).json({ message: "Email found" });
-  }catch(error){
+  } catch (error) {
     console.error(err);
   }
 });
 
 //Routing for Password Update
-app.post("/api/updatepassword", async(req, res)=>{
-  const {email, password} = req.body;
-  try{
-    const user = await User.findOne({email});
+app.post("/api/updatepassword", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({ message: "Email not found" });
     }
 
     user.password = password;
     await user.save();
     res.status(200).json({ message: "Password updated successfully" });
-  }catch(error){
+  } catch (error) {
     console.error(error);
   }
 });
@@ -139,6 +139,45 @@ app.get("/api/getForms", async (req, res) => {
   try {
     const forms = await Form.find();
     res.json(forms);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/api/getFormById/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const form = await Form.findById(id);
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+    res.json(form);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.put("/api/updateForm/:id", async (req, res) => {
+  const { id } = req.params;
+  const { incidentTitle, incidentLocation, incidentDate, description } =
+    req.body;
+  console.log(req.body);
+  try {
+    const form = await Form.findById(id);
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    form.incidentTitle = incidentTitle;
+    form.incidentLocation = incidentLocation;
+    form.incidentDate = incidentDate;
+    form.description = description;
+
+    await form.save();
+
+    res.json({ message: "Form updated successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
