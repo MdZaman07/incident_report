@@ -14,20 +14,23 @@ function Incident() {
   const [incident, setIncident] = useState(null);
   const [visible, setVisible] = useState(false);
 
+  const getIncident = async () => {
+    const response = await fetch(`http://localhost:4000/api/getFormById/${id}`);
+    const data = await response.json();
+    setIncident(data);
+  };
+
   useEffect(() => {
-    const getIncident = async () => {
-      const response = await fetch(
-        `http://localhost:4000/api/getFormById/${id}`
-      );
-      const data = await response.json();
-      setIncident(data);
-    };
     getIncident();
   }, [id]);
 
   const handleEdit = () => {
     setVisible(true);
     //navigate(`/incident/${id}/edit`);
+  };
+
+  const updateVisible = (value) => {
+    setVisible(value);
   };
 
   const navBack = () => {
@@ -45,7 +48,7 @@ function Incident() {
         visible={visible}
         onHide={() => setVisible(false)}
       >
-        <EditIncident />
+        <EditIncident updateVisible={updateVisible} getIncident={getIncident} />
       </Dialog>
       <div className="incident-details-container">
         <div className="incident-details">

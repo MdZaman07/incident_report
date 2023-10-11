@@ -6,13 +6,11 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
-import { useNavigate } from "react-router-dom";
 import { ProgressSpinner } from "primereact/progressspinner";
 import "./editIncident.css";
 
-function EditIncident() {
+function EditIncident({ updateVisible, getIncident }) {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     incidentTitle: "",
     incidentLocation: "",
@@ -38,12 +36,14 @@ function EditIncident() {
         .then((response) => response.json())
         .then(() => {
           setLoading(false);
+          getIncident();
+          updateVisible(false);
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    [formData, id]
+    [formData, id, updateVisible]
   );
 
   useEffect(() => {
@@ -76,7 +76,6 @@ function EditIncident() {
 
               <label htmlFor="incidentLocation">Incident Location:</label>
               <Dropdown
-                required
                 id="incidentLocation"
                 value={formData.incidentLocation}
                 options={[
