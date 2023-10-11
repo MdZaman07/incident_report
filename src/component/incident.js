@@ -1,74 +1,59 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./incident.css";
 import { useParams } from "react-router-dom";
-import { mockData } from "./MOCKDATA";
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
 import { Image } from "primereact/image";
 import { useNavigate } from "react-router-dom";
+import { Dialog } from "primereact/dialog";
+import EditIncident from "./editIncident";
 
 function Incident() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const toast = useRef(null);
+  const [incident, setIncident] = useState(null);
+  const [visible, setVisible] = useState(false);
 
-  const resolvedConfirmation = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Resolved",
-      detail: "You have successfully resolved the incident .",
-      life: 3000,
-    });
+  useEffect(() => {
+    const getIncident = async () => {
+      const response = await fetch(
+        `http://localhost:4000/api/getFormById/${id}`
+      );
+      const data = await response.json();
+      setIncident(data);
+    };
+    getIncident();
+  }, [id]);
+
+  const handleEdit = () => {
+    setVisible(true);
+    //navigate(`/incident/${id}/edit`);
   };
 
-  const deniedConfirmation = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Denied",
-      detail: "You have denied resolved the incident .",
-      life: 3000,
-    });
+  const navBack = () => {
+    navigate(-1);
   };
-
-  const resolveConfirmation = () => {
-    confirmDialog({
-      message: "Are you sure you want to resolve this incident?",
-      header: "Confirmation",
-      icon: "pi pi-exclamation-triangle",
-      accept: resolvedConfirmation,
-    });
-  };
-
-  const denyConfirmation = () => {
-    confirmDialog({
-      message: "Are you sure you want to deny this incident?",
-      header: "Confirmation",
-      icon: "pi pi-info-circle",
-      acceptClassName: "p-button-danger",
-      accept: deniedConfirmation,
-    });
-  };
-
-  const incident = mockData.find((incident) => incident.incidentID === id);
 
   if (!incident) {
-    return <div>No incident found for ID: {id}</div>;
+    return <div>Loading...</div>;
   }
 
   return (
     <>
-      <Toast ref={toast} />
-      <ConfirmDialog />
+      <Dialog
+        header="Header"
+        visible={visible}
+        onHide={() => setVisible(false)}
+      >
+        <EditIncident />
+      </Dialog>
       <div className="incident-details-container">
         <div className="incident-details">
-          <Panel header={`Incident: ${id} - ${incident.incidentTitle}`}>
-            <p>Witness Name: {incident.witnessName}</p>
+          <Panel header={`Incident: ${incident.incidentTitle}`}>
+            <p>Date: {new Date(incident.date).toLocaleDateString()}</p>
             <p>Offender Name: {incident.offenderName}</p>
-            <p>Date: {incident.date}</p>
             <p>Incident Category: {incident.incidentCategory}</p>
-            <p>Severity: {incident.severity}</p>
+            <p>Location: {incident.incidentLocation}</p>
             <p>Description: {incident.description}</p>
             {incident.attachedFile ? (
               <Image
@@ -81,22 +66,8 @@ function Incident() {
               <p>No evidence supplied</p>
             )}
             <p>Status: {incident.status}</p>
-            {incident.status === "Open" && (
-              <div>
-                <Button
-                  onClick={resolveConfirmation}
-                  icon="pi pi-check"
-                  label="Resolve"
-                  className="mr-2"
-                ></Button>
-                <Button
-                  style={{ marginLeft: "1em" }}
-                  onClick={denyConfirmation}
-                  icon="pi pi-times"
-                  label="Deny"
-                ></Button>
-              </div>
-            )}
+            <Button label="Back" onClick={navBack} /> &nbsp;
+            <Button label="Edit Incident" onClick={handleEdit} />
           </Panel>
         </div>
       </div>

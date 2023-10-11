@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import "primereact/resources/primereact.min.css";
@@ -12,6 +13,7 @@ const SearchIncidents = () => {
   const [incidentLocation, setIncidentLocation] = useState("");
   const [incidents, setIncidents] = useState([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -83,6 +85,11 @@ const SearchIncidents = () => {
     setSearchTerm("");
   };
 
+  const onRowClick = (event) => {
+    const incidentID = event.data._id;
+    navigate(`/incident/${incidentID}`);
+  };
+
   return (
     <div className="container">
       {/* <h2 className="header">Search Incidents by Location</h2> */}
@@ -136,7 +143,7 @@ const SearchIncidents = () => {
             </thead>
             <tbody>
               {incidents.map((form) => (
-                <tr key={form._id}>
+                <tr key={form._id} onClick={() => onRowClick({ data: form })}>
                   <td>{form.incidentTitle}</td>
                   <td>{form.incidentLocation}</td>
                   <td>{form.offenderName}</td>
