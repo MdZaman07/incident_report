@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "primeicons/primeicons.css";
 
 import Login from "./component/login";
+import ForgetPassword from "./component/forgetPassword";
 import Form from "./component/form";
 import Archive from "./component/archive";
 import Signup from "./component/signup";
@@ -32,6 +33,7 @@ function App() {
           <Route path="/viewForms.js" element={<FormList />} />
           <Route path="/searchForms.js" element={<SearchIncidents />} />
           <Route path="/userHome.js/:userId" element={<UserHome />} />
+          <Route path="/forgetPassword.js" element={<ForgetPassword />} />
           <Route path="/adminHome.js/:userId" element={<AdminHome />} />
         </Routes>
       </Router>

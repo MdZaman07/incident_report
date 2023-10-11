@@ -27,7 +27,39 @@ try {
   console.log(error);
 }
 
-// Used for unstructured data
+// Routing for Email check
+app.post("/api/checkemail", async(req, res) =>{
+  const {email} = req.body;
+
+  try{
+    const user = await User.findOne({email});
+
+    if(!user){
+      return res.status(404).json({ message: "Email not found" });
+    }
+    res.status(200).json({ message: "Email found" });
+  }catch(error){
+    console.error(err);
+  }
+});
+
+//Routing for Password Update
+app.post("/api/updatepassword", async(req, res)=>{
+  const {email, password} = req.body;
+  try{
+    const user = await User.findOne({email});
+
+    if(!user){
+      return res.status(404).json({ message: "Email not found" });
+    }
+
+    user.password = password;
+    await user.save();
+    res.status(200).json({ message: "Password updated successfully" });
+  }catch(error){
+    console.error(error);
+  }
+});
 
 // Create a route for user registration
 app.post("/api/register", async (req, res) => {

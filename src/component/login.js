@@ -84,6 +84,9 @@ const Login = () => {
       <Link className="link" to="/signup.js">
         Sign up
       </Link>
+      <Link className="link" to="/forgetPassword.js">
+        Forget Password
+      </Link>
     </div>
   );
 };
