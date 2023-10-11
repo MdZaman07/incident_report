@@ -161,10 +161,17 @@ app.get("/api/getFormsById", async (req, res) => {
 });
 
 app.get("/api/searchIncidents", async (req, res) => {
-  const { searchCriteria, searchTerm } = req.query;
+  const { searchCriteria, searchTerm, userId } = req.query;
 
   try {
     let incidents;
+
+    if(searchCriteria == undefined && userId !== undefined && searchTerm !== "") { // Byron - Added this for my userArchive to search by title.
+      incidents = await Form.find({
+        userId: userId,
+        incidentTitle: { $regex: searchTerm, $options: "i" }
+      });
+    }
 
     if (searchTerm !== "") {
       if (searchCriteria === "incidentLocation") {
