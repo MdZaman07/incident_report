@@ -124,7 +124,7 @@ const SearchIncidents = () => {
   };
 
   return (
-    <div>
+    <div className="elementContainer">
       {/* <h2 className="header">Search Incidents by Location</h2> */}
       <div className="search-container">
         <label className="label" htmlFor="search-criteria">

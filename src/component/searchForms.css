@@ -5,6 +5,16 @@ Apply basic styles to the entire page body {
   padding: 0;
 }
 
+.elementContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.search-container {
+  max-width: 70vw;
+}
 /* searchForms.css */
 
 .container {
@@ -122,6 +132,7 @@ td {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  max-width: 70vw;
 }
 
 .p-datatable-tbody > tr:hover {
