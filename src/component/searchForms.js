@@ -132,7 +132,7 @@ const SearchIncidents = () => {
         </label>
         <Dropdown
           id="search-criteria"
-          className="select"
+          className="select"  
           value={searchCriteria}
           options={[
             { label: "Location", value: "incidentLocation" },
@@ -195,11 +195,6 @@ const SearchIncidents = () => {
                   <Column
                     field="incidentCategory"
                     header="Incident Category"
-                    sortable
-                  ></Column>
-                  <Column
-                    field="description"
-                    header="Description"
                     sortable
                   ></Column>
                   <Column
