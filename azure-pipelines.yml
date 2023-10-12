@@ -35,3 +35,8 @@ steps:
   - script: |
       npm test login.test.js -- --watchAll=false
     displayName: "login renders"
+
+    - script: |
+      npm test newPass.test.js -- --watchAll=false
+    displayName: "Forget Password renders"
+  
