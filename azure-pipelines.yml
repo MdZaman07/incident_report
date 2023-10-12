@@ -22,7 +22,7 @@ steps:
 
   - script: |
       npm test form.test.js -- --watchAll=false
-    displayName: "form renders"
+    displayName: "form render, input, submit"
 
   - script: |
       npm test searchForms.test.js -- --watchAll=false
