@@ -97,7 +97,7 @@ app.post("/api/login", async (req, res) => {
 // Routing for form submission
 
 app.post("/api/submit", async (req, res) => {
-  const {
+  let {
     incidentTitle,
     incidentLocation,
     witnessName,
@@ -108,6 +108,10 @@ app.post("/api/submit", async (req, res) => {
     status,
     userId,
   } = req.body;
+
+  if(offenderName == '') {
+    offenderName = 'N/A'
+  }
 
   try {
     const form = new Form({
@@ -196,10 +200,17 @@ app.get("/api/getFormsById", async (req, res) => {
 });
 
 app.get("/api/searchIncidents", async (req, res) => {
-  const { searchCriteria, searchTerm } = req.query;
+  const { searchCriteria, searchTerm, userId } = req.query;
 
   try {
     let incidents;
+
+    if(searchCriteria == undefined && userId !== undefined && searchTerm !== "") { // Byron - Added this for my userArchive to search by title.
+      incidents = await Form.find({
+        userId: userId,
+        incidentTitle: { $regex: searchTerm, $options: "i" }
+      });
+    }
 
     if (searchTerm !== "") {
       if (searchCriteria === "incidentLocation") {
