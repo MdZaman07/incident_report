@@ -37,5 +37,5 @@ steps:
     displayName: "login renders"
 
     - script: |
-      npm test login.test.js -- --watchAll=false
+      npm test editIncident.test.js -- --watchAll=false
     displayName: "editIncident renders"
