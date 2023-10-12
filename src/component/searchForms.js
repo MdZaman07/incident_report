@@ -5,6 +5,7 @@ import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primeicons/primeicons.css";
 import "./searchForms.css";
+import { RadioButton } from "primereact/radiobutton";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { DataTable } from "primereact/datatable";
 import { useNavigate } from "react-router-dom";
@@ -13,10 +14,11 @@ import { Column } from "primereact/column";
 const SearchIncidents = () => {
   const [searchCriteria, setSearchCriteria] = useState("incidentLocation"); // Default to "location"
   const [searchTerm, setSearchTerm] = useState("");
-  const [incidentLocation, setIncidentLocation] = useState("");
+
   const [incidents, setIncidents] = useState([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [initialStatus, setInitialStatus] = useState("pending");
   const navigate = useNavigate();
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -154,6 +156,47 @@ const SearchIncidents = () => {
         />
       </div>
       <div>
+        <span>
+          <RadioButton
+            className="radioButton"
+            inputId="ingredient1"
+            name="pizza"
+            value="Approved"
+            onChange={(e) => setInitialStatus(e.value)}
+            checked={initialStatus === "Approved"}
+          />
+          <label htmlFor="ingredient1" className="ml-4">
+            Approved
+          </label>
+        </span>
+        <span>
+          <RadioButton
+            className="radioButton"
+            inputId="ingredient2"
+            name="pizza"
+            value="pending"
+            onChange={(e) => setInitialStatus(e.value)}
+            checked={initialStatus === "pending"}
+          />
+          <label htmlFor="ingredient2" className="ml-4">
+            Pending
+          </label>
+        </span>
+        <span>
+          <RadioButton
+            className="radioButton"
+            inputId="ingredient3"
+            name="pizza"
+            value="Rejected"
+            onChange={(e) => setInitialStatus(e.value)}
+            checked={initialStatus === "Rejected"}
+          />
+          <label htmlFor="ingredient3" className="ml-4">
+            Rejected
+          </label>
+        </span>
+      </div>
+      <div>
         {searchTerm === "" ? (
           <h3 className="h3 center-text">All Incidents</h3>
         ) : (
@@ -167,7 +210,9 @@ const SearchIncidents = () => {
                 <ProgressSpinner />
               ) : (
                 <DataTable
-                  value={incidents}
+                  value={incidents.filter(
+                    (incident) => incident.status === initialStatus
+                  )}
                   paginator
                   rows={10}
                   sortField="status"

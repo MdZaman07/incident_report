@@ -134,6 +134,10 @@ td {
   min-height: 100vh;
   max-width: 70vw;
 }
+.radioButton {
+  margin-left: 6px;
+  margin-right: 6px;
+}
 
 .p-datatable-tbody > tr:hover {
   cursor: pointer;
