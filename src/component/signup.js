@@ -47,7 +47,7 @@ const Signup = () => {
             })
             if(response.status === 200) {
                 setSubmitDisabled(true)
-                setStatus('Sign up successful. Redirecting...')
+                setStatus('Sign up successful. An email notification has been sent for confirmation. Redirecting...')
 
                 setTimeout(() => {
                   navigate('/login.js');
@@ -147,3 +147,4 @@ const Signup = () => {
     )
 }
 export default Signup;
+
