@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import "./signup.css";
 import {Link, Navigate, useNavigate} from 'react-router-dom';
-import { set } from 'mongoose';
 
 
 const Signup = () => {
@@ -48,7 +47,7 @@ const Signup = () => {
             })
             if(response.status === 200) {
                 setSubmitDisabled(true)
-                setStatus('Sign up successful. Redirecting...')
+                setStatus('Sign up successful. An email notification has been sent for confirmation. Redirecting...')
 
                 setTimeout(() => {
                   navigate('/login.js');
@@ -56,12 +55,12 @@ const Signup = () => {
                 console.log('Form data submitted sucessfully.')
             }
             else {
+                setStatus('Error. Try again.')
                 console.log('Form submission failed.')
                 console.log(response.status)
             }
         }
         catch(error) {
-          setStatus('Error connecting to server, try again.')
           console.log(error)
         }
       }
@@ -148,3 +147,4 @@ const Signup = () => {
     )
 }
 export default Signup;
+

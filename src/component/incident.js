@@ -70,7 +70,8 @@ function Incident() {
             )}
             <p>Status: {incident.status}</p>
             <Button label="Back" onClick={navBack} /> &nbsp;
-            <Button label="Edit Incident" onClick={handleEdit} />
+            <Button label="Edit Incident" onClick={handleEdit} /> &nbsp;
+            <Button id='cancelButton' severity="danger" label="Cancel"/>
           </Panel>
         </div>
       </div>

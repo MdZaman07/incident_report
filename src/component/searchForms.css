@@ -5,6 +5,16 @@ Apply basic styles to the entire page body {
   padding: 0;
 }
 
+.elementContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.search-container {
+  max-width: 70vw;
+}
 /* searchForms.css */
 
 .container {
@@ -21,29 +31,31 @@ Apply basic styles to the entire page body {
   margin-bottom: 20px;
 }
 
+/* Apply to the .search-container element */
 .search-container {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
+/* Style the label element */
 .label {
-  margin-right: 10px;
   font-weight: bold;
-  margin-left: 70px;
+  margin-right: 10px;
 }
 
+/* Style the Dropdown component */
 .select {
   width: 200px;
+  margin-right: 10px; /* Add margin for spacing */
 }
 
+/* Style the input element */
 .input-text {
   flex: 1;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  margin-left: 10px;
 }
 
 .h3 {
@@ -113,4 +125,17 @@ td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.centered-content {
+  max-width: 70vw;
+}
+.radioButton {
+  margin-left: 10px;
+  margin-right: 6px;
+  margin-top: 20px;
+}
+
+.p-datatable-tbody > tr:hover {
+  cursor: pointer;
+  background-color: #f2f2f2;
 }

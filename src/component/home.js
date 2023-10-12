@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import ShoppingMalls from "./shoppingMalls";
-import archive from "./archive";
+
 import "./home.css";
 
 const Home = () => {
@@ -12,20 +11,21 @@ const Home = () => {
         <p>Report incidents easily and help maintain safety.</p>
       </header>
       <nav className="navbar">
-        <Link to="/form.js" className="nav-link">
-          Report an Incident..
-        </Link>
         <Link to="/signup.js" className="nav-link">
           Signup
         </Link>
         <Link to="/login.js" className="nav-link">
           Login
         </Link>
-        <Link to="/archive.js" className="nav-link">
+        {/* <Link to="/form.js" className="nav-link">
+          Report an Incident..
+        </Link> */}
+
+        {/* <Link to="/archive.js" className="nav-link">
           Archive
         </Link>
         <Link to="/viewMalls.js" className="nav-link">
-          Shopping
+          Shopping Malls
         </Link>
         <Link to="/viewForms.js" className="nav-link">
           Incidents List
@@ -35,10 +35,8 @@ const Home = () => {
         </Link>
         <Link to="/userHome.js/:test" className="nav-link">
           User Home
-        </Link>
-        {/* <Link to="/adminHome.js/:admin@admin.com" className="nav-link">
-          User Home
         </Link> */}
+
         <div></div>
       </nav>
     </div>

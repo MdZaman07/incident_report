@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const Grid = require("gridfs-stream");
 const cors = require("cors");
+const nodemailer = require("nodemailer");
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -65,12 +66,37 @@ app.post("/api/updatepassword", async (req, res) => {
 app.post("/api/register", async (req, res) => {
   let { firstname, lastname, email, password } = req.body;
   email = email.toLowerCase();
+
   console.log(email);
 
   try {
     const newUser = new User({ firstname, lastname, email, password });
     await newUser.save();
     res.json({ message: "User registered successfully" });
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "reactapp02@gmail.com", // your Gmail email address
+        pass: "sefl hyja xsme brae",
+      },
+    });
+
+    const mailOptions = {
+      from: "reactapp02@gmail.com", // the email address to send from
+      to: email,
+      subject: "Signup Successful",
+      text: "Thank you for signing up to our Incident Reporting System.",
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Email send failed:", error);
+      } else {
+        console.log("Email sent:", info.response);
+        res.json({ message: "Signup is complete!" });
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -109,8 +135,8 @@ app.post("/api/submit", async (req, res) => {
     userId,
   } = req.body;
 
-  if(offenderName == '') {
-    offenderName = 'N/A'
+  if (offenderName == "") {
+    offenderName = "N/A";
   }
 
   try {
@@ -205,10 +231,15 @@ app.get("/api/searchIncidents", async (req, res) => {
   try {
     let incidents;
 
-    if(searchCriteria == undefined && userId !== undefined && searchTerm !== "") { // Byron - Added this for my userArchive to search by title.
+    if (
+      searchCriteria == undefined &&
+      userId !== undefined &&
+      searchTerm !== ""
+    ) {
+      // Byron - Added this for my userArchive to search by title.
       incidents = await Form.find({
         userId: userId,
-        incidentTitle: { $regex: searchTerm, $options: "i" }
+        incidentTitle: { $regex: searchTerm, $options: "i" },
       });
     }
 
@@ -244,29 +275,6 @@ app.get("/api/searchIncidents", async (req, res) => {
   }
 });
 
-// Add a new route for searching incidents by incidentTitle
-// app.get("/api/searchIncidents", async (req, res) => {
-//   const { incidentLocation } = req.query;
-
-//   try {
-//     let incidents;
-
-//     if (incidentLocation !== "") {
-//       incidents = await Form.find({
-//         incidentLocation: { $regex: incidentLocation, $options: "i" },
-//       });
-//     } else {
-//       incidents = await Form.find();
-//     }
-
-//     // console.log("Found incidents:", incidents);
-//     res.json(incidents);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
-// Add a new route for incident form approval
 app.post("/api/approveIncident", async (req, res) => {
   const { id, status } = req.body;
 
