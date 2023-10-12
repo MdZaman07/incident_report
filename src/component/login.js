@@ -57,6 +57,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error);
+      setStatus("Error connecting to server, try again.")
     }
   };
 
