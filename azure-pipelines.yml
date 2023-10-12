@@ -38,4 +38,4 @@ steps:
 
   - script: |
       npm test editIncident.test.js -- --watchAll=false
-    displayName: "editIncident renders"
+    displayName: "editIncident renders fields update"
