@@ -2,7 +2,7 @@ import "./App.css";
 import { PrimeReactProvider } from "primereact/api";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { MemoryRouter as Router, Route, Routes } from "react-router-dom";
 import "primeicons/primeicons.css";
 
 import Login from "./component/login";
