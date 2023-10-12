@@ -54,8 +54,6 @@ const SearchIncidents = () => {
     }
   }, [debouncedSearchTerm, searchCriteria]);
   const handleSearch = (e) => {
-    console.log(e);
-    console.log(e === "");
     setSearchTerm(e);
   };
   const handleStatus = (id, status) => {
@@ -134,12 +132,12 @@ const SearchIncidents = () => {
         </label>
         <Dropdown
           id="search-criteria"
-          className="select"  
+          className="select"
           value={searchCriteria}
           options={[
             { label: "Location", value: "incidentLocation" },
             { label: "Incident Title", value: "incidentTitle" },
-            { label: "Description", value: "description" },
+
             { label: "Incident Category", value: "incidentCategory" },
             // { label: "Form Status", value: "status" },
           ]}
