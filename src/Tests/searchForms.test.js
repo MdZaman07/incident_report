@@ -5,9 +5,14 @@ import {
   getByDisplayValue,
 } from "@testing-library/react";
 import SearchIncidents from "../component/searchForms";
+import { MemoryRouter } from "react-router";
 
 test("renders form", () => {
-  render(<SearchIncidents />);
+  render(
+    <MemoryRouter>
+      <SearchIncidents />
+    </MemoryRouter>
+  );
 });
 
 test("displays search criteria dropdown", () => {
