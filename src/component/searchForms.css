@@ -35,7 +35,6 @@ Apply basic styles to the entire page body {
 .search-container {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 /* Style the label element */
@@ -128,10 +127,6 @@ td {
   text-overflow: ellipsis;
 }
 .centered-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   max-width: 70vw;
 }
 .radioButton {
