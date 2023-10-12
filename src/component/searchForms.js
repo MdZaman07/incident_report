@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primeicons/primeicons.css";
 import "./searchForms.css";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { DataTable } from "primereact/datatable";
+import { useNavigate } from "react-router-dom";
+import { Column } from "primereact/column";
 
 const SearchIncidents = () => {
   const [searchCriteria, setSearchCriteria] = useState("incidentLocation"); // Default to "location"
@@ -13,8 +16,8 @@ const SearchIncidents = () => {
   const [incidentLocation, setIncidentLocation] = useState("");
   const [incidents, setIncidents] = useState([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
@@ -40,6 +43,9 @@ const SearchIncidents = () => {
         .then((data) => setIncidents(data))
         .catch((error) => {
           console.error("Error fetching data:", error);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } else {
       setIncidents([]);
@@ -78,20 +84,47 @@ const SearchIncidents = () => {
       })
       .catch((error) => {
         console.error("Error approving incident:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   const handleSearchCriteriaChange = (e) => {
     setSearchCriteria(e);
     setSearchTerm("");
   };
-
   const onRowClick = (event) => {
     const incidentID = event.data._id;
+    console.log(incidentID);
     navigate(`/incident/${incidentID}`);
+  };
+  const actionButton = (rowData) => {
+    if (rowData.status === "pending") {
+      return (
+        <div className="button-container">
+          <Button
+            icon="pi pi-check"
+            tooltip="Approve"
+            className="approve-button"
+            onClick={() => handleStatus(rowData._id, "Approved")}
+            disabled={rowData.status === "Approved"}
+          />
+          <Button
+            icon="pi pi-times"
+            tooltip="Reject"
+            className="reject-button"
+            onClick={() => handleStatus(rowData._id, "Rejected")}
+            disabled={rowData.status === "Rejected"}
+          />
+        </div>
+      );
+    } else {
+      return null; // Or any other component you want to render when the condition is not met
+    }
   };
 
   return (
-    <div className="container">
+    <div>
       {/* <h2 className="header">Search Incidents by Location</h2> */}
       <div className="search-container">
         <label className="label" htmlFor="search-criteria">
@@ -106,7 +139,7 @@ const SearchIncidents = () => {
             { label: "Incident Title", value: "incidentTitle" },
             { label: "Description", value: "description" },
             { label: "Incident Category", value: "incidentCategory" },
-            { label: "Form Status", value: "status" },
+            // { label: "Form Status", value: "status" },
           ]}
           onChange={(e) => handleSearchCriteriaChange(e.value)}
           placeholder="Select a criteria"
@@ -128,56 +161,59 @@ const SearchIncidents = () => {
         )}
 
         {incidents.length > 0 ? (
-          <table className="table">
-            <thead>
-              <tr>
-                <th className="th">Incident Title</th>
-                <th className="th">Incident Location</th>
-                <th className="th">Offender Name</th>
-                <th className="th">Date</th>
-                <th className="th">Description</th>
-                <th className="th">Incident Category</th>
-                <th className="th">Incident Status</th>
-                <th className="th">Approval</th>
-              </tr>
-            </thead>
-            <tbody>
-              {incidents.map((form) => (
-                <tr key={form._id} onClick={() => onRowClick({ data: form })}>
-                  <td>{form.incidentTitle}</td>
-                  <td>{form.incidentLocation}</td>
-                  <td>{form.offenderName}</td>
-                  <td>{new Date(form.date).toLocaleDateString()}</td>
-                  <td>{form.description}</td>
-                  <td>{form.incidentCategory}</td>
-                  <td className="status-label">{form.status}</td>
+          <>
+            <div className="centered-content">
+              {loading ? (
+                <ProgressSpinner />
+              ) : (
+                <DataTable
+                  value={incidents}
+                  paginator
+                  rows={10}
+                  sortField="status"
+                  onRowClick={onRowClick}
+                  size="normal"
+                >
+                  <Column
+                    field="incidentTitle"
+                    header="Incident Title"
+                    sortable
+                  ></Column>
+                  <Column
+                    field="date"
+                    header="Date"
+                    sortable
+                    body={(rowData) =>
+                      new Date(rowData.date).toLocaleDateString()
+                    }
+                  ></Column>
+                  <Column
+                    field="incidentLocation"
+                    header="Incident Location"
+                    sortable
+                  ></Column>
+                  <Column
+                    field="incidentCategory"
+                    header="Incident Category"
+                    sortable
+                  ></Column>
+                  <Column
+                    field="description"
+                    header="Description"
+                    sortable
+                  ></Column>
+                  <Column
+                    field="offenderName"
+                    header="Offender Name"
+                    sortable
+                  ></Column>
+                  <Column field="status" header="Status" sortable></Column>
 
-                  <td>
-                    {form.status === "pending" ? (
-                      <div className="button-container">
-                        <Button
-                          icon="pi pi-check"
-                          tooltip="Approve"
-                          className="approve-button"
-                          onClick={() => handleStatus(form._id, "Approved")}
-                          disabled={form.status === "Approved"}
-                        />
-                        <Button
-                          icon="pi pi-times"
-                          tooltip="Reject"
-                          className="reject-button"
-                          onClick={() => handleStatus(form._id, "Rejected")}
-                          disabled={form.status === "Rejected"}
-                        />
-                      </div>
-                    ) : (
-                      <p>{form.status}</p>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  <Column header="Action" body={actionButton} />
+                </DataTable>
+              )}
+            </div>{" "}
+          </>
         ) : (
           <p className="no-results">No search results found</p>
         )}
