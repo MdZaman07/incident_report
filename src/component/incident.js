@@ -14,29 +14,35 @@ function Incident() {
   const [incident, setIncident] = useState(null);
   const [visible, setVisible] = useState(false);
 
+  //Sent a request to the server to get the incident details by its ID
   const getIncident = async () => {
     const response = await fetch(`http://localhost:4000/api/getFormById/${id}`);
     const data = await response.json();
     setIncident(data);
   };
 
+  //Get incident when component is first loaded
   useEffect(() => {
     getIncident();
   }, [id]);
 
+  //Called when edit button is pressed, sets visible state of the edible component to true.
   const handleEdit = () => {
     setVisible(true);
     //navigate(`/incident/${id}/edit`);
   };
 
+  //Set visible state of the editable component to the passed in value.
   const updateVisible = (value) => {
     setVisible(value);
   };
 
+  //Navigate to the previous page
   const navBack = () => {
     navigate(-1);
   };
 
+  //If there is not incident in the state, display loading.
   if (!incident) {
     return <div>Loading...</div>;
   }

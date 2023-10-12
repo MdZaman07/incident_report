@@ -22,6 +22,7 @@ function EditIncident({ updateVisible, getIncident }) {
   });
   const [loading, setLoading] = useState(false);
 
+  //Form submit handler
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -46,6 +47,7 @@ function EditIncident({ updateVisible, getIncident }) {
     [formData, id, updateVisible]
   );
 
+  //Fetch incident details when component is first loaded
   useEffect(() => {
     fetch(`http://localhost:4000/api/getFormById/${id}`)
       .then((response) => response.json())
