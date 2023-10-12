@@ -130,8 +130,9 @@ td {
   max-width: 70vw;
 }
 .radioButton {
-  margin-left: 6px;
+  margin-left: 10px;
   margin-right: 6px;
+  margin-top: 20px;
 }
 
 .p-datatable-tbody > tr:hover {
