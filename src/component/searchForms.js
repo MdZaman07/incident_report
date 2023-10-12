@@ -1,30 +1,35 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
+import { Dropdown } from "primereact/dropdown";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primeicons/primeicons.css";
 import "./searchForms.css";
 
 const SearchIncidents = () => {
+  const [searchCriteria, setSearchCriteria] = useState("incidentLocation"); // Default to "location"
+  const [searchTerm, setSearchTerm] = useState("");
   const [incidentLocation, setIncidentLocation] = useState("");
   const [incidents, setIncidents] = useState([]);
-  const [debouncedLocation, setDebouncedLocation] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedLocation(incidentLocation);
+      setDebouncedSearchTerm(searchTerm);
     }, 100);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [incidentLocation]);
+  }, [searchTerm]);
 
   useEffect(() => {
-    if (debouncedLocation !== undefined) {
-      console.log(debouncedLocation);
+    if (debouncedSearchTerm !== undefined) {
+      console.log(debouncedSearchTerm);
       fetch(
-        `http://localhost:4000/api/searchIncidents?incidentLocation=${debouncedLocation}`
+        `http://localhost:4000/api/searchIncidents?searchCriteria=${searchCriteria}&searchTerm=${debouncedSearchTerm}`
       )
         .then((response) => {
           if (!response.ok) {
@@ -39,11 +44,11 @@ const SearchIncidents = () => {
     } else {
       setIncidents([]);
     }
-  }, [debouncedLocation]);
+  }, [debouncedSearchTerm, searchCriteria]);
   const handleSearch = (e) => {
     console.log(e);
     console.log(e === "");
-    setIncidentLocation(e);
+    setSearchTerm(e);
   };
   const handleStatus = (id, status) => {
     const requestBody = {
@@ -75,24 +80,53 @@ const SearchIncidents = () => {
         console.error("Error approving incident:", error);
       });
   };
+  const handleSearchCriteriaChange = (e) => {
+    setSearchCriteria(e);
+    setSearchTerm("");
+  };
+
+  const onRowClick = (event) => {
+    const incidentID = event.data._id;
+    navigate(`/incident/${incidentID}`);
+  };
 
   return (
     <div className="container">
-      <h2 className="header">Search Incidents by Location</h2>
+      {/* <h2 className="header">Search Incidents by Location</h2> */}
       <div className="search-container">
-        <label className="label" htmlFor="incident-location">
-          Incident Location:
+        <label className="label" htmlFor="search-criteria">
+          Search Criteria:
         </label>
+        <Dropdown
+          id="search-criteria"
+          className="select"
+          value={searchCriteria}
+          options={[
+            { label: "Location", value: "incidentLocation" },
+            { label: "Incident Title", value: "incidentTitle" },
+            { label: "Description", value: "description" },
+            { label: "Incident Category", value: "incidentCategory" },
+            { label: "Form Status", value: "status" },
+          ]}
+          onChange={(e) => handleSearchCriteriaChange(e.value)}
+          placeholder="Select a criteria"
+        />
         <input
           type="text"
-          id="incident-location"
+          id="search-term"
           className="input-text"
-          value={incidentLocation}
+          value={searchTerm}
+          placeholder="Search..."
           onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
       <div>
-        <h3 className="h3">Search Results:</h3>
+        {searchTerm === "" ? (
+          <h3 className="h3 center-text">All Incidents</h3>
+        ) : (
+          <h3 className="h3 center-text">Search Results:</h3>
+        )}
+
         {incidents.length > 0 ? (
           <table className="table">
             <thead>
@@ -109,7 +143,7 @@ const SearchIncidents = () => {
             </thead>
             <tbody>
               {incidents.map((form) => (
-                <tr key={form._id}>
+                <tr key={form._id} onClick={() => onRowClick({ data: form })}>
                   <td>{form.incidentTitle}</td>
                   <td>{form.incidentLocation}</td>
                   <td>{form.offenderName}</td>

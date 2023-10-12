@@ -2,7 +2,7 @@ import "./App.css";
 import { PrimeReactProvider } from "primereact/api";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { MemoryRouter as Router, Route, Routes } from "react-router-dom";
 import "primeicons/primeicons.css";
 
 import Login from "./component/login";
@@ -15,7 +15,9 @@ import ViewMalls from "./component/viewMalls";
 import FormList from "./component/viewForms";
 import SearchIncidents from "./component/searchForms";
 import UserHome from "./component/userHome";
+import AdminHome from "./component/adminHome";
 import Incident from "./component/incident";
+import EditIncident from "./component/editIncident";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="/searchForms.js" element={<SearchIncidents />} />
           <Route path="/userHome.js/:userId" element={<UserHome />} />
           <Route path="/forgetPassword.js" element={<ForgetPassword />} />
+          <Route path="/adminHome.js/:userId" element={<AdminHome />} />
+          <Route path="/incident/:id/edit" element={<EditIncident />} />
         </Routes>
       </Router>
     </PrimeReactProvider>

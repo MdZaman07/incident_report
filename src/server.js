@@ -32,35 +32,35 @@ try {
 }
 
 // Routing for Email check
-app.post("/api/checkemail", async(req, res) =>{
-  const {email} = req.body;
+app.post("/api/checkemail", async (req, res) => {
+  const { email } = req.body;
 
-  try{
-    const user = await User.findOne({email});
+  try {
+    const user = await User.findOne({ email });
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({ message: "Email not found" });
     }
     res.status(200).json({ message: "Email found" });
-  }catch(error){
+  } catch (error) {
     console.error(err);
   }
 });
 
 //Routing for Password Update
-app.post("/api/updatepassword", async(req, res)=>{
-  const {email, password} = req.body;
-  try{
-    const user = await User.findOne({email});
+app.post("/api/updatepassword", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({ message: "Email not found" });
     }
 
     user.password = password;
     await user.save();
     res.status(200).json({ message: "Password updated successfully" });
-  }catch(error){
+  } catch (error) {
     console.error(error);
   }
 });
@@ -128,7 +128,7 @@ app.post("/api/login", async (req, res) => {
 // Routing for form submission
 
 app.post("/api/submit", async (req, res) => {
-  const {
+  let {
     incidentTitle,
     incidentLocation,
     witnessName,
@@ -139,6 +139,10 @@ app.post("/api/submit", async (req, res) => {
     status,
     userId,
   } = req.body;
+
+  if(offenderName == '') {
+    offenderName = 'N/A'
+  }
 
   try {
     const form = new Form({
@@ -176,6 +180,45 @@ app.get("/api/getForms", async (req, res) => {
   }
 });
 
+app.get("/api/getFormById/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const form = await Form.findById(id);
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+    res.json(form);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.put("/api/updateForm/:id", async (req, res) => {
+  const { id } = req.params;
+  const { incidentTitle, incidentLocation, incidentDate, description } =
+    req.body;
+  console.log(req.body);
+  try {
+    const form = await Form.findById(id);
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    form.incidentTitle = incidentTitle;
+    form.incidentLocation = incidentLocation;
+    form.incidentDate = incidentDate;
+    form.description = description;
+
+    await form.save();
+
+    res.json({ message: "Form updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 app.get("/api/getFormsById", async (req, res) => {
   const { userId } = req.query;
   try {
@@ -187,33 +230,79 @@ app.get("/api/getFormsById", async (req, res) => {
   }
 });
 
-// Add a new route for searching incidents by incidentTitle
 app.get("/api/searchIncidents", async (req, res) => {
-  const { incidentLocation } = req.query;
+  const { searchCriteria, searchTerm, userId } = req.query;
 
   try {
     let incidents;
 
-    if (incidentLocation !== "") {
+    if(searchCriteria == undefined && userId !== undefined && searchTerm !== "") { // Byron - Added this for my userArchive to search by title.
       incidents = await Form.find({
-        incidentLocation: { $regex: incidentLocation, $options: "i" },
+        userId: userId,
+        incidentTitle: { $regex: searchTerm, $options: "i" }
       });
+    }
+
+    if (searchTerm !== "") {
+      if (searchCriteria === "incidentLocation") {
+        incidents = await Form.find({
+          incidentLocation: { $regex: searchTerm, $options: "i" },
+        });
+      } else if (searchCriteria === "incidentTitle") {
+        incidents = await Form.find({
+          incidentTitle: { $regex: searchTerm, $options: "i" },
+        });
+      } else if (searchCriteria === "description") {
+        incidents = await Form.find({
+          description: { $regex: searchTerm, $options: "i" },
+        });
+      } else if (searchCriteria === "incidentCategory") {
+        incidents = await Form.find({
+          incidentCategory: { $regex: searchTerm, $options: "i" },
+        });
+      } else if (searchCriteria === "status") {
+        incidents = await Form.find({
+          status: { $regex: searchTerm, $options: "i" },
+        });
+      }
     } else {
       incidents = await Form.find();
     }
-
-    // console.log("Found incidents:", incidents);
     res.json(incidents);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+// Add a new route for searching incidents by incidentTitle
+// app.get("/api/searchIncidents", async (req, res) => {
+//   const { incidentLocation } = req.query;
+
+//   try {
+//     let incidents;
+
+//     if (incidentLocation !== "") {
+//       incidents = await Form.find({
+//         incidentLocation: { $regex: incidentLocation, $options: "i" },
+//       });
+//     } else {
+//       incidents = await Form.find();
+//     }
+
+//     // console.log("Found incidents:", incidents);
+//     res.json(incidents);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 // Add a new route for incident form approval
 app.post("/api/approveIncident", async (req, res) => {
   const { id, status } = req.body;
 
   try {
+    // Update the status of the incident form with the given ID
     const updatedForm = await Form.findByIdAndUpdate(
       id,
       { status: status },

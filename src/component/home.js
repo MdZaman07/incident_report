@@ -36,6 +36,9 @@ const Home = () => {
         <Link to="/userHome.js/:test" className="nav-link">
           User Home
         </Link>
+        {/* <Link to="/adminHome.js/:admin@admin.com" className="nav-link">
+          User Home
+        </Link> */}
         <div></div>
       </nav>
     </div>
