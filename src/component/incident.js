@@ -60,14 +60,14 @@ function Incident() {
         visible={editVisible}
         onHide={() => setEditVisible(false)}
       >
-        <EditIncident updateVisible={updateVisible} getIncident={getIncident} />
+        <EditIncident updateCancelVisible={updateVisible} getIncident={getIncident} />
       </Dialog>
       <Dialog
         header="Cancel Incident"
         visible={cancelVisible}
         onHide={() => setCancelVisible(false)}
       >
-        <CancelIncident updateVisible={updateCancelVisible} />
+        <CancelIncident updateCancelVisible={updateCancelVisible} getIncident={getIncident} />
       </Dialog>
       <div className="incident-details-container">
         <div className="incident-details">

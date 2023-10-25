@@ -22,6 +22,7 @@ function EditIncident({ updateVisible, getIncident }) {
   });
   const [loading, setLoading] = useState(false);
 
+
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
