@@ -6,10 +6,8 @@ import "./cancelIncident.css"
 
 const CancelIncident = ({updateCancelVisible}, {getIncident}) => {
 
-    const formId = useParams().id;
+    const { id } = useParams()
     const navigate = useNavigate();
-
-    console.log(formId)
 
 
     const handleNo = () => {
@@ -17,8 +15,8 @@ const CancelIncident = ({updateCancelVisible}, {getIncident}) => {
     }
 
     const handleYes = () => {
-        console.log(`Form ID: ${formId}`)
-        fetch(`http://localhost:4000/api/incidentdelete/${formId}`, {
+        console.log(`Form ID: ${id}`)
+        fetch(`http://localhost:4000/api/incidentdelete/${id}`, {
         method: "DELETE"
       })
       .then((response) => {
@@ -26,6 +24,7 @@ const CancelIncident = ({updateCancelVisible}, {getIncident}) => {
             alert("Incident cancellation was successful.");
             navigate(-1)
         } else {
+            alert(`Error: ${response.status}`)
           console.error('Request failed with status:', response.status);
         }
       })

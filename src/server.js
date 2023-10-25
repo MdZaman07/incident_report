@@ -191,7 +191,7 @@ app.get("/api/getFormById/:id", async (req, res) => {
 
 app.put("/api/updateForm/:id", async (req, res) => {
   const { id } = req.params;
-  const { incidentTitle, incidentLocation, incidentDate, description } =
+  const { incidentTitle, offenderName, incidentCategory, date, incidentLocation, incidentDate, description } =
     req.body;
   console.log(req.body);
   try {
@@ -204,6 +204,9 @@ app.put("/api/updateForm/:id", async (req, res) => {
     form.incidentLocation = incidentLocation;
     form.incidentDate = incidentDate;
     form.description = description;
+    form.date = date;
+    form.offenderName = offenderName;
+    form.incidentCategory = incidentCategory;
 
     await form.save();
 

@@ -60,7 +60,7 @@ function Incident() {
         visible={editVisible}
         onHide={() => setEditVisible(false)}
       >
-        <EditIncident updateCancelVisible={updateVisible} getIncident={getIncident} />
+        <EditIncident updateVisible={updateVisible} getIncident={getIncident} />
       </Dialog>
       <Dialog
         header="Cancel Incident"
