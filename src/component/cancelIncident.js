@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Panel } from "primereact/panel";
 import { Button } from "primereact/button";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./cancelIncident.css"
 
 const CancelIncident = ({updateCancelVisible}, {getIncident}) => {
 
-    const formId = useParams();
+    const formId = useParams().id;
+    const navigate = useNavigate();
 
     console.log(formId)
 
@@ -16,15 +17,21 @@ const CancelIncident = ({updateCancelVisible}, {getIncident}) => {
     }
 
     const handleYes = () => {
+        console.log(`Form ID: ${formId}`)
         fetch(`http://localhost:4000/api/incidentdelete/${formId}`, {
         method: "DELETE"
       })
       .then((response) => {
-        response.json()
-        if(!response.status(2))
+        if (response.ok) {
+            alert("Incident cancellation was successful.");
+            navigate(-1)
+        } else {
+          console.error('Request failed with status:', response.status);
+        }
       })
-        
-      }
+      .catch((error) => {
+        console.error('Request error:', error);
+      });
     }
 
     return (

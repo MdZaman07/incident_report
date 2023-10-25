@@ -313,6 +313,8 @@ app.post("/api/user", async (req, res) => {
 app.delete("/api/incidentdelete/:id", async (req, res) => {
     const { id } = req.params;
 
+    console.log(`Id is: ${id}`);
+
     try {
       const deletedForm = await Form.findByIdAndDelete(id)
       if(!deletedForm) {
