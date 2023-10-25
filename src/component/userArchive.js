@@ -16,7 +16,7 @@ const UserArchive = ( {userData} ) => {
   const [loading, setLoading] = useState(true);
 
   const onRowClick = (event) => {
-    const incidentID = event.data.incidentID;
+    const incidentID = event.data._id;
     navigate(`/incident/${incidentID}`);
   };
 
