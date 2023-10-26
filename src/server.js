@@ -81,6 +81,7 @@ app.post("/api/submit", async (req, res) => {
     incidentCategory,
     status,
     userId,
+    fileId
   } = req.body;
 
   if (offenderName == "") {
@@ -98,6 +99,7 @@ app.post("/api/submit", async (req, res) => {
       incidentCategory,
       status,
       userId,
+      fileId
     });
 
     await form.save();

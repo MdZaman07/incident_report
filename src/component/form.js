@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';       
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { fieldSubscriptionItems } from 'final-form';
         
 
 const Form = ( {userData} ) => {
@@ -16,10 +17,6 @@ const Form = ( {userData} ) => {
     const[status, setStatus] = useState('')
     const[loading, setLoading] = useState(false)
 
-    //const [address, setAddress] = useState('');
-    //const [coordinates, setCoordinates] = useState(null);
-  
-
     const[formData, setFormData] = useState( {
         incidentTitle: "",
         incidentLocation: "",
@@ -29,8 +26,10 @@ const Form = ( {userData} ) => {
         incidentCategory: "",
         status: 'pending',
         userId: userId, // Id of user who submits form
-        file: null
+        fileId: null
     })
+
+    const[file, setFile] = useState(null);
 
     const handleFormChange = (event) => {
         const fieldName = event.target.name;
@@ -42,19 +41,10 @@ const Form = ( {userData} ) => {
         }));
     }
 
-    /*const handleSearch = async (selectedAddress) => {
-        try {
-            const results = await geocodeByAddress(selectedAddress);
-            const latLng = await getLatLng(results[0]);
-            setAddress(selectedAddress);
-            setCoordinates(latLng);
-          } catch (error) {
-            console.error('Error selecting address:', error);
-          }
-        }; */
-
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        console.log(file);
 
         if(formData.incidentTitle === "" || formData.description === "" || formData.incidentLocation === "" 
         || formData.date === null) {
@@ -63,6 +53,25 @@ const Form = ( {userData} ) => {
         else {
             setLoading(true);
             try {
+                // First try to upload file
+                const uploadResponse = await fetch('http://localhost:4000/api/upload', {
+                    method: 'POST',
+                    body : JSON.stringify(file),
+                    headers: {
+
+                    }
+                })
+                if(uploadResponse.status === 200) {
+                    console.log("File attachment submitted successfully")
+                    const data = await uploadResponse.json();
+                    console.log(data)
+                }
+                else {
+                    console.log("File failed to submit to database");
+                    return;
+                }
+
+
                 const response = await fetch('http://localhost:4000/api/submit', {
                     method: 'POST',
                     body : JSON.stringify(formData),
@@ -103,10 +112,7 @@ const Form = ( {userData} ) => {
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
-        setFormData((prevData) => ({
-          ...prevData,
-          file: selectedFile,
-        }));
+        setFile(selectedFile);
       };
 
     // const severityLevels = ["Low", "Medium", "High"];
