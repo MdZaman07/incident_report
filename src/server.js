@@ -1,11 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const multer = require("multer");
-const Grid = require("gridfs-stream");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
 
+// Dependencies for file uploads
+const multer = require("multer");
+const Grid = require("gridfs-stream");
+const {GridFsStorage} = require("multer-gridfs-storage")
+const bodyParser =  require("body-parser")
+const crypto = require("crypto")
+
+  
+// Initalisation of server
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -15,6 +21,7 @@ const User = require("./Model/user");
 app.use(cors());
 app.use(bodyParser.json());
 
+// Mongo URI
 const dbUrl =
   "mongodb+srv://blester7:yTGJYryN4t2RfVFC@cluster0.hr8ilkr.mongodb.net/IncidentReportingDB?retryWrites=true&w=majority";
 
@@ -27,6 +34,80 @@ try {
 } catch (error) {
   console.log(error);
 }
+
+const con = mongoose.connection;
+
+let gfs;
+
+con.once('open', () =>  {
+  gfs = Grid(con.db, mongoose.mongo)
+  gfs.collection('uploads')
+})
+
+const storage = new GridFsStorage({
+  url: dbUrl,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+      });
+    });
+  }
+});
+const upload = multer({ storage });
+
+// Route for uploading file
+app.post("/upload", upload.single(), (req, res) => {
+  res.json({ file: req.file });
+})
+
+// Routing for form submission
+app.post("/api/submit", async (req, res) => {
+  let {
+    incidentTitle,
+    incidentLocation,
+    witnessName,
+    offenderName,
+    date,
+    description,
+    incidentCategory,
+    status,
+    userId,
+  } = req.body;
+
+  if (offenderName == "") {
+    offenderName = "N/A";
+  }
+
+  try {
+    const form = new Form({
+      incidentTitle,
+      incidentLocation,
+      witnessName,
+      offenderName,
+      date,
+      description,
+      incidentCategory,
+      status,
+      userId,
+    });
+
+    await form.save();
+
+    res.json({ message: "Incident submitted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // Routing for Email check
 app.post("/api/checkemail", async (req, res) => {
@@ -120,46 +201,6 @@ app.post("/api/login", async (req, res) => {
   } catch (error) {}
 });
 
-// Routing for form submission
-
-app.post("/api/submit", async (req, res) => {
-  let {
-    incidentTitle,
-    incidentLocation,
-    witnessName,
-    offenderName,
-    date,
-    description,
-    incidentCategory,
-    status,
-    userId,
-  } = req.body;
-
-  if (offenderName == "") {
-    offenderName = "N/A";
-  }
-
-  try {
-    const form = new Form({
-      incidentTitle,
-      incidentLocation,
-      witnessName,
-      offenderName,
-      date,
-      description,
-      incidentCategory,
-      status,
-      userId,
-    });
-
-    await form.save();
-
-    res.json({ message: "Incident submitted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
 
 // routing to form display
 
