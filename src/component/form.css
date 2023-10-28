@@ -86,3 +86,20 @@
 .custom-date {
   width: 100%;
 }
+#fileupload {
+  width: 120%;
+  padding-bottom: 10px;
+}
+
+.fileupload-container {
+  .centered-element {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Optionally, you can set a fixed width for the element */
+    /* width: 300px; */
+    /* Optionally, you can set a fixed height for the element */
+    /* height: 200px; */
+  }
+  
+}

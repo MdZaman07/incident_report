@@ -35,3 +35,12 @@ steps:
   - script: |
       npm test login.test.js -- --watchAll=false
     displayName: "login renders"
+
+  - script: |
+      npm test newPass.test.js -- --watchAll=false
+    displayName: "forget-password renders"
+
+  - script: |
+      npm test signup.test.js -- --watchAll=false
+    displayName: "sign-up renders"   
+  

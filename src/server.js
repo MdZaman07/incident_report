@@ -191,7 +191,7 @@ app.get("/api/getFormById/:id", async (req, res) => {
 
 app.put("/api/updateForm/:id", async (req, res) => {
   const { id } = req.params;
-  const { incidentTitle, incidentLocation, incidentDate, description } =
+  const { incidentTitle, offenderName, incidentCategory, date, incidentLocation, incidentDate, description } =
     req.body;
   console.log(req.body);
   try {
@@ -204,6 +204,9 @@ app.put("/api/updateForm/:id", async (req, res) => {
     form.incidentLocation = incidentLocation;
     form.incidentDate = incidentDate;
     form.description = description;
+    form.date = date;
+    form.offenderName = offenderName;
+    form.incidentCategory = incidentCategory;
 
     await form.save();
 
@@ -310,6 +313,27 @@ app.post("/api/user", async (req, res) => {
   return res.status(200).json({ message: "User found", user: user });
 });
 
+app.delete("/api/incidentdelete/:id", async (req, res) => {
+    const { id } = req.params;
+
+    console.log(`Id is: ${id}`);
+
+    try {
+      const deletedForm = await Form.findByIdAndDelete(id)
+      if(!deletedForm) {
+        return res.status(404).json({ message: "Form not found"})
+      }
+
+      res.status(200).json({ message : "Form deleted successfully."})
+
+    }
+    catch(error) {
+      console.error(error)
+      res.status(500).json( { message : "Error deleting form"})
+    }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
