@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Dialog } from "primereact/dialog";
 import EditIncident from "./editIncident";
 import CancelIncident from "./cancelIncident";
+import { Dropdown } from "primereact/dropdown";
 
 function Incident() {
   const { id } = useParams();
@@ -15,11 +16,13 @@ function Incident() {
   const [incident, setIncident] = useState(null);
   const [editVisible, setEditVisible] = useState(false);
   const [cancelVisible, setCancelVisible] = useState(false);
+  const [version, editVersion] = useState(0);
 
   const getIncident = async () => {
     const response = await fetch(`http://localhost:4000/api/getFormById/${id}`);
     const data = await response.json();
     setIncident(data);
+    editVersion(data.versions.length - 1);
   };
 
   useEffect(() => {
@@ -33,7 +36,7 @@ function Incident() {
 
   const handleCancel = () => {
     setCancelVisible(true);
-  }
+  };
 
   // for edit
   const updateVisible = (value) => {
@@ -67,16 +70,38 @@ function Incident() {
         visible={cancelVisible}
         onHide={() => setCancelVisible(false)}
       >
-        <CancelIncident updateCancelVisible={updateCancelVisible} getIncident={getIncident} />
+        <CancelIncident
+          updateCancelVisible={updateCancelVisible}
+          getIncident={getIncident}
+        />
       </Dialog>
       <div className="incident-details-container">
         <div className="incident-details">
-          <Panel header={`Incident: ${incident.incidentTitle}`}>
-            <p>Date: {new Date(incident.date).toLocaleDateString()}</p>
-            <p>Offender Name: {incident.offenderName}</p>
-            <p>Incident Category: {incident.incidentCategory}</p>
-            <p>Location: {incident.incidentLocation}</p>
-            <p>Description: {incident.description}</p>
+          <Dropdown
+            options={Array.from(
+              { length: incident.versions.length },
+              (_, i) => ({
+                label: `Version ${incident.versions.length - i}`,
+                value: incident.versions.length - i - 1,
+              })
+            )}
+            placeholder="Select a Version"
+            value={version}
+            onChange={(e) => editVersion(e.value)}
+          />
+          <Panel
+            header={`Incident: ${incident.versions[version].incidentTitle}`}
+          >
+            <p>
+              Date:{" "}
+              {new Date(incident.versions[version].date).toLocaleDateString()}
+            </p>
+            <p>Offender Name: {incident.versions[version].offenderName}</p>
+            <p>
+              Incident Category: {incident.versions[version].incidentCategory}
+            </p>
+            <p>Location: {incident.versions[version].incidentLocation}</p>
+            <p>Description: {incident.versions[version].description}</p>
             {incident.attachedFile ? (
               <Image
                 src={incident.attachedFile}
@@ -90,7 +115,12 @@ function Incident() {
             <p>Status: {incident.status}</p>
             <Button label="Back" onClick={navBack} /> &nbsp;
             <Button label="Edit Incident" onClick={handleEdit} /> &nbsp;
-            <Button id='cancelButton' severity="danger" label="Cancel Incident" onClick={handleCancel}/>
+            <Button
+              id="cancelButton"
+              severity="danger"
+              label="Cancel Incident"
+              onClick={handleCancel}
+            />
           </Panel>
         </div>
       </div>
