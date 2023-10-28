@@ -11,6 +11,7 @@ const formSchema = new mongoose.Schema(
     incidentCategory: String,
     status: String,
     userId: String,
+    editNote: { type: String, default: null },
     versions: [
       {
         incidentTitle: String,
@@ -22,6 +23,7 @@ const formSchema = new mongoose.Schema(
         incidentCategory: String,
         status: String,
         userId: String,
+        editNote: String,
         updatedAt: { type: Date, default: Date.now },
       },
     ],
@@ -42,6 +44,7 @@ formSchema.pre("save", function (next) {
       incidentCategory: form.incidentCategory,
       status: form.status,
       userId: form.userId,
+      editNote: form.editNote,
     };
     form.versions.push(versions);
   }
@@ -49,7 +52,5 @@ formSchema.pre("save", function (next) {
 });
 
 const Form = mongoose.model("Form", formSchema, "Forms");
-
-module.exports = Form;
 
 module.exports = Form;

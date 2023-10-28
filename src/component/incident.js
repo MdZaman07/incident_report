@@ -113,15 +113,36 @@ function Incident() {
               <p>No evidence supplied</p>
             )}
             <p>Status: {incident.status}</p>
+            <p>
+              Updated:{" "}
+              {new Date(incident.versions[version].updatedAt).toLocaleString(
+                "en-GB",
+                {
+                  timeStyle: "medium",
+                  dateStyle: "medium",
+                }
+              )}
+            </p>
             <Button label="Back" onClick={navBack} /> &nbsp;
-            <Button label="Edit Incident" onClick={handleEdit} /> &nbsp;
+            <Button
+              label="Edit Incident"
+              onClick={handleEdit}
+              disabled={version !== incident.versions.length - 1}
+            />
+            &nbsp; &nbsp;
             <Button
               id="cancelButton"
               severity="danger"
               label="Cancel Incident"
               onClick={handleCancel}
+              disabled={version !== incident.versions.length - 1}
             />
           </Panel>
+          {incident.versions[version].editNote && (
+            <Panel>
+              <p>Edit Notes: {incident.versions[version].editNote}</p>
+            </Panel>
+          )}
         </div>
       </div>
     </>
