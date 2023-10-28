@@ -7,12 +7,14 @@ import { Image } from "primereact/image";
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "primereact/dialog";
 import EditIncident from "./editIncident";
+import CancelIncident from "./cancelIncident";
 
 function Incident() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [incident, setIncident] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [editVisible, setEditVisible] = useState(false);
+  const [cancelVisible, setCancelVisible] = useState(false);
 
   const getIncident = async () => {
     const response = await fetch(`http://localhost:4000/api/getFormById/${id}`);
@@ -25,12 +27,22 @@ function Incident() {
   }, [id]);
 
   const handleEdit = () => {
-    setVisible(true);
+    setEditVisible(true);
     //navigate(`/incident/${id}/edit`);
   };
 
+  const handleCancel = () => {
+    setCancelVisible(true);
+  }
+
+  // for edit
   const updateVisible = (value) => {
-    setVisible(value);
+    setEditVisible(value);
+  };
+
+  // for cancel
+  const updateCancelVisible = (value) => {
+    setCancelVisible(value);
   };
 
   const navBack = () => {
@@ -45,10 +57,17 @@ function Incident() {
     <>
       <Dialog
         header="Header"
-        visible={visible}
-        onHide={() => setVisible(false)}
+        visible={editVisible}
+        onHide={() => setEditVisible(false)}
       >
         <EditIncident updateVisible={updateVisible} getIncident={getIncident} />
+      </Dialog>
+      <Dialog
+        header="Cancel Incident"
+        visible={cancelVisible}
+        onHide={() => setCancelVisible(false)}
+      >
+        <CancelIncident updateCancelVisible={updateCancelVisible} getIncident={getIncident} />
       </Dialog>
       <div className="incident-details-container">
         <div className="incident-details">
@@ -71,7 +90,7 @@ function Incident() {
             <p>Status: {incident.status}</p>
             <Button label="Back" onClick={navBack} /> &nbsp;
             <Button label="Edit Incident" onClick={handleEdit} /> &nbsp;
-            <Button id='cancelButton' severity="danger" label="Cancel"/>
+            <Button id='cancelButton' severity="danger" label="Cancel Incident" onClick={handleCancel}/>
           </Panel>
         </div>
       </div>
