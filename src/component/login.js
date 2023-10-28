@@ -42,7 +42,7 @@ const Login = () => {
         console.log("Login successful");
         setStatus("Details correct. Logging in.");
 
-        if (userId === `6525084dc93df7b411560ea4`) {
+        if (userId === `653cca249335e2b7841dc54f`) {
           setTimeout(() => {
             navigate(`/adminHome.js/${userId}`);
           }, 2000);
