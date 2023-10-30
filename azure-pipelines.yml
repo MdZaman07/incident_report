@@ -42,7 +42,23 @@ steps:
 
   - script: |
       npm test signup.test.js -- --watchAll=false
-    displayName: "sign-up renders"   
+    displayName: "sign-up renders"
+
+  - stage: Deploy
+    jobs:
+      - deployment: DeployWebApp
+        displayName: 'Deploy to Azure Web App'
+        environment: 'Your Azure Environment Name'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  inputs:
+                    azureSubscription: 'Resource Manager - Incident Reporting System'
+                    appName: '$(WebAppName)'
+                    package: '$(Pipeline.Workspace)/drop/*.zip'
+                    startUpCommand: 'npm start'
 
   - task: PublishBuildArtifacts@1
     inputs:

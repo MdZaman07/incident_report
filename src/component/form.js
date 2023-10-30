@@ -5,11 +5,7 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { FileUpload } from 'primereact/fileupload';
- 
-
-        
-        
+import { FileUpload } from 'primereact/fileupload';   
         
 
 const Form = ( {userData} ) => {
