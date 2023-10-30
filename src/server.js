@@ -7,7 +7,7 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 80;
 
 const Form = require("./Model/form");
 const User = require("./Model/user");
