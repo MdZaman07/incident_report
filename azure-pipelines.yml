@@ -46,4 +46,4 @@ stages:
               azureSubscription: 'Resource Manager - Incident Reporting System'
               appName: '$(WebAppName)'
               package: '$(Pipeline.Workspace)/drop/'
-              startUpCommand: 'serve -s build'
+              startUpCommand: 'npx serve'
