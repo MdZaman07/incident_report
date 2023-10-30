@@ -8,7 +8,9 @@ const multer = require("multer");
 const Grid = require("gridfs-stream");
 const {GridFsStorage} = require("multer-gridfs-storage")
 const bodyParser =  require("body-parser")
+const methodOverride = require("method-override")
 const crypto = require("crypto")
+const path = require("path")
 
   
 // Initalisation of server
@@ -18,8 +20,10 @@ const port = process.env.PORT || 4000;
 const Form = require("./Model/form");
 const User = require("./Model/user");
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(methodOverride('_method'))
 
 // Mongo URI
 const dbUrl =
@@ -35,14 +39,17 @@ try {
   console.log(error);
 }
 
-const con = mongoose.connection;
+const conn = mongoose.connection;
+
 
 let gfs;
 
-con.once('open', () =>  {
-  gfs = Grid(con.db, mongoose.mongo)
-  gfs.collection('uploads')
-})
+conn.once('open', () => {
+  // Init stream
+  gfs = Grid(conn.db, mongoose.mongo);  
+  gfs.collection('uploads');
+});
+
 
 const storage = new GridFsStorage({
   url: dbUrl,
@@ -65,12 +72,15 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 // Route for uploading file
-app.post("/upload", upload.single(), (req, res) => {
+app.post("/api/upload", upload.single('file'), (req, res) => {
   res.json({ file: req.file });
-})
+});
 
 // Routing for form submission
 app.post("/api/submit", async (req, res) => {
+
+  console.log("Form object", req.body)
+
   let {
     incidentTitle,
     incidentLocation,
@@ -81,7 +91,7 @@ app.post("/api/submit", async (req, res) => {
     incidentCategory,
     status,
     userId,
-    fileId
+    fileName
   } = req.body;
 
   if (offenderName == "") {
@@ -99,7 +109,7 @@ app.post("/api/submit", async (req, res) => {
       incidentCategory,
       status,
       userId,
-      fileId
+      fileName
     });
 
     await form.save();
@@ -110,6 +120,11 @@ app.post("/api/submit", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+app.get("/api/image:fileName", async (req, res) => {
+  const fileName = req.params.fileName
+  console.log(fileName)
+})
 
 // Routing for Email check
 app.post("/api/checkemail", async (req, res) => {
@@ -358,8 +373,6 @@ app.post("/api/user", async (req, res) => {
 
 app.delete("/api/incidentdelete/:id", async (req, res) => {
     const { id } = req.params;
-
-    console.log(`Id is: ${id}`);
 
     try {
       const deletedForm = await Form.findByIdAndDelete(id)

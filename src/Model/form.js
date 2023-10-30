@@ -11,7 +11,7 @@ const formSchema = new mongoose.Schema({
   incidentCategory: String,
   status: String,
   userId: String,
-  fileId: mongoose.Schema.Types.ObjectId
+  fileName: String
 
 }, { collection: 'Forms' });
 

@@ -26,7 +26,7 @@ const Form = ( {userData} ) => {
         incidentCategory: "",
         status: 'pending',
         userId: userId, // Id of user who submits form
-        fileId: null
+        fileName: null
     })
 
     const[file, setFile] = useState(null);
@@ -40,41 +40,44 @@ const Form = ( {userData} ) => {
             [fieldName]: fieldValue
         }));
     }
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(file);
+        let formObject;
 
         if(formData.incidentTitle === "" || formData.description === "" || formData.incidentLocation === "" 
         || formData.date === null) {
             setStatus("One of the mandatory fields was empty. Please try again.")
         }
         else {
+            console.log("Form object", formObject)
             setLoading(true);
             try {
+                const formDataFile = new FormData();
+                formDataFile.append('file', file)
                 // First try to upload file
                 const uploadResponse = await fetch('http://localhost:4000/api/upload', {
                     method: 'POST',
-                    body : JSON.stringify(file),
-                    headers: {
-
-                    }
+                    body : formDataFile
                 })
                 if(uploadResponse.status === 200) {
-                    console.log("File attachment submitted successfully")
                     const data = await uploadResponse.json();
                     console.log(data)
+                    const resFileName = data.file.filename
+                    formObject = {...formData, 'fileName' : resFileName}
                 }
                 else {
+                    setStatus("File failed to upload.");
+                    setLoading(false);
                     console.log("File failed to submit to database");
                     return;
                 }
 
+                console.log("Form object", formObject);
 
                 const response = await fetch('http://localhost:4000/api/submit', {
                     method: 'POST',
-                    body : JSON.stringify(formData),
+                    body : JSON.stringify(formObject),
                     headers: {
                         'Content-Type': 'application/json', 
                     },
@@ -83,15 +86,18 @@ const Form = ( {userData} ) => {
                 if(response.status === 200) {
                     console.log(userId)
                     console.log('Form data submitted sucessfully.')
-                    setFormData({
+                    /*setFormData({
                         incidentTitle: "",
                         incidentLocation: "",
                         offenderName: "",
                         date: "",
                         description: "",
                         incidentCategory: "",
+                        status: 'pending',
+                        userId: userId,
+                        fileName: ""
 
-                    })
+                    }) */
                     setLoading(false);
                     setStatus('Incident form submitted successfully.')
                 }

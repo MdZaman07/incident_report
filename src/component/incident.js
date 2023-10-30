@@ -15,6 +15,7 @@ function Incident() {
   const [incident, setIncident] = useState(null);
   const [editVisible, setEditVisible] = useState(false);
   const [cancelVisible, setCancelVisible] = useState(false);
+  const [fileName, setFileName] = useState('');
 
   const getIncident = async () => {
     const response = await fetch(`http://localhost:4000/api/getFormById/${id}`);
@@ -25,6 +26,11 @@ function Incident() {
   useEffect(() => {
     getIncident();
   }, [id]);
+
+  useEffect(() => {
+    setFileName(incident?.fileName || '');
+    console.log(fileName)
+  }, [incident])
 
   const handleEdit = () => {
     setEditVisible(true);
@@ -48,6 +54,10 @@ function Incident() {
   const navBack = () => {
     navigate(-1);
   };
+
+  const getFile = () => {
+    return `http://localhost:4000/api/image/${fileName}`;
+  }
 
   if (!incident) {
     return <div>Loading...</div>;
@@ -77,15 +87,15 @@ function Incident() {
             <p>Incident Category: {incident.incidentCategory}</p>
             <p>Location: {incident.incidentLocation}</p>
             <p>Description: {incident.description}</p>
-            {incident.attachedFile ? (
+            {fileName  ? (
               <Image
-                src={incident.attachedFile}
+                src={getFile}
                 width="100%"
                 preview
                 alt="Evidence"
               />
             ) : (
-              <p>No evidence supplied</p>
+              <p>No image evidence supplied</p>
             )}
             <p>Status: {incident.status}</p>
             <Button label="Back" onClick={navBack} /> &nbsp;
