@@ -25,7 +25,8 @@ stages:
         ArtifactName: 'drop'
         publishLocation: 'Container'
 
-- stage: Deploy
+- stage: 'Deploy'
+  displayName: 'Deploy the web application'
   dependsOn: Build
   jobs:
   - deployment: Deploy
@@ -38,11 +39,11 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: artifacts
+          - download: current
             artifact: drop
           - task: AzureWebApp@1
             inputs:
               azureSubscription: 'Resource Manager - Incident Reporting System'
               appName: '$(WebAppName)'
-              package: '$(Pipeline.Workspace)/drop/*.zip'
+              package: '$(Pipeline.Workspace)/drop/'
               startUpCommand: 'npm start'
