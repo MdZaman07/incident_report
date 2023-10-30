@@ -39,7 +39,7 @@ stages:
         deploy:
           steps:
           - download: artifacts
-            artifacts: drop
+            artifact: drop
           - task: AzureWebApp@1
             inputs:
               azureSubscription: 'Resource Manager - Incident Reporting System'
