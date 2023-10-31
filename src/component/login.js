@@ -36,7 +36,11 @@ const Login = () => {
 
       if (response.status === 200) {
         const data = await response.json();
+        const token = data.token;
         const userId = data.user._id;
+
+        // Store the token in localStorage for future use
+        localStorage.setItem("token", token);
 
         console.log(userId);
         console.log("Login successful");
@@ -93,3 +97,4 @@ const Login = () => {
 };
 
 export default Login;
+
