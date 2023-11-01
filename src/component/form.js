@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import { InputTextarea } from "primereact/inputtextarea";
-import { FileUpload } from "primereact/fileupload";
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 const Form = ({ userData }) => {
   const mapRef = useRef(null);
@@ -49,9 +49,6 @@ const Form = ({ userData }) => {
 
   const userId = userData ? userData._id : null;
 
-  //const [address, setAddress] = useState('');
-  //const [coordinates, setCoordinates] = useState(null);
-
   const [formData, setFormData] = useState({
     incidentTitle: "",
     incidentLocation: "",
@@ -60,8 +57,12 @@ const Form = ({ userData }) => {
     description: "",
     incidentCategory: "",
     status: "pending",
-    userId: userId
+    userId: userId,
+    fileName: null
   });
+
+  const[file, setFile] = useState(null);
+  const[loading, setLoading] = useState(false)
 
   const handleFormChange = (event) => {
     const fieldName = event.target.name;
@@ -78,45 +79,87 @@ const Form = ({ userData }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (
-      formData.incidentTitle == "" ||
-      formData.description == "" ||
-      formData.incidentLocation == ""
-    ) {
-      alert("One of the mandatory fields is empty, please try again.");
-    } else {
-      try {
-        const response = await fetch("http://localhost:4000/api/submit", {
-          method: "POST",
-          body: JSON.stringify(formData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+    let formObject;
 
-        if (response.status === 200) {
-          console.log(userId);
-          console.log("Form data submitted sucessfully.");
-          setFormData({
-            incidentTitle: "",
-            incidentLocation: "",
-            offenderName: "",
-            date: "",
-            description: "",
-            incidentCategory: "",
-            status: "pending",
-            userId: userId
-          });
-          setStatus("Incident form submitted successfully.");
-        } else {
-          console.log("Form submission failed.");
-          setStatus("Form fail to submit, please try again.");
-        }
-      } catch (error) {
-        console.log(error);
-        setStatus("Form fail to submit, please try again.");
-      }
+    if(formData.incidentTitle === "" || formData.description === "" || formData.incidentLocation === "" 
+    || formData.date === null) {
+        setStatus("One of the mandatory fields was empty. Please try again.")
     }
+    else {
+        console.log("Form object", formObject)
+        setLoading(true);
+        try {
+            if(file !== null) {
+                const formDataFile = new FormData();
+                formDataFile.append('file', file)
+                // First try to upload file
+                const uploadResponse = await fetch('http://localhost:4000/api/upload', {
+                    method: 'POST',
+                    body : formDataFile
+                })
+                if(uploadResponse.status === 200) {
+                    const data = await uploadResponse.json();
+                    console.log(data)
+                    const resFileName = data.file.filename
+                    formObject = {...formData, 'fileName' : resFileName}
+                }
+                else {
+                    setStatus("File failed to upload.");
+                    setLoading(false);
+                    console.log("File failed to submit to database");
+                    return;
+                }
+            }
+            else {
+                formObject = {...formData}
+            }
+            console.log("Form object", formObject);
+
+            const response = await fetch('http://localhost:4000/api/submit', {
+                method: 'POST',
+                body : JSON.stringify(formObject),
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+            })
+
+            if(response.status === 200) {
+                console.log(userId)
+                console.log('Form data submitted sucessfully.')
+                setFormData({
+                    incidentTitle: "",
+                    incidentLocation: "",
+                    offenderName: "",
+                    date: "",
+                    description: "",
+                    incidentCategory: "",
+                    status: 'pending',
+                    userId: userId,
+                    fileName: "",
+
+                }) 
+                setFile(null)
+                setLoading(false);
+                setStatus('Incident form submitted successfully.')
+            }
+            else {
+                setLoading(false);
+                console.log('Form submission failed.')
+                setStatus('Form fail to submit, please try again.')
+            }
+        }
+        catch(error) {
+            setLoading(false);
+            console.log(error)
+            setStatus('Form fail to submit, please try again.')
+        }
+    }
+    
+}
+
+const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
   };
 
   const incidentCategories = [
@@ -212,9 +255,11 @@ const Form = ({ userData }) => {
                         type="file"
                         id="file"
                         name="file"
-                        accept=".pdf, .doc, .docx, .jpg, .jpeg, .png, .mp4"
+                        accept=".jpg, .jpeg, .png"
+                        onChange={handleFileChange}
                     />
         </div>
+        {loading ? <ProgressSpinner style={{width: '50px', height: '50px'}}/> : null}
         {status && <p className="status">{status}</p>}
         <Button
           className="submit-button"

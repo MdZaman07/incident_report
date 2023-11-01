@@ -20,6 +20,7 @@ function Incident() {
   const [editVisible, setEditVisible] = useState(false);
   const [cancelVisible, setCancelVisible] = useState(false);
   const [version, editVersion] = useState(0);
+  const [fileName, setFileName] = useState('');
 
   // fetch incident data from server
   const getIncident = async () => {
@@ -35,6 +36,11 @@ function Incident() {
   }, [id]);
 
   // handle edit button click
+  useEffect(() => {
+    setFileName(incident?.fileName || '');
+    console.log(fileName)
+  }, [incident])
+
   const handleEdit = () => {
     setEditVisible(true);
   };
@@ -60,6 +66,10 @@ function Incident() {
   };
 
   // display loading message if incident data is not yet loaded
+  const getFile = () => {
+    return `http://localhost:4000/api/image/${fileName}`;
+  }
+
   if (!incident) {
     return <div>Loading...</div>;
   }
@@ -116,16 +126,18 @@ function Incident() {
             </p>
             <p>Location: {incident.versions[version].incidentLocation}</p>
             <p>Description: {incident.versions[version].description}</p>
-            {/* display evidence image if available */}
-            {incident.fileName ? (
+            {fileName  ? (
+            <>
+            <p>Attached image evidence:</p>
               <Image
-                src={incident.fileName}
-                width="100%"
+                src={getFile()}
+                width="30%"
                 preview
                 alt="Evidence"
               />
+            </>
             ) : (
-              <p>No evidence supplied</p>
+              <p>No image evidence supplied</p>
             )}
             <p>Status: {incident.status}</p>
             <p>

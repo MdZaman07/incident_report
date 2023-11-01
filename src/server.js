@@ -1,11 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const multer = require("multer");
-const Grid = require("gridfs-stream");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+
+// Dependencies for file uploads
+const multer = require("multer");
+const Grid = require("gridfs-stream");
+const {GridFsStorage} = require("multer-gridfs-storage")
+const bodyParser =  require("body-parser")
+const methodOverride = require("method-override")
+const crypto = require("crypto")
+const path = require("path")
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -31,6 +37,113 @@ try {
 } catch (error) {
   console.log(error);
 }
+
+let bucket;
+mongoose.connection.on("connected", () => {
+  var db = mongoose.connections[0].db;
+  bucket = new mongoose.mongo.GridFSBucket(db, {
+    bucketName: "uploads"
+  });
+  //console.log(bucket);
+});
+
+//to parse json content
+app.use(express.json());
+//to parse body from url
+app.use(express.urlencoded({
+  extended: false
+}));
+
+const storage = new GridFsStorage({
+  url: dbUrl,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+      });
+    });
+  }
+});
+const upload = multer({ storage });
+
+// Route for uploading file
+app.post("/api/upload", upload.single('file'), (req, res) => {
+  res.json({ file: req.file });
+});
+
+// Routing for form submission
+
+app.post("/api/submit", async (req, res) => {
+
+  console.log("Form object", req.body)
+
+  let {
+    incidentTitle,
+    incidentLocation,
+    witnessName,
+    offenderName,
+    date,
+    description,
+    incidentCategory,
+    status,
+    userId,
+    fileName
+  } = req.body;
+
+  if (offenderName == "") {
+    offenderName = "N/A";
+  }
+
+  try {
+    const form = new Form({
+      incidentTitle,
+      incidentLocation,
+      witnessName,
+      offenderName,
+      date,
+      description,
+      incidentCategory,
+      status,
+      userId,
+      fileName
+    });
+
+    await form.save();
+
+    res.json({ message: "Incident submitted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/api/image/:fileName", async (req, res) => {
+  
+  const file = await bucket.find({ filename: req.params.fileName }).toArray();
+
+  console.log("was reached")
+  console.log(file)
+
+  // Check if the file exists.
+  if (!file || file.length === 0) {
+    return res.status(404).json({ err: "no files exist" });
+  }
+
+  // Open a read stream for the file.
+  const readStream = bucket.openDownloadStreamByName(req.params.fileName);
+
+  // Pipe the read stream to the HTTP response stream.
+  readStream.pipe(res);
+});
+
 
 // Routing for Email check
 app.post("/api/checkemail", async (req, res) => {
@@ -129,48 +242,6 @@ app.post("/api/login", async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "An error occurred" });
-  }
-});
-
-
-// Routing for form submission
-
-app.post("/api/submit", async (req, res) => {
-  let {
-    incidentTitle,
-    incidentLocation,
-    witnessName,
-    offenderName,
-    date,
-    description,
-    incidentCategory,
-    status,
-    userId,
-  } = req.body;
-
-  if (offenderName == "") {
-    offenderName = "N/A";
-  }
-
-  try {
-    const form = new Form({
-      incidentTitle,
-      incidentLocation,
-      witnessName,
-      offenderName,
-      date,
-      description,
-      incidentCategory,
-      status,
-      userId,
-    });
-
-    await form.save();
-
-    res.json({ message: "Incident submitted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
   }
 });
 
