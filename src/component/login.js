@@ -55,7 +55,14 @@ const Login = () => {
             navigate(`/userHome.js/${userId}`);
           }, 2000);
         }
-      } else {
+      } else if (response.status === 401){
+        console.error("Token has expired. Please log in again");
+        // Show a message to the user and redirect them to the login page
+        // You may also clear the stored token from localStorage
+        localStorage.removeItem("token");
+        // Redirect the user to the login page
+        navigate("/login.js");
+      }else{
         console.error("Login failed");
         setStatus("Incorrect details. Try again.");
       }
