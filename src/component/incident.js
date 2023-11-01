@@ -89,7 +89,7 @@ function Incident() {
             <p>Description: {incident.description}</p>
             {fileName  ? (
               <Image
-                src={getFile}
+                src={getFile()}
                 width="100%"
                 preview
                 alt="Evidence"

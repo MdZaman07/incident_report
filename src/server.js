@@ -42,13 +42,21 @@ try {
 const conn = mongoose.connection;
 
 
-let gfs;
-
-conn.once('open', () => {
-  // Init stream
-  gfs = Grid(conn.db, mongoose.mongo);  
-  gfs.collection('uploads');
+let bucket;
+mongoose.connection.on("connected", () => {
+  var db = mongoose.connections[0].db;
+  bucket = new mongoose.mongo.GridFSBucket(db, {
+    bucketName: "uploads"
+  });
+  //console.log(bucket);
 });
+
+//to parse json content
+app.use(express.json());
+//to parse body from url
+app.use(express.urlencoded({
+  extended: false
+}));
 
 
 const storage = new GridFsStorage({
@@ -121,10 +129,23 @@ app.post("/api/submit", async (req, res) => {
   }
 });
 
-app.get("/api/image:fileName", async (req, res) => {
-  const fileName = req.params.fileName
-  console.log(fileName)
-})
+app.get("/api/image/:fileName", async (req, res) => {
+  
+  const file = await bucket.find({ filename: req.params.fileName }).toArray();
+
+  console.log(file)
+
+  // Check if the file exists.
+  if (!file || file.length === 0) {
+    return res.status(404).json({ err: "no files exist" });
+  }
+
+  // Open a read stream for the file.
+  const readStream = bucket.openDownloadStreamByName(req.params.fileName);
+
+  // Pipe the read stream to the HTTP response stream.
+  readStream.pipe(res);
+});
 
 // Routing for Email check
 app.post("/api/checkemail", async (req, res) => {
