@@ -133,6 +133,7 @@ app.get("/api/image/:fileName", async (req, res) => {
   
   const file = await bucket.find({ filename: req.params.fileName }).toArray();
 
+  console.log("was reached")
   console.log(file)
 
   // Check if the file exists.

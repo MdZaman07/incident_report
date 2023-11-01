@@ -66,7 +66,7 @@ function Incident() {
   return (
     <>
       <Dialog
-        header="Header"
+        header="Edit incident"
         visible={editVisible}
         onHide={() => setEditVisible(false)}
       >
@@ -88,12 +88,15 @@ function Incident() {
             <p>Location: {incident.incidentLocation}</p>
             <p>Description: {incident.description}</p>
             {fileName  ? (
+            <>
+            <p>Attached image evidence:</p>
               <Image
                 src={getFile()}
-                width="100%"
+                width="30%"
                 preview
                 alt="Evidence"
               />
+            </>
             ) : (
               <p>No image evidence supplied</p>
             )}

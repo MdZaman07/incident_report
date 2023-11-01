@@ -6,7 +6,6 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';       
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { fieldSubscriptionItems } from 'final-form';
         
 
 const Form = ( {userData} ) => {
@@ -53,26 +52,30 @@ const Form = ( {userData} ) => {
             console.log("Form object", formObject)
             setLoading(true);
             try {
-                const formDataFile = new FormData();
-                formDataFile.append('file', file)
-                // First try to upload file
-                const uploadResponse = await fetch('http://localhost:4000/api/upload', {
-                    method: 'POST',
-                    body : formDataFile
-                })
-                if(uploadResponse.status === 200) {
-                    const data = await uploadResponse.json();
-                    console.log(data)
-                    const resFileName = data.file.filename
-                    formObject = {...formData, 'fileName' : resFileName}
+                if(file !== null) {
+                    const formDataFile = new FormData();
+                    formDataFile.append('file', file)
+                    // First try to upload file
+                    const uploadResponse = await fetch('http://localhost:4000/api/upload', {
+                        method: 'POST',
+                        body : formDataFile
+                    })
+                    if(uploadResponse.status === 200) {
+                        const data = await uploadResponse.json();
+                        console.log(data)
+                        const resFileName = data.file.filename
+                        formObject = {...formData, 'fileName' : resFileName}
+                    }
+                    else {
+                        setStatus("File failed to upload.");
+                        setLoading(false);
+                        console.log("File failed to submit to database");
+                        return;
+                    }
                 }
                 else {
-                    setStatus("File failed to upload.");
-                    setLoading(false);
-                    console.log("File failed to submit to database");
-                    return;
+                    formObject = {...formData}
                 }
-
                 console.log("Form object", formObject);
 
                 const response = await fetch('http://localhost:4000/api/submit', {
@@ -86,7 +89,7 @@ const Form = ( {userData} ) => {
                 if(response.status === 200) {
                     console.log(userId)
                     console.log('Form data submitted sucessfully.')
-                    /*setFormData({
+                    setFormData({
                         incidentTitle: "",
                         incidentLocation: "",
                         offenderName: "",
@@ -95,9 +98,10 @@ const Form = ( {userData} ) => {
                         incidentCategory: "",
                         status: 'pending',
                         userId: userId,
-                        fileName: ""
+                        fileName: "",
 
-                    }) */
+                    }) 
+                    setFile(null)
                     setLoading(false);
                     setStatus('Incident form submitted successfully.')
                 }
