@@ -119,7 +119,7 @@ const SearchIncidents = () => {
         </div>
       );
     } else {
-      return null; // Or any other component you want to render when the condition is not met
+      return null;
     }
   };
 
@@ -157,34 +157,34 @@ const SearchIncidents = () => {
         <span>
           <RadioButton
             className="radioButton"
-            inputId="ingredient1"
-            name="pizza"
+            inputId="item1"
+            name="status"
             value="Approved"
             onChange={(e) => setInitialStatus(e.value)}
             checked={initialStatus === "Approved"}
           />
-          <label htmlFor="ingredient1" className="ml-4">
+          <label htmlFor="item1" className="ml-4">
             Approved
           </label>
         </span>
         <span>
           <RadioButton
             className="radioButton"
-            inputId="ingredient2"
-            name="pizza"
+            inputId="item2"
+            name="status"
             value="pending"
             onChange={(e) => setInitialStatus(e.value)}
             checked={initialStatus === "pending"}
           />
-          <label htmlFor="ingredient2" className="ml-4">
+          <label htmlFor="item2" className="ml-4">
             Pending
           </label>
         </span>
         <span>
           <RadioButton
             className="radioButton"
-            inputId="ingredient3"
-            name="pizza"
+            inputId="item3"
+            name="status"
             value="Rejected"
             onChange={(e) => setInitialStatus(e.value)}
             checked={initialStatus === "Rejected"}

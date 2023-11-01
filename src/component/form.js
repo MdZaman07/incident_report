@@ -5,6 +5,8 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { FileUpload } from 'primereact/fileupload';
+ 
 
         
         
@@ -143,6 +145,10 @@ const Form = ( {userData} ) => {
                 </div>
                  <div className='incident-form__text-area'>
                     <InputText type='text' placeholder='Name of offender (if applicable)' id='offenderName' name='offenderName' onChange={handleFormChange} value={formData.offenderName}></InputText>
+                </div>
+                <div>
+                    <label>Upload an image:</label>
+                    <FileUpload name="fileupload" id='fileupload' url="./upload"/>
                 </div>
                {/*<div className='incident-form__text-area'>
                     <label htmlFor="file">Attach image/video: </label>

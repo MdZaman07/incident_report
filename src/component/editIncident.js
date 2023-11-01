@@ -19,6 +19,7 @@ function EditIncident({ updateVisible, getIncident }) {
     description: "",
     incidentCategory: "",
     status: "",
+    editNote: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -52,7 +53,15 @@ function EditIncident({ updateVisible, getIncident }) {
     fetch(`http://localhost:4000/api/getFormById/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        setFormData(data);
+        setFormData({
+          incidentTitle: data.incidentTitle,
+          incidentLocation: data.incidentLocation,
+          offenderName: data.offenderName,
+          date: data.date,
+          description: data.description,
+          incidentCategory: data.incidentCategory,
+          status: data.status,
+        });
         document.title = data.incidentTitle;
       })
       .catch((error) => {
@@ -161,6 +170,14 @@ function EditIncident({ updateVisible, getIncident }) {
                 value={formData.status}
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
+                }
+              />
+              <label htmlFor="editNote">Edit Notes:</label>
+              <InputTextarea
+                id="editNote"
+                value={formData.editNote}
+                onChange={(e) =>
+                  setFormData({ ...formData, editNote: e.target.value })
                 }
               />
               <Button type="submit" label="Submit" />
