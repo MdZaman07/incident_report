@@ -47,7 +47,8 @@
   display: flex;
   flex-direction: column; /* Arrange photos vertically */
   align-items: flex-end; /* Center photos vertically */
-  margin-left: 20px; /* Add spacing between text and photos */
+  margin-right: 20px; /* I want them to stick to the right side */
+  justify-content: flex-start;
 }
 
 .mall-photo {

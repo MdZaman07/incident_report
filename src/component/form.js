@@ -181,7 +181,7 @@ const Form = ({ userData }) => {
             options={malls}
             value={formData.incidentLocation}
             onChange={handleFormChange}
-            disabled={malls.length === 0}
+            disabled={malls.length === 0 || searchTerm === ""}
           ></Dropdown>
         </div>
         <div className="incident-form__text-area">

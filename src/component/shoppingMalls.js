@@ -5,17 +5,45 @@ import "./shoppingMall.css";
 const ShoppingMalls = ({ map }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [malls, setMalls] = useState([]);
+  useEffect(() => {
+    if (!map) {
+      return;
+    }
+    const placesService = new window.google.maps.places.PlacesService(map);
+
+    // Define the search request with the initial search term
+    const request = {
+      query: `Shopping Mall Sydney`,
+      fields: ["name", "formatted_address", "place_id", "photos"],
+    };
+
+    // Perform the text-based search
+    placesService.textSearch(request, (results, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        setMalls(results);
+      } else {
+        console.error("Error fetching shopping malls:", status);
+      }
+    });
+  }, [map]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     // Create an instance of the Places service
     const placesService = new window.google.maps.places.PlacesService(map);
-
+    let request;
     // Define the search request
-    const request = {
-      query: `Shopping Mall ${searchTerm}`,
-      fields: ["name", "formatted_address", "place_id", "photos"],
-    };
+    if (event.target.value === "") {
+      request = {
+        query: `Shopping Mall Sydney`,
+        fields: ["name", "formatted_address", "place_id", "photos"],
+      };
+    } else {
+      request = {
+        query: `Shopping Mall ${searchTerm}`,
+        fields: ["name", "formatted_address", "place_id", "photos"],
+      };
+    }
 
     // Perform the text-based search
     placesService.textSearch(request, (results, status) => {
@@ -27,25 +55,25 @@ const ShoppingMalls = ({ map }) => {
     });
   };
 
-  const handleSearchSubmit = () => {
-    // Create an instance of the Places service
-    const placesService = new window.google.maps.places.PlacesService(map);
+  // const handleSearchSubmit = () => {
+  //   // Create an instance of the Places service
+  //   const placesService = new window.google.maps.places.PlacesService(map);
 
-    // Define the search request
-    const request = {
-      query: `Shopping Mall ${searchTerm}`,
-      fields: ["name", "formatted_address", "place_id", "photos"],
-    };
+  //   // Define the search request
+  //   const request = {
+  //     query: `Shopping Mall ${searchTerm}`,
+  //     fields: ["name", "formatted_address", "place_id", "photos"],
+  //   };
 
-    // Perform the text-based search
-    placesService.textSearch(request, (results, status) => {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        setMalls(results);
-      } else {
-        console.error("Error fetching shopping malls:", status);
-      }
-    });
-  };
+  //   // Perform the text-based search
+  //   placesService.textSearch(request, (results, status) => {
+  //     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+  //       setMalls(results);
+  //     } else {
+  //       console.error("Error fetching shopping malls:", status);
+  //     }
+  //   });
+  // };
 
   return (
     <div className="container">
@@ -56,12 +84,15 @@ const ShoppingMalls = ({ map }) => {
         onChange={handleSearchChange}
         className="search-input"
       />
-      <button onClick={handleSearchSubmit} className="search-button">
+      {/* <button onClick={handleSearchSubmit} className="search-button">
         Search
-      </button>
+      </button> */}
       <ul className="mall-list">
         {malls.map((mall) => (
-          <Link to={`/shoppingMallIncidents.js/${mall.name}`}>
+          <Link
+            key={mall.place_id}
+            to={`/shoppingMallIncidents.js/${mall.name}`}
+          >
             <li key={mall.place_id} className="mall-item">
               <div className="text-container">
                 <p>{mall.name}</p>
@@ -88,3 +119,25 @@ const ShoppingMalls = ({ map }) => {
 };
 
 export default ShoppingMalls;
+// useEffect(() => {
+//   if (!map) {
+//     return;
+//   }
+//   const placesService = new window.google.maps.places.PlacesService(map);
+
+//   // Define the search request
+//   const request = {
+//     query: `Shopping Mall Sydney`,
+//     fields: ["name", "formatted_address", "place_id", "photos"],
+//   };
+
+//   // Perform the text-based search
+//   placesService.textSearch(request, (results, status) => {
+//     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+//       setMalls(results);
+//       console.log(results);
+//     } else {
+//       console.error("Error fetching shopping malls:", status);
+//     }
+//   });
+// }, []);
