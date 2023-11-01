@@ -5,12 +5,14 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Form from "./form";
 import UserArchive from "./userArchive";
 import SearchIncidents from "./searchForms";
+import ViewMalls from "./viewMalls";
 
 const AdminHome = () => {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showArchive, setShowArchive] = useState(true);
+  const [showMalls, setShowMalls] = useState(false);
   const [header, setHeader] = useState("Admin Incident Archive");
 
   const navigate = useNavigate();
@@ -61,6 +63,7 @@ const AdminHome = () => {
       command: () => {
         setShowForm(false);
         setShowArchive(true);
+        setShowMalls(false);
         setHeader("Incident Archive");
       },
     },
@@ -69,7 +72,17 @@ const AdminHome = () => {
       command: () => {
         setShowForm(true);
         setShowArchive(false);
+        setShowMalls(false);
         setHeader("Report an incident");
+      },
+    },
+    {
+      label: "Shopping Malls",
+      command: () => {
+        setShowForm(false);
+        setShowArchive(false);
+        setShowMalls(true);
+        setHeader("Shopping Malls");
       },
     },
     {
@@ -87,6 +100,7 @@ const AdminHome = () => {
       <div className="function-container">
         {showForm && <Form userData={userData} />}
         {showArchive && <SearchIncidents />}
+        {showMalls && <ViewMalls />}
       </div>
     </>
   );
