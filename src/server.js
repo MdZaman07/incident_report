@@ -5,6 +5,7 @@ const multer = require("multer");
 const Grid = require("gridfs-stream");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -17,6 +18,9 @@ app.use(bodyParser.json());
 
 const dbUrl =
   "mongodb+srv://blester7:yTGJYryN4t2RfVFC@cluster0.hr8ilkr.mongodb.net/IncidentReportingDB?retryWrites=true&w=majority";
+
+// static secretKey for JWT token
+const secretKey = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY5ODcyNTQ5NCwiaWF0IjoxNjk4NzI1NDk0fQ.qTmMGNgXFJJj2O_Dzpc0_vGeZX_5reMEssHSQF8Uryk";
 
 // Connect to MongoDB
 try {
@@ -116,9 +120,18 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    return res.status(200).json({ message: "Login successful", user: user });
-  } catch (error) {}
+    // Create a JWT with user information and sign it with the secret key
+    const token = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
+      expiresIn: "2d", // Token expires 2 Days
+    });
+
+    return res.status(200).json({ message: "Login successful", user: user, token: token });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "An error occurred" });
+  }
 });
+
 
 // Routing for form submission
 
@@ -191,7 +204,7 @@ app.get("/api/getFormById/:id", async (req, res) => {
 
 app.put("/api/updateForm/:id", async (req, res) => {
   const { id } = req.params;
-  const { incidentTitle, offenderName, incidentCategory, date, incidentLocation, incidentDate, description } =
+  const { incidentTitle, offenderName, incidentCategory, date, incidentLocation, incidentDate, description, editNote } =
     req.body;
   console.log(req.body);
   try {
@@ -207,6 +220,7 @@ app.put("/api/updateForm/:id", async (req, res) => {
     form.date = date;
     form.offenderName = offenderName;
     form.incidentCategory = incidentCategory;
+    form.editNote = editNote;
 
     await form.save();
 
