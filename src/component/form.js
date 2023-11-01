@@ -177,10 +177,11 @@ const Form = ({ userData }) => {
             required
             id="incidentLocation"
             name="incidentLocation"
-            placeholder="Venue Locations"
+            placeholder="Venue Names"
             options={malls}
             value={formData.incidentLocation}
             onChange={handleFormChange}
+            disabled={malls.length === 0}
           ></Dropdown>
         </div>
         <div className="incident-form__text-area">
