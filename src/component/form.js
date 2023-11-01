@@ -60,8 +60,7 @@ const Form = ({ userData }) => {
     description: "",
     incidentCategory: "",
     status: "pending",
-    userId: userId, // Id of user who submits form
-    // attachedFile: null
+    userId: userId
   });
 
   const handleFormChange = (event) => {
@@ -75,27 +74,6 @@ const Form = ({ userData }) => {
   };
 
   const [status, setStatus] = useState("");
-
-  const [inputType, setInputType] = useState("text");
-
-  const handleInputFocus = () => {
-    setInputType("date");
-  };
-
-  const handleInputBlur = () => {
-    setInputType("text");
-  };
-
-  /*const handleSearch = async (selectedAddress) => {
-        try {
-            const results = await geocodeByAddress(selectedAddress);
-            const latLng = await getLatLng(results[0]);
-            setAddress(selectedAddress);
-            setCoordinates(latLng);
-          } catch (error) {
-            console.error('Error selecting address:', error);
-          }
-        }; */
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -126,6 +104,8 @@ const Form = ({ userData }) => {
             date: "",
             description: "",
             incidentCategory: "",
+            status: "pending",
+            userId: userId
           });
           setStatus("Incident form submitted successfully.");
         } else {
@@ -138,8 +118,6 @@ const Form = ({ userData }) => {
       }
     }
   };
-
-  // const severityLevels = ["Low", "Medium", "High"];
 
   const incidentCategories = [
     "Safety",
@@ -228,11 +206,7 @@ const Form = ({ userData }) => {
             value={formData.offenderName}
           ></InputText>
         </div>
-        <div>
-          <label>Upload an image:</label>
-          <FileUpload name="fileupload" id="fileupload" url="./upload" />
-        </div>
-        {/*<div className='incident-form__text-area'>
+        <div className='incident-form__text-area'>
                     <label htmlFor="file">Attach image/video: </label>
                     <input
                         type="file"
@@ -240,7 +214,7 @@ const Form = ({ userData }) => {
                         name="file"
                         accept=".pdf, .doc, .docx, .jpg, .jpeg, .png, .mp4"
                     />
-                        </div> */}
+        </div>
         {status && <p className="status">{status}</p>}
         <Button
           className="submit-button"
