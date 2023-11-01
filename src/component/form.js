@@ -139,6 +139,7 @@ const Form = ({ userData }) => {
 
                 }) 
                 setFile(null)
+                setSearchTerm("")
                 setLoading(false);
                 setStatus('Incident form submitted successfully.')
             }
