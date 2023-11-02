@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import "./signup.css";
 import {Link, Navigate, useNavigate} from 'react-router-dom';
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { Input } from '@mui/material';
 
 
 const Signup = () => {
@@ -70,8 +73,8 @@ const Signup = () => {
         <div className="Signup">
         <h4>Sign-up!</h4>
         <form onSubmit={handleSubmit}>
-          <div className="text_area">
-            <input
+          <div className="">
+            <InputText
               type="text"
               id="firstname"
               name="firstname"
@@ -83,8 +86,8 @@ const Signup = () => {
 
             />
           </div>
-          <div className="text_area">
-            <input
+          <div className="">
+            <InputText
               type="text"
               id="lastname"
               name="lastname"
@@ -96,8 +99,8 @@ const Signup = () => {
 
             />
           </div>
-          <div className="text_area">
-            <input
+          <div className="">
+            <InputText
               type="text"
               id="email"
               name="email"
@@ -109,8 +112,8 @@ const Signup = () => {
 
             />
           </div>
-          <div className="text_area">
-            <input
+          <div className="">
+            <InputText
               type="password"
               id="password"
               name="password"
@@ -122,8 +125,8 @@ const Signup = () => {
 
             />
           </div>
-          <div className="text_area">
-            <input
+          <div className="">
+            <InputText
               type="password"
               id="verifyPassword"
               name="verifyPassword"
@@ -135,10 +138,11 @@ const Signup = () => {
             />
           </div>
           {status && <p className="status">{status}</p>}
-          <input
+          <Button
             type="submit"
-            value="Sign-Up"
+            label="SIGN-UP"
             className="btn"
+            rounded
             disabled={submitDisabled}
           />
         </form>

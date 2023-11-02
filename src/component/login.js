@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./login.css";
 import { useNavigate, Link } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ const Login = () => {
           id="email"
           placeholder="Email"
           className="text-area"
+          required
         ></InputText>
         <InputText
           type="password"
@@ -85,9 +87,10 @@ const Login = () => {
           id="password"
           placeholder="Password"
           className = "text-area"
+          required
         ></InputText>
         {status && <p className="status">{status}</p>}
-        <input type="submit" value="LOGIN" className="btn" />
+        <Button className="" raised type="submit" rounded label="LOGIN" />
       </form>
       <Link className="link" to="/signup.js">
         Sign up
