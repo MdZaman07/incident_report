@@ -81,6 +81,8 @@ const Form = ({ userData }) => {
 
     let formObject;
 
+    console.log("Incident title", formData.incidentTitle)
+
     if(formData.incidentTitle === "" || formData.description === "" || formData.incidentLocation === "" 
     || formData.date === null) {
         setStatus("One of the mandatory fields was empty. Please try again.")
@@ -196,7 +198,6 @@ const handleFileChange = (event) => {
           <div ref={mapRef} className="map-container"></div>
           <Dropdown
             className="dropdown"
-            required
             id="incidentLocation"
             name="incidentLocation"
             placeholder="Venue Names"
@@ -218,7 +219,6 @@ const handleFileChange = (event) => {
         </div>
         <div className="incident-form__text-area">
           <Dropdown
-            required
             id="incidentCategory"
             className="dropdown"
             options={incidentCategories}
@@ -269,6 +269,7 @@ const handleFileChange = (event) => {
           severity="success"
           type="submit"
           label="Submit"
+          raised
         ></Button>
       </form>
     </div>

@@ -143,6 +143,7 @@ const Signup = () => {
             label="SIGN-UP"
             className="btn"
             rounded
+            raised
             disabled={submitDisabled}
           />
         </form>
