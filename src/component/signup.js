@@ -64,7 +64,8 @@ const Signup = () => {
             }
         }
         catch(error) {
-          console.log(error)
+          setStatus("Error connecting to server.")
+          console.log("Error occurred:", error);
         }
       }
     }
