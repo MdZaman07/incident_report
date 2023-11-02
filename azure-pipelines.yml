@@ -44,9 +44,4 @@ steps:
       npm test signup.test.js -- --watchAll=false
     displayName: "sign-up renders"   
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.SourcesDirectory)/build'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
   
