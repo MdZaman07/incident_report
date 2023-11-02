@@ -260,7 +260,7 @@ const handleFileChange = (event) => {
                         onChange={handleFileChange}
                     />
         </div>
-        {loading ? <ProgressSpinner style={{width: '50px', height: '50px'}}/> : null}
+        {loading ? <ProgressSpinner className="progress-spinner" style={{width: '50px', height: '50px'}}/> : null}
         {status && <p className="status">{status}</p>}
         <Button
           className="submit-button"
