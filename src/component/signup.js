@@ -142,7 +142,8 @@ const Signup = () => {
             disabled={submitDisabled}
           />
         </form>
-        <Link className='link' to='/login.js'>Back to login</Link>
+        <br></br>
+        <Link className='link' to='/login.js'>Go to Login</Link>
       </div>
     )
 }

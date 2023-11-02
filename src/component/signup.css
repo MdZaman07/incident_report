@@ -34,6 +34,11 @@ form{
     font-size: 20px;
     border: none;
     width: 80%;
+    background-color: transparent;
+}
+
+.text_input::placeholder {
+    color: black;
 }
 
 .btn{
