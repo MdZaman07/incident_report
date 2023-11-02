@@ -27,6 +27,7 @@ function EditIncident({ updateVisible, getIncident }) {
     (e) => {
       e.preventDefault();
       setLoading(true);
+      // Send a PUT request to the server to update the form
       fetch(`http://localhost:4000/api/updateForm/${id}`, {
         method: "PUT",
         headers: {
@@ -47,6 +48,7 @@ function EditIncident({ updateVisible, getIncident }) {
     [formData, id, updateVisible]
   );
 
+  // Get existing incident data from server and update form data
   useEffect(() => {
     fetch(`http://localhost:4000/api/getFormById/${id}`)
       .then((response) => response.json())
@@ -74,6 +76,7 @@ function EditIncident({ updateVisible, getIncident }) {
           {loading && <ProgressSpinner />}
           <Panel header="Edit Incident Details">
             <form onSubmit={handleSubmit}>
+              {/* Form fields for editing the incident details */}
               <label htmlFor="incidentTitle">Incident Title:</label>
               <InputText
                 id="incidentTitle"

@@ -11,13 +11,18 @@ import CancelIncident from "./cancelIncident";
 import { Dropdown } from "primereact/dropdown";
 
 function Incident() {
+  // get incident id from URL
   const { id } = useParams();
+  // initialize navigation
   const navigate = useNavigate();
+  // initialize state variables
   const [incident, setIncident] = useState(null);
   const [editVisible, setEditVisible] = useState(false);
   const [cancelVisible, setCancelVisible] = useState(false);
   const [version, editVersion] = useState(0);
+  const [fileName, setFileName] = useState('');
 
+  // fetch incident data from server
   const getIncident = async () => {
     const response = await fetch(`http://localhost:4000/api/getFormById/${id}`);
     const data = await response.json();
@@ -25,39 +30,54 @@ function Incident() {
     editVersion(data.versions.length - 1);
   };
 
+  // fetch incident data on component mount
   useEffect(() => {
     getIncident();
   }, [id]);
 
+  // handle edit button click
+  useEffect(() => {
+    setFileName(incident?.fileName || '');
+    console.log(fileName)
+  }, [incident])
+
   const handleEdit = () => {
     setEditVisible(true);
-    //navigate(`/incident/${id}/edit`);
   };
 
+  // handle cancel button click
   const handleCancel = () => {
     setCancelVisible(true);
   };
 
-  // for edit
+  // update edit dialog visibility
   const updateVisible = (value) => {
     setEditVisible(value);
   };
 
-  // for cancel
+  // update cancel dialog visibility
   const updateCancelVisible = (value) => {
     setCancelVisible(value);
   };
 
+  // navigate back to previous page
   const navBack = () => {
     navigate(-1);
   };
+
+  // display loading message if incident data is not yet loaded
+  const getFile = () => {
+    return `http://localhost:4000/api/image/${fileName}`;
+  }
 
   if (!incident) {
     return <div>Loading...</div>;
   }
 
+  // render incident details
   return (
     <>
+      {/* edit incident dialog */}
       <Dialog
         header="Header"
         visible={editVisible}
@@ -65,6 +85,7 @@ function Incident() {
       >
         <EditIncident updateVisible={updateVisible} getIncident={getIncident} />
       </Dialog>
+      {/* cancel incident dialog */}
       <Dialog
         header="Cancel Incident"
         visible={cancelVisible}
@@ -75,8 +96,10 @@ function Incident() {
           getIncident={getIncident}
         />
       </Dialog>
+      {/* incident details */}
       <div className="incident-details-container">
         <div className="incident-details">
+          {/* version dropdown */}
           <Dropdown
             options={Array.from(
               { length: incident.versions.length },
@@ -89,6 +112,7 @@ function Incident() {
             value={version}
             onChange={(e) => editVersion(e.value)}
           />
+          {/* incident panel */}
           <Panel
             header={`Incident: ${incident.versions[version].incidentTitle}`}
           >
@@ -102,15 +126,18 @@ function Incident() {
             </p>
             <p>Location: {incident.versions[version].incidentLocation}</p>
             <p>Description: {incident.versions[version].description}</p>
-            {incident.attachedFile ? (
+            {fileName  ? (
+            <>
+            <p>Attached image evidence:</p>
               <Image
-                src={incident.attachedFile}
-                width="100%"
+                src={getFile()}
+                width="30%"
                 preview
                 alt="Evidence"
               />
+            </>
             ) : (
-              <p>No evidence supplied</p>
+              <p>No image evidence supplied</p>
             )}
             <p>Status: {incident.status}</p>
             <p>
@@ -123,13 +150,16 @@ function Incident() {
                 }
               )}
             </p>
+            {/* back button */}
             <Button label="Back" onClick={navBack} /> &nbsp;
+            {/* edit incident button */}
             <Button
               label="Edit Incident"
               onClick={handleEdit}
               disabled={version !== incident.versions.length - 1}
             />
             &nbsp; &nbsp;
+            {/* cancel incident button */}
             <Button
               id="cancelButton"
               severity="danger"
@@ -138,6 +168,7 @@ function Incident() {
               disabled={version !== incident.versions.length - 1}
             />
           </Panel>
+          {/* display edit notes if available */}
           {incident.versions[version].editNote && (
             <Panel>
               <p>Edit Notes: {incident.versions[version].editNote}</p>

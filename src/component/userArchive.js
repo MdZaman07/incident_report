@@ -87,7 +87,7 @@ const UserArchive = ( {userData} ) => {
     <>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
-        <InputText placeholder="Search" onChange={(e) => setSearchTerm(e.target.value)} />
+        <InputText placeholder="Search by title..." onChange={(e) => setSearchTerm(e.target.value)} />
       </span>
       <div className="data-table">
         {loading ? (

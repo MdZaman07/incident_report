@@ -101,8 +101,16 @@ const ShoppingMallIncidents = () => {
   return (
     <div className="elementContainer">
       <div>
-        <h1 className="h3 center-text">{mallName} Incidents</h1>
-        <div>
+        <div className="top-bar">
+          <Button
+            icon="pi pi-arrow-left"
+            tooltip="Admin Home"
+            className="return-button"
+            onClick={() => navigate(-1)}
+          />
+          <h1 className="h3 center-text">{mallName} Incidents</h1>
+        </div>
+        <div className="radio-buttons-container">
           <span>
             <RadioButton
               className="radioButton"

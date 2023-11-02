@@ -11,6 +11,7 @@ const formSchema = new mongoose.Schema(
     incidentCategory: String,
     status: String,
     userId: String,
+    fileName: String,
     editNote: { type: String, default: null },
     versions: [
       {
@@ -24,6 +25,7 @@ const formSchema = new mongoose.Schema(
         status: String,
         userId: String,
         editNote: String,
+        fileName: String,
         updatedAt: { type: Date, default: Date.now },
       },
     ],
