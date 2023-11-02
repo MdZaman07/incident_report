@@ -11,13 +11,19 @@ import { DataTable } from "primereact/datatable";
 import { useNavigate } from "react-router-dom";
 import { Column } from "primereact/column";
 import { useParams } from "react-router-dom";
+
+// This component represents a page for displaying incidents related to a shopping mall.
 const ShoppingMallIncidents = () => {
+  // Get the mallName parameter from the URL using useParams from React Router.
   const { mallName } = useParams();
+
+  // State variables for managing incidents data and loading status.
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [initialStatus, setInitialStatus] = useState("pending");
   const navigate = useNavigate();
 
+  // useEffect hook for fetching incident data when the component mounts.
   useEffect(() => {
     fetch(
       `http://localhost:4000/api/searchIncidents?searchCriteria=${"incidentLocation"}&searchTerm=${mallName}`
@@ -36,6 +42,8 @@ const ShoppingMallIncidents = () => {
         setLoading(false);
       });
   }, []);
+
+  // Function to handle changing the status of an incident.
   const handleStatus = (id, status) => {
     const requestBody = {
       id: id,
@@ -53,7 +61,7 @@ const ShoppingMallIncidents = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-
+        // Update the incidents list with the new status.
         const updatedIncidents = incidents.map((form) => {
           if (form._id === id) {
             return { ...form, status: status };
@@ -69,11 +77,15 @@ const ShoppingMallIncidents = () => {
         setLoading(false);
       });
   };
+
+  // Function to handle clicking on a row and navigate to the incident details page.
   const onRowClick = (event) => {
     const incidentID = event.data._id;
     console.log(incidentID);
     navigate(`/incident/${incidentID}`);
   };
+
+  // Function to render action buttons for each incident based on its status.
   const actionButton = (rowData) => {
     if (rowData.status === "pending") {
       return (
@@ -95,7 +107,7 @@ const ShoppingMallIncidents = () => {
         </div>
       );
     } else {
-      return null;
+      return null; // Don't render buttons for incidents with status other than 'pending'.
     }
   };
   return (

@@ -55,26 +55,6 @@ const ShoppingMalls = ({ map }) => {
     });
   };
 
-  // const handleSearchSubmit = () => {
-  //   // Create an instance of the Places service
-  //   const placesService = new window.google.maps.places.PlacesService(map);
-
-  //   // Define the search request
-  //   const request = {
-  //     query: `Shopping Mall ${searchTerm}`,
-  //     fields: ["name", "formatted_address", "place_id", "photos"],
-  //   };
-
-  //   // Perform the text-based search
-  //   placesService.textSearch(request, (results, status) => {
-  //     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-  //       setMalls(results);
-  //     } else {
-  //       console.error("Error fetching shopping malls:", status);
-  //     }
-  //   });
-  // };
-
   return (
     <div className="container">
       <input
@@ -119,25 +99,3 @@ const ShoppingMalls = ({ map }) => {
 };
 
 export default ShoppingMalls;
-// useEffect(() => {
-//   if (!map) {
-//     return;
-//   }
-//   const placesService = new window.google.maps.places.PlacesService(map);
-
-//   // Define the search request
-//   const request = {
-//     query: `Shopping Mall Sydney`,
-//     fields: ["name", "formatted_address", "place_id", "photos"],
-//   };
-
-//   // Perform the text-based search
-//   placesService.textSearch(request, (results, status) => {
-//     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-//       setMalls(results);
-//       console.log(results);
-//     } else {
-//       console.error("Error fetching shopping malls:", status);
-//     }
-//   });
-// }, []);

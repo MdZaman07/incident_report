@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Column } from "primereact/column";
 
 const SearchIncidents = () => {
+  // State variables
   const [searchCriteria, setSearchCriteria] = useState("incidentLocation"); // Default to "location"
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -20,6 +21,8 @@ const SearchIncidents = () => {
   const [loading, setLoading] = useState(true);
   const [initialStatus, setInitialStatus] = useState("pending");
   const navigate = useNavigate();
+
+  // Effect to debounce the search term
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
@@ -30,6 +33,7 @@ const SearchIncidents = () => {
     };
   }, [searchTerm]);
 
+  // Effect to fetch incidents based on search criteria and term
   useEffect(() => {
     if (debouncedSearchTerm !== undefined) {
       console.log(debouncedSearchTerm);
@@ -53,9 +57,13 @@ const SearchIncidents = () => {
       setIncidents([]);
     }
   }, [debouncedSearchTerm, searchCriteria]);
+
+  // Function to handle search term input change
   const handleSearch = (e) => {
     setSearchTerm(e);
   };
+
+  // Function to update incident status
   const handleStatus = (id, status) => {
     const requestBody = {
       id: id,
@@ -74,6 +82,7 @@ const SearchIncidents = () => {
           throw new Error("Network response was not ok");
         }
 
+        // Update incidents with the new status
         const updatedIncidents = incidents.map((form) => {
           if (form._id === id) {
             return { ...form, status: status };
@@ -89,19 +98,26 @@ const SearchIncidents = () => {
         setLoading(false);
       });
   };
+
+  // Function to handle change in search criteria
   const handleSearchCriteriaChange = (e) => {
     setSearchCriteria(e);
     setSearchTerm("");
   };
+
+  // Function to navigate to incident details page
   const onRowClick = (event) => {
     const incidentID = event.data._id;
     console.log(incidentID);
     navigate(`/incident/${incidentID}`);
   };
+
+  // Function to render action buttons for each incident
   const actionButton = (rowData) => {
     if (rowData.status === "pending") {
       return (
         <div className="button-container">
+          {/* Button to approve the incident */}
           <Button
             icon="pi pi-check"
             tooltip="Approve"
@@ -109,6 +125,7 @@ const SearchIncidents = () => {
             onClick={() => handleStatus(rowData._id, "Approved")}
             disabled={rowData.status === "Approved"}
           />
+          {/* Button to reject the incident */}
           <Button
             icon="pi pi-times"
             tooltip="Reject"
@@ -125,8 +142,9 @@ const SearchIncidents = () => {
 
   return (
     <div className="elementContainer">
-      {/* <h2 className="header">Search Incidents by Location</h2> */}
+      {/* User Interface */}
       <div className="search-container">
+        {/* Search criteria dropdown */}
         <label className="label" htmlFor="search-criteria">
           Search Criteria:
         </label>
@@ -137,13 +155,12 @@ const SearchIncidents = () => {
           options={[
             { label: "Location", value: "incidentLocation" },
             { label: "Incident Title", value: "incidentTitle" },
-
             { label: "Incident Category", value: "incidentCategory" },
-            // { label: "Form Status", value: "status" },
           ]}
           onChange={(e) => handleSearchCriteriaChange(e.value)}
           placeholder="Select a criteria"
         />
+        {/* Search term input */}
         <input
           type="text"
           id="search-term"
@@ -153,6 +170,7 @@ const SearchIncidents = () => {
           onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
+      {/* Radio buttons for initial status filter */}
       <div>
         <span>
           <RadioButton
@@ -189,11 +207,12 @@ const SearchIncidents = () => {
             onChange={(e) => setInitialStatus(e.value)}
             checked={initialStatus === "Rejected"}
           />
-          <label htmlFor="ingredient3" className="ml-4">
+          <label htmlFor="item3" className="ml-4">
             Rejected
           </label>
         </span>
       </div>
+      {/* Display search results */}
       <div>
         {searchTerm === "" ? (
           <h3 className="h3 center-text">All Incidents</h3>
@@ -213,7 +232,6 @@ const SearchIncidents = () => {
                   )}
                   paginator
                   rows={10}
-                  sortField="status"
                   onRowClick={onRowClick}
                   size="normal"
                 >
@@ -246,11 +264,10 @@ const SearchIncidents = () => {
                     sortable
                   ></Column>
                   <Column field="status" header="Status" sortable></Column>
-
                   <Column header="Action" body={actionButton} />
                 </DataTable>
               )}
-            </div>{" "}
+            </div>
           </>
         ) : (
           <p className="no-results">No search results found</p>

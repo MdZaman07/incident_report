@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./login.css";
 import { useNavigate, Link } from "react-router-dom";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -69,22 +71,26 @@ const Login = () => {
     <div className="Login">
       <h4>Login</h4>
       <form onSubmit={handleSubmit}>
-        <input
+        <InputText
           type="text"
           name="email"
           onChange={handleInputChange}
           id="email"
           placeholder="Email"
-        ></input>
-        <input
+          className="text-area"
+          required
+        ></InputText>
+        <InputText
           type="password"
           name="password"
           onChange={handleInputChange}
           id="password"
           placeholder="Password"
-        ></input>
+          className = "text-area"
+          required
+        ></InputText>
         {status && <p className="status">{status}</p>}
-        <input type="submit" value="LOGIN" className="btn" />
+        <Button className="" raised type="submit" rounded label="LOGIN" />
       </form>
       <Link className="link" to="/signup.js">
         Sign up
